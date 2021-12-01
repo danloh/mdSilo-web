@@ -57,8 +57,7 @@ function Note(props: Props) {
   useEffect(() => { 
     if ((isWiki || !noteExists) && !isLoaded ) {
       loadNote(noteId)
-    } 
-    // https://stackoverflow.com/questions/56450975/to-fix-cancel-all-subscriptions-and-asynchronous-tasks-in-a-useeffect-cleanup-f
+    }
     return () => {
       setIsLoaded(true);
     }
@@ -131,9 +130,8 @@ function Note(props: Props) {
   }, []);
 
   // update note to db
-  const handleNoteUpdate = useCallback(async (note: NoteUpdate) => {
-    if (!user) { return; }
-    const { error } = await updateDbNote(note, user.id);
+  const handleNoteUpdate = useCallback(async (note: NoteUpdate, userId: string) => {
+    const { error } = await updateDbNote(note, userId);
 
     if (error) {
       switch (error.code) {
@@ -154,12 +152,12 @@ function Note(props: Props) {
     }
     
     setSyncState({ isTitleSynced: true, isContentSynced: true, isAttrSynced: true });
-  }, [user]);
+  }, []);
 
   // Save the note to db
   const offlineMode = useStore((state) => state.offlineMode);
   useEffect(() => {
-    if ((offlineMode && !isWiki) || !user) {
+    if ((offlineMode && !isWiki) || (!offlineMode && !user)) {
       return;
     }
 
@@ -168,7 +166,7 @@ function Note(props: Props) {
       return;
     }
 
-    const noteUpdate: NoteUpdate = { id: noteId };
+    const noteUpdate: NoteUpdate = { id: noteId, is_wiki: isWiki };
     if (!syncState.isContentSynced) {
       noteUpdate.content = note.content;
     }
@@ -179,9 +177,16 @@ function Note(props: Props) {
       noteUpdate.attr = note.attr;
     }
 
+    // Note: a potential issue
+    // do not need authed user to update wiki note currently
+    const userId = isWiki ? '' : user?.id || '';
+    if (!userId && !isWiki) {
+      return;
+    }
+
     if (noteUpdate.title || noteUpdate.content || noteUpdate.attr) {
       const handler = setTimeout(
-        () => handleNoteUpdate(noteUpdate),
+        () => handleNoteUpdate(noteUpdate, userId),
         SYNC_DEBOUNCE_MS
       );
       return () => clearTimeout(handler);
@@ -190,7 +195,7 @@ function Note(props: Props) {
 
   // Prompt the user with a dialog box about unsaved changes if they navigate away
   useEffect(() => {
-    if ((offlineMode && !isWiki) || !user) {
+    if ((offlineMode && !isWiki) || (!offlineMode && !user)) {
       return;
     }
 

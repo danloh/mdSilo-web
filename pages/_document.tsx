@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const DESCRIPTION = 'mdSilo';
+const DESCRIPTION = 'mdSilo: networking while writing';
 
 class MsDocument extends Document {
   render() {
@@ -15,15 +15,15 @@ class MsDocument extends Document {
           <meta name="mobile-web-app-capable" content="yes" />
           <meta property="og:title" content="mdSilo" />
           <meta property="og:description" content={DESCRIPTION} />
-          <meta property="og:image" content="https://mdsilo.com/banner.png" />
+          <meta property="og:image" content="https://mdsilo.com/logo.webp" />
           <meta property="og:url" content="https://mdsilo.com" />
           <meta property="og:type" content="website" />
 
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@mdSilo" />
+          <meta name="twitter:site" content="@mdsiloapp" />
           <meta name="twitter:title" content="mdSilo" />
           <meta name="twitter:description" content={DESCRIPTION} />
-          <meta name="twitter:image" content="https://mdsilo.com/banner.png" />
+          <meta name="twitter:image" content="https://mdsilo.com/logo.webp" />
 
           <link rel="manifest" href="/manifest.json" />
           <link rel="icon" type="image/x-icon" href="/favicon.ico" />

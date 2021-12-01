@@ -1,7 +1,7 @@
 {
   "name": "mdSilo",
   "short_name": "mdSilo",
-  "description": "mdSilo is a note-taking app and promise keeper",
+  "description": "mdSilo: networking while writing",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -14,10 +14,10 @@
       "type": "image/png"
     },
     {
-      "src": "/maskable-icon.png",
-      "sizes": "1024x1024",
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#FFFFFF",

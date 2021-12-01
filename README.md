@@ -5,6 +5,7 @@ A mind silo for storing ideas, thought, knowledge with a powerful writing tool,
 which runs entirely in the browser. No install required, no register required.
 The data is stored on your computer, in your browser and can be exported as a single json file.
 
+[Demo](https://mdsilo.com/app/demo)  
 [Gitter](https://gitter.im/mdSilo)  
 [Discord](https://discord.gg/cWzfqYkX)
 

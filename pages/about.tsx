@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import MainView from 'components/landing/MainView';
 
 export default function About() {
@@ -10,31 +9,23 @@ export default function About() {
       </Head>
       <article className="container px-6 py-16 prose prose-primary text-gray-300">
         <h1>About mdSilo</h1>
+        <p><b>mdSilo</b> /maind &apos;sailou/ : A mind silo to mark down promises.</p>
         <div>
-          <blockquote>
-            Simple is better than complex.
-            Networked is better than standalone.
-          </blockquote>
+          <blockquote>Simple is better than complex.</blockquote>
+          <p>
+            mdSilo is the silo for storing ideas with a WYSIWYG editor and markdown support, it is easy-to-use and versatile.
+          </p>
         </div>
         <div>
-          <p><b>mdSilo</b> /maind &apos;sailou/ : A mind silo to markdown promises.</p>
+          <blockquote>Networked is better than standalone.</blockquote>
           <p>
-            As the name indicated, mdSilo is the silo for storing ideas with a WYSIWYG editor and markdown support, 
-            help you grasp every spark of inspiration, keep promises, build habit and think better via daily I/O(reading and writing). 
-          </p>
-          <p>
-            With mdSilo, notes are not standalone but networked with bidirectional links to each other;
-            besides backlinks, which let you see which notes link to a specific note, 
-            the different pieces of thoughts in different notes can be also connected together via block reference. Your notes and knowledge will be organized associatively, empowering your reading, thinking and writing.
+            With mdSilo, the writings are not standalone but networked together via bidirectional BackLinks, Block Reference, PubLinks, HashTag and more.
           </p>
         </div>
         <div>
           <blockquote>You can&apos;t start a fire without a spark.</blockquote>
           <p>
-            mdSilo is a powerful {' '}  
-            <Link href="/app"><a><b>note-taking-networking app</b></a></Link>, to help you grasp, 
-            mark down every spark of inspiration and connect your thoughts together. 
-            it is easy-to-use and versatile.
+            mdSilo can help you grasp, mark every spark of inspiration down, connect your thoughts together, think better via daily I/O(reading and writing). 
           </p>
         </div>
       </article>
