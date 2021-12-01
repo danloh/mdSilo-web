@@ -26,6 +26,14 @@ export default function Footer(props: Props) {
             <Link href="/terms">
               <a className="text-gray-300 hover:text-primary-500">Terms</a>
             </Link>
+            <a
+              href="https://trello.com/b/xzIFkNGb/mdsilo-roadmap"
+              className="text-gray-300 hover:text-primary-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Roadmap
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap flex-1 space-x-16 lg:justify-end">

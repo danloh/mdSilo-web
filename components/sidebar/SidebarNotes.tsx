@@ -52,7 +52,7 @@ function SidebarNotes(props: SidebarNotesProps) {
         ) : (
           <>
             <p className="flex-1 px-6 my-2 text-center text-gray-500">
-              No content yet
+              No silage yet
             </p>
             <button
               className="p-1 m-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"

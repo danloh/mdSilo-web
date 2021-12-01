@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { IconFile, IconSearch } from '@tabler/icons';
+import { IconFolder, IconSearch } from '@tabler/icons';
 import Tooltip from 'components/Tooltip';
 import { SidebarTab as SidebarTabType, useStore } from 'lib/store';
 import SidebarNotes from './SidebarNotes';
@@ -45,7 +45,7 @@ const Tabs = (props: TabsProps) => {
         <SidebarTab
           isActive={activeTab === SidebarTabType.Silo}
           setActive={() => setActiveTab(SidebarTabType.Silo)}
-          Icon={IconFile}
+          Icon={IconFolder}
           className={activeTab === SidebarTabType.Silo ? 'border-r' : ''}
         />
       </Tooltip>

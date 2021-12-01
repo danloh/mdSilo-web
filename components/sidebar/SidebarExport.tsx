@@ -17,7 +17,7 @@ export default function Header(props: Props) {
       <Menu>
         <Menu.Button className="px-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-700 focus:outline-none">
           <span className="text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
-            {numOfNotes} notes
+          silage: {numOfNotes}
           </span>
         </Menu.Button>
         <Menu.Items className="absolute z-20 w-auto overflow-hidden bg-white rounded top-full shadow-popover dark:bg-gray-800 focus:outline-none">
