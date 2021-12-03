@@ -7,7 +7,7 @@ describe('AppHome', () => {
     render(<AppHome />);
 
     const emptyText = screen.getByText(
-      'Get started by clicking “Find or Create Note” in the sidebar'
+      'Get started'
     );
     expect(emptyText).toBeInTheDocument();
   });

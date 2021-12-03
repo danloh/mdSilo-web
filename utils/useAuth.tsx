@@ -9,6 +9,7 @@ import {
 import type { User, GoTrueClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
 import apiClient from 'lib/apiClient';
+import { useStore } from 'lib/store';
 
 type AuthContextType = {
   isAuthed: boolean;
@@ -33,6 +34,8 @@ function useProvideAuth(): AuthContextType {
   const router = useRouter();
   const [isAuthed, setIsAuthed] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  
+  const offlineMode = useStore((state) => state.offlineMode);
 
   // Initialize the user based on the stored session
   const initUser = useCallback(async () => {
@@ -44,8 +47,11 @@ function useProvideAuth(): AuthContextType {
   }, []);
 
   useEffect(() => {
+    if (offlineMode) {
+      return;
+    }
     initUser();
-  }, [initUser]);
+  }, [initUser, offlineMode]);
 
   const signIn = useCallback(
     (email: string, password: string) =>

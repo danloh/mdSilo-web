@@ -3,6 +3,9 @@ import { ElementType, TableCell, TableRow, MsElement } from 'editor/slate';
 import { createNodeId } from './withNodeId';
 
 export const buildTable = (row = 4, col = 4): MsElement[] => {
+  if (row < 1 || col < 1) {
+    return [];
+  }
   const children: TableRow[] = [];
   for (let i = 0; i < row; i++) {
     const subChildren: TableCell[] = [];

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Editor, Element, Transforms } from 'slate';
 import { ReactEditor, useSlateStatic, useSlate } from 'slate-react';
 import { 
@@ -7,11 +7,13 @@ import {
 } from '@tabler/icons';
 import { ReferenceableBlockElement, TableElement, ElementType } from 'editor/slate';
 import Dropdown, { DropdownItem } from 'components/Dropdown';
+import Portal from 'components/Portal';
 import { isReferenceableBlockElement } from 'editor/checks';
 import { toggleElement, isElementActive } from 'editor/formatting';
 import { createNodeId } from 'editor/plugins/withNodeId';
 import { buildTable } from 'editor/plugins/withTable';
 import ChangeBlockOptions from './ChangeBlockOptions';
+import TableModal from './TableModal';
 
 type BlockMenuDropdownProps = {
   element: ReferenceableBlockElement | TableElement;
@@ -22,6 +24,8 @@ type BlockMenuDropdownProps = {
 export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
   const { element, className = '' } = props;
   const editor = useSlateStatic();
+
+  const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
   const onCopyBlockRef = useCallback(async () => {
     let blockId;
@@ -66,16 +70,26 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
     );
   }, [editor, element]);
 
-  // TODO: customize rows x columns and add/del row/col
-  const onInsertTable = useCallback(() => {
+  const onInsertTable = useCallback((row: number, col: number) => {
     // Insert table below
     const path = ReactEditor.findPath(editor, element);
     const location = Editor.after(editor, path, { unit: 'line', voids: true });
     Transforms.insertNodes(
       editor,
-      buildTable(),
+      buildTable(row, col),
       { at: location ?? Editor.end(editor, []) }
     );
+    setIsTableModalOpen(false);
+  }, [editor, element]);
+
+  const onTableClick = useCallback(() => {
+    const checkTable = element.type === ElementType.Table;
+    if (checkTable) {
+      const path = ReactEditor.findPath(editor, element);
+      Transforms.removeNodes(editor, { at: path });
+      return;
+    }
+    setIsTableModalOpen(true)
   }, [editor, element]);
 
   const buttonChildren = useMemo(
@@ -100,6 +114,7 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
   }, [element.type, className]);
 
   return (
+    <>
     <Dropdown
       buttonChildren={buttonChildren}
       buttonClassName={buttonClassName}
@@ -128,11 +143,11 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
         <span>Copy the Block</span>
       </DropdownItem>
       <DropdownItem 
-        onClick={onInsertTable}
+        onClick={onTableClick}
         className="flex items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
       >
         <IconTable size={18} className="mr-1" />
-        <span>Insert a Table(4X4)</span>
+        <span>{`${element.type === ElementType.Table ? 'Delete' : 'Insert'}  Table`}</span>
       </DropdownItem>
       <DropdownItem 
         onClick={onInsertBreak}
@@ -147,6 +162,15 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
         optOuts= {["p", "img", "cl", "code"]}
       />
     </Dropdown>
+    {isTableModalOpen ? (
+      <Portal>
+        <TableModal
+          setIsOpen={setIsTableModalOpen}
+          onInsert={onInsertTable}
+        />
+      </Portal>
+    ) : null}
+    </>
   );
 }
 
@@ -176,7 +200,7 @@ const DropdownOption = ({
   return (
     <DropdownItem
       className={`flex items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600 ${className}`}
-      onClick={() => toggleElement(editor, format, path)}
+      onClick={() => toggleElement(editor, format, path, element)}
     >
       <Icon
         size={18}

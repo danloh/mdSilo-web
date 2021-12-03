@@ -7,14 +7,8 @@ import notes from '__fixtures__/notes';
 describe('Editor', () => {
   const renderEditor = () => {
     const auth = {
-      isAuthed: true,
-      user: {
-        id: '1',
-        app_metadata: {},
-        user_metadata: {},
-        aud: '',
-        created_at: new Date().toISOString(),
-      },
+      isAuthed: false,
+      user: null,
       signIn: jest.fn(),
       signUp: jest.fn(),
       signOut: jest.fn(),

@@ -59,9 +59,15 @@ export const isElementActive = (
 
 export const toggleElement = (
   editor: Editor,
-  format: ElementType,
-  path?: Path
+  format: ElementType, // target type
+  path?: Path,
+  element?: Element,  // src element
 ) => {
+  // do not re-wrap Table
+  if (element?.type === ElementType.Table) {
+    return;
+  }
+
   const pathRef = path ? Editor.pathRef(editor, path) : null;
   const isActive = isElementActive(editor, format, path);
 

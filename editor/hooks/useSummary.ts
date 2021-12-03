@@ -52,11 +52,12 @@ export function bleachLinks (nodes: Descendant[]) {
         linkNode = (linkNode as Element).children[pathNumber];
       }
       
-      if (!Element.isElement(linkNode)) {
+      if (!Element.isElement(linkNode) || !checkLink((linkNode as Element).type)) {
         return [];
       }
+
       // change the Type of the element
-      linkNode.children.unshift({ text: `${linkNode.type} : ` });
+      (linkNode.children as Descendant[]).unshift({ text: `${linkNode.type} : ` });
       linkNode.type = ElementType.Paragraph;
     });
   }
@@ -73,14 +74,6 @@ const computeNodeMatches = (nodes: Descendant[], isLink = false) => {
   const editor = createEditor();
   editor.children = nodes;
 
-  const checkLink = (typ: ElementType) => { 
-    return (
-      typ === ElementType.NoteLink || 
-      typ === ElementType.PubLink || 
-      typ === ElementType.BlockReference
-    );
-  };
-
   const matchingElements = Editor.nodes(editor, {
     at: [],
     match: (n) =>
@@ -92,4 +85,12 @@ const computeNodeMatches = (nodes: Descendant[], isLink = false) => {
     result.push({ node, path });
   }
   return result;
+};
+
+const checkLink = (typ: ElementType) => { 
+  return (
+    typ === ElementType.NoteLink || 
+    typ === ElementType.PubLink || 
+    typ === ElementType.BlockReference
+  );
 };

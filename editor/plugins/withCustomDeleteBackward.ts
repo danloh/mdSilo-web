@@ -20,7 +20,7 @@ const withCustomDeleteBackward = (editor: Editor) => {
 
       if (cell) {
         const [, cellPath] = cell;
-        const start = Editor.start(editor, cellPath)
+        const start = Editor.start(editor, cellPath);        
         if (Point.equals(selection.anchor, start)) {
           return;
         }
