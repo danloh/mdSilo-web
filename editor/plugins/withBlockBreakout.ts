@@ -19,6 +19,20 @@ const withBlockBreakout = (editor: Editor) => {
       return;
     }
 
+    // override insert in table
+    const [table] = Editor.nodes(editor, {
+      match: n =>
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        ( n.type === ElementType.Table || 
+          n.type === ElementType.TableCell || 
+          n.type === ElementType.TableRow
+        ),
+    })
+    if (table) {
+      return;
+    }
+
     const { anchor } = selection;
     const block = Editor.above(editor, {
       match: (n) => Editor.isBlock(editor, n),

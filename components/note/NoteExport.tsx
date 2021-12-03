@@ -54,7 +54,7 @@ export const exportAllNotes = async () => {
   }
 
   const zipContent = await zip.generateAsync({ type: 'blob' });
-  const now = Math.floor(Date.now() / 1000 / 3600);
+  const now = nowToRadix36Str();
   saveAs(zipContent, `mdSilo-export-${now}.zip`);
 };
 
@@ -63,7 +63,7 @@ export const exportNotesJson = async () => {
   const jsonContent = new Blob([notesJson], {
     type: 'application/json;charset=utf-8',
   });
-  const now = Math.floor(Date.now() / 1000 / 3600); // h
+  const now = nowToRadix36Str();
   saveAs(jsonContent, `mdSilo-json-${now}.json`);
 };
 
@@ -85,4 +85,10 @@ const buildNotesJson = () => {
   const notesData: NotesData = {notesObj, noteTree, wikiTree};
   const notesJson = JSON.stringify(notesData);
   return notesJson;
+}
+
+const nowToRadix36Str = () => {
+  const now = Math.floor(Date.now() / 100); // 0.1s
+  const strR = now.toString(36); // radix = 36
+  return strR;
 }

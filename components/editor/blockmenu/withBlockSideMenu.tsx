@@ -1,5 +1,6 @@
 import { ComponentType } from 'react';
 import { isReferenceableBlockElement } from 'editor/checks';
+import { ElementType } from 'editor/slate';
 import { EditorElementProps } from '../elements/EditorElement';
 import BacklinksPopover from './BacklinksPopover';
 import BlockMenuDropdown from './BlockMenuDropdown';
@@ -11,7 +12,7 @@ export default function withBlockSideMenu(
   const ElementWithSideMenu = (props: EditorElementProps) => {
     const { element } = props;
 
-    if (!isReferenceableBlockElement(element)) {
+    if (!isReferenceableBlockElement(element) && element.type !== ElementType.Table) {
       return <EditorElement {...props} />;
     }
 
@@ -27,7 +28,9 @@ export default function withBlockSideMenu(
            */
           className="opacity-0.1 group-hover:opacity-100"
         />
-        <BacklinksPopover element={element} isWiki={isWiki} />
+        {element.type !== ElementType.Table ? (
+          <BacklinksPopover element={element} isWiki={isWiki} />
+        ): null}
       </div>
     );
   };

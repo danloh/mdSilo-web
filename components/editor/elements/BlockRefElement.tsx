@@ -36,7 +36,7 @@ export default function BlockRefElement(props: BlockRefElementProps) {
   );
 
   const noteTitle = useStore((state) =>
-    blockReference ? state.notes[blockReference.noteId].title : null
+    blockReference ? state.notes[blockReference.noteId]?.title : null
   );
 
   const renderElement = useCallback((props: EditorElementProps) => {

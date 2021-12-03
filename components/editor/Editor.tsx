@@ -38,6 +38,7 @@ import withNodeId from 'editor/plugins/withNodeId';
 import withBlockReferences from 'editor/plugins/withBlockReferences';
 import withTags from 'editor/plugins/withTags';
 import withHtml from 'editor/plugins/withHtml';
+import withTable from 'editor/plugins/withTable';
 import { useStore } from 'lib/store';
 import { ElementType, Mark } from 'editor/slate';
 import useIsMounted from 'editor/hooks/useIsMounted';
@@ -98,7 +99,13 @@ function Editor(props: Props) {
                   withImages(
                     withTags(
                       withLinks(
-                        withNodeId(withHistory(withReact(createEditor())))
+                        withNodeId(
+                          withTable(
+                            withHistory(
+                              withReact(createEditor())
+                            )
+                          )
+                        )
                       )
                     )
                   )

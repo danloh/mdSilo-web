@@ -20,7 +20,8 @@ export default function withVerticalSpacing(
       if (
         elementType === ElementType.ListItem ||
         elementType === ElementType.BulletedList ||
-        elementType === ElementType.NumberedList
+        elementType === ElementType.NumberedList ||
+        elementType === ElementType.Table
       ) {
         return 'my-2';
       } else if (elementType === ElementType.HeadingOne) {

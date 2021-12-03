@@ -22,6 +22,9 @@ export enum ElementType {
   CodeBlock = 'code-block',
   ThematicBreak = 'thematic-break',
   Image = 'image',
+  Table = 'table',
+  TableRow = 'table-row',
+  TableCell = 'table-cell',
 }
 
 export enum Mark {
@@ -140,6 +143,24 @@ export type Image = {
   children: Descendant[];
 };
 
+export type TableCell = {
+  id: string;
+  type: ElementType.TableCell;
+  children: Descendant[];
+};
+
+export type TableRow = {
+  id: string;
+  type: ElementType.TableRow;
+  children: TableCell[];
+};
+
+export type Table = {
+  id: string;
+  type: ElementType.Table;
+  children: TableRow[];
+};
+
 export type BlockReference = {
   id: string;
   type: ElementType.BlockReference;
@@ -162,12 +183,15 @@ export type ReferenceableBlockElement =
 
 export type InlineElement = ExternalLink | NoteLink | PubLink | Tag;
 
-export type ListElement = BulletedList | NumberedList;
+export type ListElement = BulletedList | NumberedList; 
+
+export type TableElement = Table | TableRow | TableCell;
 
 export type MsElement =
   | ReferenceableBlockElement
   | ListElement
-  | InlineElement;
+  | InlineElement
+  | TableElement;
 
 export type FormattedText = { text: string } & Partial<Record<Mark, boolean>>;
 

@@ -3,17 +3,18 @@ import { Editor, Element, Transforms } from 'slate';
 import { ReactEditor, useSlateStatic, useSlate } from 'slate-react';
 import { 
   IconDotsVertical, TablerIcon, 
-  IconLink, IconListCheck, IconBraces, IconPrompt
+  IconLink, IconListCheck, IconBraces, IconPrompt, IconTable
 } from '@tabler/icons';
-import { ReferenceableBlockElement, ElementType } from 'editor/slate';
+import { ReferenceableBlockElement, TableElement, ElementType } from 'editor/slate';
 import Dropdown, { DropdownItem } from 'components/Dropdown';
 import { isReferenceableBlockElement } from 'editor/checks';
 import { toggleElement, isElementActive } from 'editor/formatting';
 import { createNodeId } from 'editor/plugins/withNodeId';
+import { buildTable } from 'editor/plugins/withTable';
 import ChangeBlockOptions from './ChangeBlockOptions';
 
 type BlockMenuDropdownProps = {
-  element: ReferenceableBlockElement;
+  element: ReferenceableBlockElement | TableElement;
   className?: string;
 };
 
@@ -50,7 +51,8 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
   }, [editor, element]);
 
   const onInsertBreak = useCallback(() => {
-    // Insert new paragraph below current as break
+    // Insert new paragraph below as break
+    // FIXME: after table
     const path = ReactEditor.findPath(editor, element);
     const location = Editor.after(editor, path, { unit: 'line', voids: true });
     Transforms.insertNodes(
@@ -60,6 +62,18 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
         type: ElementType.Paragraph,
         children: [{ text: '' }],
       },
+      { at: location ?? Editor.end(editor, []) }
+    );
+  }, [editor, element]);
+
+  // TODO: customize rows x columns and add/del row/col
+  const onInsertTable = useCallback(() => {
+    // Insert table below
+    const path = ReactEditor.findPath(editor, element);
+    const location = Editor.after(editor, path, { unit: 'line', voids: true });
+    Transforms.insertNodes(
+      editor,
+      buildTable(),
       { at: location ?? Editor.end(editor, []) }
     );
   }, [editor, element]);
@@ -111,7 +125,14 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
         className="flex items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
       >
         <IconLink size={18} className="mr-1" />
-        <span>Copy block reference</span>
+        <span>Copy the Block</span>
+      </DropdownItem>
+      <DropdownItem 
+        onClick={onInsertTable}
+        className="flex items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
+      >
+        <IconTable size={18} className="mr-1" />
+        <span>Insert a Table(4X4)</span>
       </DropdownItem>
       <DropdownItem 
         onClick={onInsertBreak}

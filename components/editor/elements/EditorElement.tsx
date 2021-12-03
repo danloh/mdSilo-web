@@ -9,6 +9,7 @@ import NoteLinkElement from './NoteLinkElement';
 import PubLinkElement from './PubLinkElement';
 import CheckListItemElement from './CheckListItemElement';
 import TagElement from './TagElement';
+import { TableElement, TableRowElement, TableCellElement } from './TableElement';
 
 export type EditorElementProps = {
   className?: string;
@@ -125,6 +126,36 @@ export default function EditorElement(props: EditorElementProps) {
         >
           {children}
         </TagElement>
+      );
+    case ElementType.Table:
+      return (
+        <TableElement
+          className={className}
+          element={element}
+          attributes={attributes}
+        >
+          {children}
+        </TableElement>
+      );
+    case ElementType.TableRow:
+      return (
+        <TableRowElement
+          className={className}
+          element={element}
+          attributes={attributes}
+        >
+          {children}
+        </TableRowElement>
+      );
+    case ElementType.TableCell:
+      return (
+        <TableCellElement
+          className={className}
+          element={element}
+          attributes={attributes}
+        >
+          {children}
+        </TableCellElement>
       );
     case ElementType.Image:
       return (
