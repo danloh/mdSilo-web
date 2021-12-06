@@ -3,14 +3,16 @@ import useHotkeys from 'editor/hooks/useHotkeys';
 
 type Props = {
   setIsOpen: (isOpen: boolean) => void;
-  onInsert: (row: number, col: number) => void;
+  onOperate: (row: number, col: number) => void;
+  rows?: number | null;
+  columns?: number | null;
 };
 
 export default function TableModal(props: Props) {
-  const { setIsOpen, onInsert } = props;
+  const { setIsOpen, onOperate, rows, columns } = props;
 
-  const [row, setRow] = useState('');
-  const [col, setCol] = useState('');
+  const [row, setRow] = useState(`${rows ?? ''}`);
+  const [col, setCol] = useState(`${columns ?? ''}`);
 
   const hotkeys = useMemo(
     () => [
@@ -27,16 +29,13 @@ export default function TableModal(props: Props) {
   const onClick = (row: string, col: string) => {
     const rowN = Number(row);
     const colN = Number(col);
-    if ( rowN < 1 || colN < 1) {
-      setIsOpen(false);
-    } else {
-      onInsert(rowN, colN)
-    }
+    onOperate(rowN, colN);
   }
 
   return (
     <div className="fixed inset-0 z-20 overflow-y-auto">
       <div className="flex justify-center px-6 max-h-screen-80 my-screen-10">
+      <button className="mt-2 pop-btn" onClick={() => setIsOpen(false)}>Cancel</button>
         <input
           type="number"
           className={inputClass}

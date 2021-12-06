@@ -158,6 +158,8 @@ export type TableRow = {
 export type Table = {
   id: string;
   type: ElementType.Table;
+  rows: number;
+  columns: number;
   children: TableRow[];
 };
 

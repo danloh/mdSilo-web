@@ -1,17 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Editor, Element, Transforms } from 'slate';
+import { Editor, Element, Transforms, Path } from 'slate';
 import { ReactEditor, useSlateStatic, useSlate } from 'slate-react';
 import { 
   IconDotsVertical, TablerIcon, 
   IconLink, IconListCheck, IconBraces, IconPrompt, IconTable
 } from '@tabler/icons';
-import { ReferenceableBlockElement, TableElement, ElementType } from 'editor/slate';
+import { ReferenceableBlockElement, TableElement, ElementType, Table } from 'editor/slate';
 import Dropdown, { DropdownItem } from 'components/Dropdown';
 import Portal from 'components/Portal';
 import { isReferenceableBlockElement } from 'editor/checks';
 import { toggleElement, isElementActive } from 'editor/formatting';
 import { createNodeId } from 'editor/plugins/withNodeId';
-import { buildTable } from 'editor/plugins/withTable';
+import { buildTable, resizeTable } from 'editor/plugins/withTable';
 import ChangeBlockOptions from './ChangeBlockOptions';
 import TableModal from './TableModal';
 
@@ -79,18 +79,42 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
       buildTable(row, col),
       { at: location ?? Editor.end(editor, []) }
     );
-    setIsTableModalOpen(false);
   }, [editor, element]);
 
-  const onTableClick = useCallback(() => {
+  const onResizeTable = useCallback((row: number, col: number, path: Path) => {
+    // resize Table
+    Transforms.insertNodes(
+      editor,
+      [resizeTable(element as Table, row, col), {
+        id: createNodeId(),
+        type: ElementType.Paragraph,  // to reserve a block below table
+        children: [{ text: '' }],
+      }],
+      { at: path ?? Editor.end(editor, []) }
+    );
+  }, [editor, element]);
+
+  const onOperateTable = useCallback((row: number, col: number) => {
     const checkTable = element.type === ElementType.Table;
+    // if current element is table, resize or delete
     if (checkTable) {
       const path = ReactEditor.findPath(editor, element);
+      // delete first
       Transforms.removeNodes(editor, { at: path });
-      return;
+      // or resize
+      if (row > 0 && col > 0) { 
+        onResizeTable(row, col, path); 
+      }
+    // otherwise insert table below
+    } else if (row > 0 && col > 0) {
+      onInsertTable(row, col);
     }
+    setIsTableModalOpen(false);
+  }, [editor, element, onInsertTable, onResizeTable]);
+
+  const onTableClick = useCallback(() => {
     setIsTableModalOpen(true)
-  }, [editor, element]);
+  }, []);
 
   const buttonChildren = useMemo(
     () => (
@@ -147,7 +171,7 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
         className="flex items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
       >
         <IconTable size={18} className="mr-1" />
-        <span>{`${element.type === ElementType.Table ? 'Delete' : 'Insert'}  Table`}</span>
+        <span>{`${element.type === ElementType.Table ? 'Resize' : 'Insert'}  Table`}</span>
       </DropdownItem>
       <DropdownItem 
         onClick={onInsertBreak}
@@ -166,7 +190,9 @@ export default function BlockMenuDropdown(props: BlockMenuDropdownProps) {
       <Portal>
         <TableModal
           setIsOpen={setIsTableModalOpen}
-          onInsert={onInsertTable}
+          onOperate={onOperateTable}
+          rows={(element as Table)?.rows ?? null}
+          columns={(element as Table)?.columns ?? null}
         />
       </Portal>
     ) : null}
