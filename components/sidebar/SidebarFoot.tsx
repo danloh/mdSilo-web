@@ -25,7 +25,7 @@ export default function SidebarFoot(props: SidebarFootProps) {
         <a title="Get Started"><IconHelp size={18} className="mr-1" /></a>
       </Link>
       <a
-        href="https://discord.gg/cWzfqYkX"
+        href="https://discord.gg/EXYSEHRTFt"
         target="_blank"
         rel="noopener noreferrer"
         title="Discuss on Discord"

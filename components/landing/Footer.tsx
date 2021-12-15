@@ -57,7 +57,7 @@ export default function Footer(props: Props) {
               Twitter
             </a>
             <a
-              href="https://discord.gg/cWzfqYkX"
+              href="https://discord.gg/EXYSEHRTFt"
               className="text-gray-300 hover:text-primary-500"
               target="_blank"
               rel="noopener noreferrer"

@@ -7,7 +7,7 @@ The data is stored on your computer, in your browser and can be exported as a si
 
 [Demo](https://mdsilo.com/app/demo)  
 [Gitter](https://gitter.im/mdSilo)  
-[Discord](https://discord.gg/cWzfqYkX)
+[Discord](https://discord.gg/EXYSEHRTFt)
 
 ## Features
 
