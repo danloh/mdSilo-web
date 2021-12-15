@@ -16,8 +16,8 @@ import {
 import { Element } from 'slate';
 import { toggleElement, isElementActive } from 'editor/formatting';
 import { ElementType } from 'editor/slate';
-import Tooltip from 'components/Tooltip';
-import { DropdownItem } from 'components/Dropdown';
+import Tooltip from 'components/misc/Tooltip';
+import { DropdownItem } from 'components/misc/Dropdown';
 import { uploadAndInsertImage } from 'editor/plugins/withImages';
 
 type ChangeBlockOptionsProps = {

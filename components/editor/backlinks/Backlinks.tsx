@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import type { Backlink, BacklinkMatch } from 'editor/backlinks/useBacklinks';
 import useBacklinks from 'editor/backlinks/useBacklinks';
-import Tree from 'components/Tree';
+import Tree from 'components/misc/Tree';
 import BacklinkReferenceBranch from './BacklinkReferenceBranch';
 import BacklinkMatchLeaf from './BacklinkMatchLeaf';
 import BacklinkNoteBranch from './BacklinkNoteBranch';

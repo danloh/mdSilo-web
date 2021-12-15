@@ -3,7 +3,7 @@ import { Notes, NoteTreeItem, useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
 import { ciStringCompare, dateCompare, isMobile } from 'utils/helper';
 import { useImportJson } from 'editor/hooks/useImport';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../misc/ErrorBoundary';
 import SidebarNotesBar from './SidebarNotesBar';
 import SidebarNotesTree from './SidebarNotesTree';
 import SidebarFoot from './SidebarFoot';

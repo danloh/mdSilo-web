@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { RenderElementProps } from 'slate-react';
 import classNames from 'classnames';
 import { ExternalLink } from 'editor/slate';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 
 type ExternalLinkElementProps = {
   element: ExternalLink;

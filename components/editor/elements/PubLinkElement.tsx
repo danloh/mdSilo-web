@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 import { RenderElementProps } from 'slate-react';
 import classNames from 'classnames';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
-import { PubLink } from 'editor/slate';
-import Tooltip from 'components/Tooltip';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
+import { PubLink } from 'editor/slate';
+import Tooltip from 'components/misc/Tooltip';
 
 type PubLinkElementProps = {
   element: PubLink;
@@ -16,7 +16,7 @@ type PubLinkElementProps = {
 export default function PubLinkElement(props: PubLinkElementProps) {
   const { element, children, attributes, className } = props;
 
-  const linkClassName = classNames("link shadow", className);
+  const linkClassName = classNames("link shadow px-1 py-0.5 bg-gray-100 dark:bg-gray-800", className);
   const currentNote = useCurrentContext();
   const { onClick: onNoteLinkClick, defaultStackingBehavior } =
     useOnNoteLinkClick(currentNote.id);
@@ -36,7 +36,7 @@ export default function PubLinkElement(props: PubLinkElementProps) {
         contentEditable={false}
         {...attributes}
       >
-        {`{{ ${element.customText ?? element.noteTitle} }}`}
+        {element.customText ?? element.noteTitle}
         {children}
       </span>
     </Tooltip>

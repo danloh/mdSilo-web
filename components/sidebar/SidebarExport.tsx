@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react';
 import { IconFileUpload, IconFileDownload, IconClearAll } from '@tabler/icons';
-import { DropdownItem } from 'components/Dropdown';
+import { DropdownItem } from 'components/misc/Dropdown';
 
 type Props = {
   numOfNotes: number;

@@ -10,7 +10,7 @@ import { Node } from 'slate';
 import { Popover } from '@headlessui/react';
 import { usePopper } from 'react-popper';
 import { ReferenceableBlockElement } from 'editor/slate';
-import Portal from 'components/Portal';
+import Portal from 'components/misc/Portal';
 import updateBlockBacklinks from 'editor/backlinks/updateBlockBacklinks';
 import { shallowEqual, Store, useStore } from 'lib/store';
 import BlockBacklinks from '../backlinks/BlockBacklinks';

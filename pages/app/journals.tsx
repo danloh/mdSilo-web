@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useStore } from 'lib/store';
 import { Note } from 'types/model';
-import ErrorBoundary from 'components/ErrorBoundary';
+import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { realDateCompare, strToDate } from 'utils/helper';

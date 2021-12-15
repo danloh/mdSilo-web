@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useCallback, memo } from 'react';
 import { IconFeather } from '@tabler/icons';
 import { useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import { exportNotesJson } from 'components/note/NoteExport';
 import { delDemoNotes } from 'components/AppLayout';
 import { isMobile } from 'utils/helper';

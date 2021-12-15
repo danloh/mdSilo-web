@@ -6,8 +6,8 @@ import {
   IconLink, IconListCheck, IconBraces, IconPrompt, IconTable
 } from '@tabler/icons';
 import { ReferenceableBlockElement, TableElement, ElementType, Table } from 'editor/slate';
-import Dropdown, { DropdownItem } from 'components/Dropdown';
-import Portal from 'components/Portal';
+import Dropdown, { DropdownItem } from 'components/misc/Dropdown';
+import Portal from 'components/misc/Portal';
 import { isReferenceableBlockElement } from 'editor/checks';
 import { toggleElement, isElementActive } from 'editor/formatting';
 import { createNodeId } from 'editor/plugins/withNodeId';

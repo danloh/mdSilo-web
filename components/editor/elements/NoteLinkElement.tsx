@@ -3,7 +3,7 @@ import { RenderElementProps, useFocused, useSelected } from 'slate-react';
 import classNames from 'classnames';
 import { NoteLink } from 'editor/slate';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import { store } from 'lib/store';
 import { extractTexts } from 'editor/hooks/useSummary';
@@ -25,7 +25,7 @@ export default function NoteLinkElement(props: NoteLinkElementProps) {
   const selected = useSelected();
   const focused = useFocused();
   const noteLinkClassName = classNames(
-    'p-0.25 rounded cursor-pointer select-none border-b border-gray-200 text-primary-600 dark:text-primary-400 hover:bg-gray-100 active:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 dark:active:bg-gray-700',
+    'p-0.5 rounded cursor-pointer select-none border-b border-gray-200 text-primary-600 dark:text-primary-400 hover:bg-gray-100 active:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 dark:active:bg-gray-700',
     { 'bg-primary-100 dark:bg-primary-900': selected && focused },
     className
   );

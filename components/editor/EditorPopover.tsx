@@ -3,7 +3,7 @@ import type { Range } from 'slate';
 import { ReactEditor, useSlate } from 'slate-react';
 import type { Placement, VirtualElement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
-import Portal from 'components/Portal';
+import Portal from 'components/misc/Portal';
 import useOnClickOutside from 'editor/hooks/useOnClickOutside';
 import useHotkeys from 'editor/hooks/useHotkeys';
 

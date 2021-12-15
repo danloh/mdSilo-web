@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { IconPencil } from '@tabler/icons';
 import { Note } from 'types/model';
-import Tree from 'components/Tree';
+import Tree from 'components/misc/Tree';
 import useSummary from 'editor/hooks/useSummary';
 import ReadOnlyEditor from 'components/editor/ReadOnlyEditor';
 

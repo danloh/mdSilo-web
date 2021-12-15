@@ -1,11 +1,11 @@
 //import { useMemo } from 'react';
 import Head from 'next/head';
 import { useStore } from 'lib/store';
-import ErrorBoundary from 'components/ErrorBoundary';
+import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { matchSort, SearchLeaf } from 'components/sidebar/SidebarSearch';
-import Tree from 'components/Tree';
+import Tree from 'components/misc/Tree';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { dateCompare, getStrDate } from 'utils/helper';
 

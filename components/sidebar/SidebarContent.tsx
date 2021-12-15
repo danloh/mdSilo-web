@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { IconFolder, IconSearch } from '@tabler/icons';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import { SidebarTab as SidebarTabType, useStore } from 'lib/store';
 import SidebarNotes from './SidebarNotes';
 import SidebarSearch from './SidebarSearch';

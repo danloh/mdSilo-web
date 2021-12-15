@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { toast } from 'react-toastify';
 import { NoteTreeItem, useStore } from 'lib/store';
-import Portal from 'components/Portal';
+import Portal from 'components/misc/Portal';
 import updateDbUser from 'lib/api/updateUser';
 import { useAuthContext } from 'utils/useAuth';
 import SidebarNoteLink from './SidebarNoteLink';

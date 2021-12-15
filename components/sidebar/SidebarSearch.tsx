@@ -6,8 +6,8 @@ import useNoteSearch, { NoteBlock } from 'editor/hooks/useNoteSearch';
 import useDebounce from 'editor/hooks/useDebounce';
 import { useStore } from 'lib/store';
 import { isMobile } from 'utils/helper';
-import ErrorBoundary from '../ErrorBoundary';
-import VirtualTree from '../VirtualTree';
+import ErrorBoundary from '../misc/ErrorBoundary';
+import VirtualTree from '../misc/VirtualTree';
 
 const DEBOUNCE_MS = 500;
 

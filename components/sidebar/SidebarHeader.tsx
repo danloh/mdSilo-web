@@ -5,9 +5,9 @@ import {
 } from '@tabler/icons';
 import { useAuthContext } from 'utils/useAuth';
 import { useStore } from 'lib/store';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
+import { DropdownItem } from 'components/misc/Dropdown';
 import { isMobile } from 'utils/helper';
-import { DropdownItem } from 'components/Dropdown';
 import Logo from 'components/Logo';
 
 type Props = {

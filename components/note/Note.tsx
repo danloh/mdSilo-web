@@ -15,7 +15,7 @@ import { ProvideCurrent } from 'editor/hooks/useCurrent';
 import { ciStringEqual } from 'utils/helper';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import Backlinks from '../editor/backlinks/Backlinks';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../misc/ErrorBoundary';
 import NoteHeader from './NoteHeader';
 
 

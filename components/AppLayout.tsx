@@ -26,6 +26,7 @@ import demo from 'public/demo.json';
 import { isMobile } from 'utils/helper';
 import Sidebar from './sidebar/Sidebar';
 import FindOrCreateModal from './note/NoteNewModal';
+import { exportNotesJson } from './note/NoteExport';
 import PageLoading from './PageLoading';
 import SettingsModal from './settings/SettingsModal';
 import BillingModal from './settings/BillingModal';
@@ -344,22 +345,22 @@ export default function AppLayout(props: Props) {
   );
   useHotkeys(hotkeys);
 
-  // Prompt the user to export json
-  // FIXME: only prompt on final close?
-  // useEffect(() => {
-  //   if (!offlineMode) { return; }
-  //   // FIXME: how override default text?
-  //   const tipsText = `Would you export your works?`;
-  //   const handleWindowClose = (e: BeforeUnloadEvent) => {
-  //     e.preventDefault();
-  //     (e || window.event).returnValue = tipsText;
-  //     return tipsText;
-  //   };
-  //   window.addEventListener('beforeunload', handleWindowClose);
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleWindowClose);
-  //   };
-  // }, [user, router, offlineMode]);
+  // Prompt user to export json
+  useEffect(() => {
+    if (!offlineMode) { return; }
+    const tipsText = `Will export your works as json.`;
+    const handleWindowClose = async (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      (e || window.event).returnValue = tipsText;
+      // better export works before closing
+      await exportNotesJson();
+      return tipsText;
+    };
+    window.addEventListener('beforeunload', handleWindowClose);
+    return () => {
+      window.removeEventListener('beforeunload', handleWindowClose);
+    };
+  }, [user, router, offlineMode]);
 
   const appContainerClassName = classNames(
     'h-screen',

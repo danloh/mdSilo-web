@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { BlockReference, ElementType } from 'editor/slate';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
 import { useStore } from 'lib/store';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import useBlockReference from 'editor/backlinks/useBlockReference';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import ReadOnlyEditor from '../ReadOnlyEditor';

@@ -3,8 +3,8 @@ import { Menu } from '@headlessui/react';
 import { IconSortDescending, IconCheck } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { ReadableNameBySort, Sort } from 'lib/userSettingsSlice';
-import Tooltip from 'components/Tooltip';
-import Portal from 'components/Portal';
+import Tooltip from 'components/misc/Tooltip';
+import Portal from 'components/misc/Portal';
 
 type Props = {
   currentSort: Sort;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { Backlink, BacklinkMatch } from 'editor/backlinks/useBacklinks';
-import Tree from 'components/Tree';
+import Tree from 'components/misc/Tree';
 import BacklinkReferenceBranch from './BacklinkReferenceBranch';
 import BacklinkMatchLeaf from './BacklinkMatchLeaf';
 import BacklinkNoteBranch from './BacklinkNoteBranch';

@@ -1,5 +1,5 @@
 import { useStore } from 'lib/store';
-import Toggle from 'components/Toggle';
+import Toggle from 'components/misc/Toggle';
 
 export default function EditorSettings() {
   const isPageStackingOn = useStore((state) => state.isPageStackingOn);

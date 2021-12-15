@@ -6,7 +6,7 @@ import {
   PRICING_PLANS,
 } from 'constants/pricing';
 import PricingPlan from './PricingPlan';
-import Toggle from './Toggle';
+import Toggle from './misc/Toggle';
 
 const PRO_BULLET_POINTS = [
   'Sync writings to the clould',

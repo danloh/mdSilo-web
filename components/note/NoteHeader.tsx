@@ -5,19 +5,19 @@ import {
 } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { useRouter } from 'next/router';
-import Portal from 'components/Portal';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import { store, useStore } from 'lib/store';
 import { useImportMds } from 'editor/hooks/useImport';
 import { queryParamToArray } from 'utils/helper';
-import Tooltip from 'components/Tooltip';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
-import { DropdownItem } from 'components/Dropdown';
+import Tooltip from 'components/misc/Tooltip';
+import Portal from 'components/misc/Portal';
+import Toggle from 'components/misc/Toggle';
+import { DropdownItem } from 'components/misc/Dropdown';
 import NoteMetadata from 'components/note/NoteMetadata';
 import MoveToModal from 'components/note/NoteMoveModal';
 import NoteDelModal from 'components/note/NoteDelModal';
 import { NoteExport, NoteExportAll } from 'components/note/NoteExport';
-import Toggle from 'components/Toggle';
 
 type Props = {
   isWiki?: boolean;

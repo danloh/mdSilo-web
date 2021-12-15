@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IconDna, IconBookmarks, IconCheckbox } from '@tabler/icons';
 import { useTransition, animated } from '@react-spring/web';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import { isMobile } from 'utils/helper';
 import { useStore } from 'lib/store';
 import { SPRING_CONFIG } from 'constants/spring';

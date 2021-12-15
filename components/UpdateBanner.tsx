@@ -1,3 +1,5 @@
+import { exportNotesJson } from './note/NoteExport';
+
 export default function UpdateBanner() {
   return (
     <button
@@ -10,12 +12,13 @@ export default function UpdateBanner() {
   );
 }
 
-const updateAndReloadApp = () => {
-  const wb = window.workbox;
+const updateAndReloadApp = async () => {
+  // export works before reloading to avoid works lost
+  await exportNotesJson();
 
+  const wb = window.workbox;
   // Reload the app once the new service worker is controlling it
   wb.addEventListener('controlling', () => window.location.reload());
-
   // Send a message to the waiting service worker, instructing it to activate.
   wb.messageSkipWaiting();
 };

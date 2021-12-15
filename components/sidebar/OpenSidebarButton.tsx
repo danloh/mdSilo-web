@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { IconMenu2 } from '@tabler/icons';
-import Tooltip from 'components/Tooltip';
+import Tooltip from 'components/misc/Tooltip';
 import { useStore } from 'lib/store';
 
 type Props = {

@@ -3,11 +3,11 @@ import { Menu } from '@headlessui/react';
 import { IconCornerDownRight, IconDots } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { Note } from 'types/model';
-import { DropdownItem } from 'components/Dropdown';
+import { DropdownItem } from 'components/misc/Dropdown';
+import Portal from 'components/misc/Portal';
 import MoveToModal from 'components/note/NoteMoveModal';
 import NoteMetadata from 'components/note/NoteMetadata';
 import { NoteExport } from 'components/note/NoteExport';
-import Portal from '../Portal';
 
 type Props = {
   note: Note;

@@ -5,7 +5,7 @@ import { IconFileExport, IconFileDownload } from '@tabler/icons';
 import { Note } from 'types/model';
 import { store, NotesData } from 'lib/store';
 import serialize from 'editor/serialization/serialize';
-import { DropdownItem } from 'components/Dropdown';
+import { DropdownItem } from 'components/misc/Dropdown';
 
 type Props = {
   note: Note;

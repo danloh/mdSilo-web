@@ -6,7 +6,7 @@ import { ElementType } from 'editor/slate';
 import type { GraphData } from 'components/editor/ForceGraph';
 import ForceGraph from 'components/editor/ForceGraph';
 import { NoteTreeItem, useStore } from 'lib/store';
-import ErrorBoundary from 'components/ErrorBoundary';
+import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 
 export default function Graph() {

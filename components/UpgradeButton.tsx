@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { IconArrowUpCircle } from '@tabler/icons';
 import { Feature } from 'constants/pricing';
 import { useStore } from 'lib/store';
-import Tooltip from './Tooltip';
+import Tooltip from './misc/Tooltip';
 
 type Props = {
   feature: Feature;
