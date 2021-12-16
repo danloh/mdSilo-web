@@ -3,6 +3,8 @@ import { Notes, NoteTreeItem, useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
 import { ciStringCompare, dateCompare, isMobile } from 'utils/helper';
 import { useImportJson } from 'editor/hooks/useImport';
+import { openDirDialog } from 'editor/hooks/useFSA';
+import { FileSystemAccess } from 'editor/checks';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import SidebarNotesBar from './SidebarNotesBar';
 import SidebarNotesTree from './SidebarNotesTree';
@@ -36,6 +38,11 @@ function SidebarNotes(props: SidebarNotesProps) {
   }, [setIsSidebarOpen, setIsFindOrCreateModalOpen]);
   const onImportJsonClick = useImportJson();
 
+  const hasFSA = FileSystemAccess.support(window);
+  const onOpenFolder = openDirDialog;
+
+  const btnClass = "p-1 my-1 mx-4 rounded bg-blue-500 hover:text-yellow-500";
+
   return (
     <ErrorBoundary>
       <div className={`flex flex-col flex-1 overflow-x-hidden ${className}`}>
@@ -52,20 +59,11 @@ function SidebarNotes(props: SidebarNotesProps) {
         ) : (
           <>
             <p className="flex-1 px-6 my-2 text-center text-gray-500">
-              No silage yet
+              No md yet
             </p>
-            <button
-              className="p-1 m-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-              onClick={onCreateNoteClick}
-            >
-              Create new
-            </button>
-            <button
-              className="p-1 m-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-              onClick={onImportJsonClick}
-            >
-              Import json 
-            </button>
+            {hasFSA ? (<button className={btnClass} onClick={onOpenFolder}>Open Folder</button>) : null}
+            <button className={btnClass} onClick={onCreateNoteClick}>Create new</button>
+            <button className={btnClass} onClick={onImportJsonClick}>Import json</button>
           </>
         )}
         <SidebarFoot />

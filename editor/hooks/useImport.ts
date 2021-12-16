@@ -102,9 +102,6 @@ export function useImportJson() {
 }
 
 export function useImportMds() {
-  const upsertNote = useStore((state) => state.upsertNote);
-  const offlineMode = useStore((state) => state.offlineMode);
-
   const onImportMds = useCallback(() => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -117,8 +114,9 @@ export function useImportMds() {
       }
 
       const inputElement = e.target as HTMLInputElement;
+      const fileList = inputElement.files;
 
-      if (!inputElement.files) {
+      if (!fileList) {
         return;
       }
 
@@ -128,44 +126,7 @@ export function useImportMds() {
         draggable: false,
       });
 
-      // Add a new note for each imported note
-      const noteTitleToIdCache: Record<string, string | undefined> = {};
-
-      const newNotesData: Note[] = [];
-      const upsertData: NoteUpsert[] = [];
-      //const newLinkedNotesData: Note[] = [];
-
-      for (const file of inputElement.files) {
-        const fileName = file.name.replace(/\.[^/.]+$/, '');
-        if (!fileName) {
-          continue;
-        }
-        const fileContent = await file.text();
-
-        const { result } = unified()
-          .use(remarkParse)
-          .use(remarkGfm)
-          .use(wikiLinkPlugin, { aliasDivider: '|' })
-          .use(remarkToSlate)
-          .processSync(fileContent);
-
-        const { content: slateContent, newData: newLinkedNotesData } =
-          processNoteLinks(result as Descendant[], noteTitleToIdCache);
-
-        newNotesData.push(...newLinkedNotesData);
-        const newNoteObj = {
-          id: uuidv4(),
-          title: fileName,
-          content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
-        };
-        newNotesData.push({
-          ...defaultNote,
-          ...newNoteObj
-        });
-      }
-
-      // update to store
-      newNotesData.forEach(note => upsertNote(note));
+      const newNotesData = await processImport(fileList);
 
       // Show a toast with the number of successfully imported notes
       toast.dismiss(importingToast);
@@ -175,30 +136,74 @@ export function useImportMds() {
       numOfImports > 0 
         ? toast.success(toastText) 
         : toast.error(toastText);
-
-      // update new notes to db
-      if (!offlineMode) {
-        upsertData.push(...newNotesData);
-        // fix with actual user id
-        const userId = apiClient.auth.user()?.id; 
-        if (userId) {
-          upsertData.forEach(n => n.user_id = userId);
-          await apiClient
-            .from<Note>('notes')
-            .upsert(upsertData, { onConflict: 'user_id, title' });
-        }
-      }
     };
 
     input.click();
-  }, [offlineMode, upsertNote]);
+  }, []);
 
   return onImportMds;
 }
 
-/**
- * Add the proper note id to the note links.
-**/
+export const processImport = async (fileList: FileList | File[]) => {
+  const upsertNote = store.getState().upsertNote;
+  const offlineMode = store.getState().offlineMode;
+ 
+  const noteTitleToIdCache: Record<string, string | undefined> = {};
+  const newNotesData: Note[] = [];
+  const upsertData: NoteUpsert[] = [];
+  //const newLinkedNotesData: Note[] = [];
+
+  for (const file of fileList) {
+    const fname = file.name;
+    const checkTyp = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
+    const fileName = fname.replace(/\.[^/.]+$/, '');
+    if (!fileName || !checkTyp) {
+      continue;
+    }
+    const fileContent = await file.text();
+
+    const { result } = unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(wikiLinkPlugin, { aliasDivider: '|' })
+      .use(remarkToSlate)
+      .processSync(fileContent);
+
+    const { content: slateContent, newData: newLinkedNotesData } =
+      processNoteLinks(result as Descendant[], noteTitleToIdCache);
+
+    newNotesData.push(...newLinkedNotesData);
+    const newNoteObj = {
+      id: uuidv4(),
+      title: fileName,
+      content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
+    };
+    newNotesData.push({
+      ...defaultNote,
+      ...newNoteObj
+    });
+  }
+
+  // update to store
+  newNotesData.forEach(note => upsertNote(note));
+
+  // update new notes to db
+  if (!offlineMode) {
+    upsertData.push(...newNotesData);
+    // fix with actual user id
+    const userId = apiClient.auth.user()?.id; 
+    if (userId) {
+      upsertData.forEach(n => n.user_id = userId);
+      await apiClient
+        .from<Note>('notes')
+        .upsert(upsertData, { onConflict: 'user_id, title' });
+    }
+  }
+
+  return newNotesData;
+};
+
+// Add the proper note id to the note links.
 const processNoteLinks = (
   content: Descendant[],
   noteTitleToIdCache: Record<string, string | undefined> = {}
