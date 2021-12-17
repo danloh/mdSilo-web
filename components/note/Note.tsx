@@ -14,7 +14,7 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile } from 'editor/hooks/useFSA';
+import { writeFile, getFileHandle } from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
@@ -71,14 +71,19 @@ function Note(props: Props) {
   const value = useStore(
     (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
   );
+
   const setValue = useCallback(
-    (value: Descendant[]) => {
+    async (value: Descendant[]) => {
       store.getState().updateNote({ id: noteId, content: value });
       // write to local disk if hasFSA
       if (FileSystemAccess.support(window)) {
-        const handle = store.getState().handles[title];
+        console.log("title", title);
+        const handle = store.getState().handles[title];// || await getFileHandle(title);
+        console.log("handle", handle);
         const content = value.map((n) => serialize(n)).join('');
-        writeFile(handle, content);
+        if (handle) {
+          await writeFile(handle, content);
+        }
       }
     },
     [noteId, title]
@@ -109,7 +114,7 @@ function Note(props: Props) {
   const onTitleChange = useCallback(
     async (title: string) => {
       // update note title in storage as unique title
-      const newTitle = title || getUntitledTitle(noteId);
+      const newTitle = title.trim() || getUntitledTitle(noteId);
       const isTitleUnique = () => {
         const notesArr = Object.values(store.getState().notes);
         return notesArr.findIndex(
@@ -122,6 +127,11 @@ function Note(props: Props) {
         // save backlinked notes to db, may backlinks updated but note not
         await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
+        // FSA: on rename file
+        const newHandle = await getFileHandle(newTitle);
+        if (newHandle) {
+          store.getState().upsertHandle(newTitle, newHandle);
+        }
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`

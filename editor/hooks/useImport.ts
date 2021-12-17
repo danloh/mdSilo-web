@@ -155,9 +155,9 @@ export const processImport = async (fileList: FileList | File[]) => {
 
   for (const file of fileList) {
     const fname = file.name;
-    const checkTyp = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
+    const checkMd = checkFileIsMd(fname);
     const fileName = getFileName(fname);
-    if (!fileName || !checkTyp) {
+    if (!fileName || !checkMd) {
       continue;
     }
     const fileContent = await file.text();
@@ -276,4 +276,9 @@ const setNoteLinkIds = (
 
 export const getFileName = (fname: string) => {
   return fname.replace(/\.[^/.]+$/, '');
+}
+
+export const checkFileIsMd = (fname: string) => {
+  const check = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
+  return check;
 }

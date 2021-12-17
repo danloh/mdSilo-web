@@ -107,6 +107,10 @@ export type Store = {
   setHandles: Setter<FileHandles>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   upsertHandle: (key: string, handle: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dirHandle: any;  // FileSystemDirectoryHandle
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setDirHandle: (handle: any) => void;
 } & UserSettings;
 
 type FunctionPropertyNames<T> = {
@@ -292,6 +296,14 @@ export const store = createVanilla<
       upsertHandle: (key: string, handle: any) => {
         set((state) => {
           state.handles[key] = handle;
+        });
+      },
+      // FileSystemDirectoryHandle
+      dirHandle: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setDirHandle: (handle: any) => {
+        set((state) => {
+          state.dirHandle = handle;
         });
       },
       ...userSettingsSlice(set),
