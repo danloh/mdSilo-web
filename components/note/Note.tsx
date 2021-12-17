@@ -5,16 +5,19 @@ import { useRouter } from 'next/router';
 import Editor from 'components/editor/Editor';
 import Title from 'components/editor/Title';
 import Trait, { TraitKeys } from 'components/editor/Trait';
+import Backlinks from 'components/editor/backlinks/Backlinks';
 import { store, useStore } from 'lib/store';
 import { Attr, defaultAttr, buildAttr } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
+import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { ciStringEqual } from 'utils/helper';
+import { writeFile } from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
-import Backlinks from '../editor/backlinks/Backlinks';
+import { FileSystemAccess } from 'editor/checks';
+import { ciStringEqual } from 'utils/helper';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import NoteHeader from './NoteHeader';
 
@@ -69,9 +72,16 @@ function Note(props: Props) {
     (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
   );
   const setValue = useCallback(
-    (value: Descendant[]) =>
-      store.getState().updateNote({ id: noteId, content: value }),
-    [noteId]
+    (value: Descendant[]) => {
+      store.getState().updateNote({ id: noteId, content: value });
+      // write to local disk if hasFSA
+      if (FileSystemAccess.support(window)) {
+        const handle = store.getState().handles[title];
+        const content = value.map((n) => serialize(n)).join('');
+        writeFile(handle, content);
+      }
+    },
+    [noteId, title]
   );
 
   const noteAttr: Attr = useStore(

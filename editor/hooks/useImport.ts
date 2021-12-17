@@ -156,7 +156,7 @@ export const processImport = async (fileList: FileList | File[]) => {
   for (const file of fileList) {
     const fname = file.name;
     const checkTyp = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
-    const fileName = fname.replace(/\.[^/.]+$/, '');
+    const fileName = getFileName(fname);
     if (!fileName || !checkTyp) {
       continue;
     }
@@ -273,3 +273,7 @@ const setNoteLinkIds = (
     return node;
   }
 };
+
+export const getFileName = (fname: string) => {
+  return fname.replace(/\.[^/.]+$/, '');
+}
