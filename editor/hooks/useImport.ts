@@ -150,8 +150,6 @@ export const processImport = async (fileList: FileList | File[]) => {
  
   const noteTitleToIdCache: Record<string, string | undefined> = {};
   const newNotesData: Note[] = [];
-  const upsertData: NoteUpsert[] = [];
-  //const newLinkedNotesData: Note[] = [];
 
   for (const file of fileList) {
     const fname = file.name;
@@ -169,15 +167,28 @@ export const processImport = async (fileList: FileList | File[]) => {
       .use(remarkToSlate)
       .processSync(fileContent);
 
+    // process content and creat new notes to which NoteLinks in content linked
+    // notice: newLinkedNote with id and title only, w/o content 
     const { content: slateContent, newData: newLinkedNotesData } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
 
+    // Notice: sometimes, file note is just the note NoteLink linked to
+    // here can update the content to such note: 
+    // if note created on ProcessNoteLinks is pushed 
+    // before the note from file with more content in newNotesData array, 
+    // can be updated when upsertNote.
+    // if the same note is created from file already, will not create note on processNoteLinks.
     newNotesData.push(...newLinkedNotesData);
+
+    // new note from file
     const newNoteObj = {
-      id: uuidv4(),
+      id: noteTitleToIdCache[fileName.toLowerCase()] ?? uuidv4(),
       title: fileName,
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
     };
+    // save to title-id cache when new note from file
+    noteTitleToIdCache[fileName.toLowerCase()] = newNoteObj.id;
+
     // // store FileHandle finally
     // const handle = store.getState().handles[fileName];
     // if (handle) {
@@ -195,6 +206,7 @@ export const processImport = async (fileList: FileList | File[]) => {
   newNotesData.forEach(note => upsertNote(note));
 
   // update new notes to db
+  const upsertData: NoteUpsert[] = [];
   if (!offlineMode) {
     upsertData.push(...newNotesData);
     // fix with actual user id
@@ -218,48 +230,15 @@ const processNoteLinks = (
   const newData: Note[] = [];
 
   // Update note link elements with noteId
-  const notesArr = Object.values(store.getState().notes);
-  const myNotes = notesArr.filter(n => !n.is_wiki);
   const newContent = content.map((node) =>
-    setNoteLinkIds(node, myNotes, noteTitleToIdCache, newData)
+    setNoteLinkIds(node, noteTitleToIdCache, newData)
   );
 
   return { content: newContent, newData };
 };
 
-const getNoteId = (
-  node: NoteLink,
-  notes: Note[],
-  noteTitleToIdCache: Record<string, string | undefined>,
-  newData: Note[]
-): string => {
-  const noteTitle = node.noteTitle;
-  let noteId;
-
-  const existingNoteId =
-    noteTitleToIdCache[noteTitle.toLowerCase()] ??
-    notes.find((note) => !note.is_wiki && ciStringEqual(note.title, noteTitle))?.id;
-
-  if (existingNoteId) {
-    noteId = existingNoteId;
-  } else {
-    noteId = uuidv4(); // Create new note id
-    const newObj = {
-      id: noteId, 
-      title: noteTitle,
-    };
-    newData.push({ 
-      ...defaultNote,
-      ...newObj,
-    });
-  }
-  noteTitleToIdCache[noteTitle.toLowerCase()] = noteId; // Add to cache
-  return noteId;
-};
-
 const setNoteLinkIds = (
   node: Descendant,
-  notes: Note[],
   noteTitleToIdCache: Record<string, string | undefined>,
   newData: Note[]
 ): Descendant => {
@@ -270,16 +249,52 @@ const setNoteLinkIds = (
     return {
       ...node,
       ...(node.type === ElementType.NoteLink
-        ? { noteId: getNoteId(node, notes, noteTitleToIdCache, newData) }
+        ? { noteId: getNoteId(node, noteTitleToIdCache, newData) }
         : {}),
       children: node.children.map((child) =>
-        setNoteLinkIds(child, notes, noteTitleToIdCache, newData)
+        setNoteLinkIds(child, noteTitleToIdCache, newData)
       ),
     };
   } else {
     return node;
   }
 };
+
+const getNoteId = (
+  node: NoteLink,
+  noteTitleToIdCache: Record<string, string | undefined>,
+  newData: Note[]
+): string => {
+  const noteTitle = node.noteTitle;
+  const notesArr = Object.values(store.getState().notes);
+  const notes = notesArr.filter(n => !n.is_wiki);
+
+  const existingNoteId =
+    noteTitleToIdCache[noteTitle.toLowerCase()] ??
+    notes.find((note) => !note.is_wiki && ciStringEqual(note.title, noteTitle))?.id;
+  
+  let noteId;
+  if (existingNoteId) {
+    noteId = existingNoteId;
+  } else {
+    // Create new note from NoteLink, w/ id and title only
+    noteId = uuidv4(); 
+    const newObj = {
+      id: noteId, 
+      title: noteTitle,
+    };
+    newData.push({ 
+      ...defaultNote,
+      ...newObj,
+    });
+  }
+  // save to title-id cache when new note from NoteLink
+  noteTitleToIdCache[noteTitle.toLowerCase()] = noteId;
+
+  return noteId;
+};
+
+/* #endregion: import process */
 
 export const getFileName = (fname: string) => {
   return fname.replace(/\.[^/.]+$/, '');

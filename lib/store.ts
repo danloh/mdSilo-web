@@ -159,8 +159,10 @@ export const store = createVanilla<
       upsertNote: (note: Note, ifUpTree = true) => {
         set((state) => {
           if (state.notes[note.id]) {
+            // if existing per id
             state.notes[note.id] = { ...state.notes[note.id], ...note };
           } else {
+            // if existing per title
             const existingNote = Object.values(state.notes).find((n) =>
               ciStringEqual(n.title, note.title)
             );
