@@ -15,6 +15,11 @@ export async function openDirDialog() {
     return;
   }
 
+  // clean store notes
+  store.getState().setNotes({});
+  store.getState().setNoteTree([]);
+  store.getState().setOpenNoteIds([]);
+
   let dirHandle;
   try {
     // dialog to open folder
@@ -67,7 +72,7 @@ export async function writeFile(fileHandle, content) {
     // Close the file and write the contents to disk.
     await writable.close();
   } catch (error) {
-    console.error('An error occured: ', error);
+    console.log('An error occured: ', error);
     //alert('An error occured, change can not be saved to file');
   }
 }
@@ -127,3 +132,20 @@ export async function getFileHandle(name, id = '') {
   }
 }
 
+/**
+ * check if FileSystemDirectoryHandle
+ * @return {[boolean, FileSystemDirectoryHandleName, boolean]} [isDir, dirName, isSupport]
+ */
+export function checkFSA() {
+  if (!FileSystemAccess.support(window)) {
+    return [false, null, false];
+  }
+
+  const dirHandle = store.getState().dirHandle;
+  if (dirHandle) {
+    console.log("dir", dirHandle)
+    return [true, dirHandle.name, true];
+  } else {
+    return [false, null, true];
+  }
+}

@@ -271,6 +271,9 @@ export const store = createVanilla<
           insertTreeItem(state.noteTree, item, target);
         });
       },
+      // Cache of block id to backlinks
+      blockIdToBacklinksMap: {},
+      setBlockIdToBacklinksMap: setter(set, 'blockIdToBacklinksMap'),
       // wiki tree
       wikiTree: [],
       setWikiTree: setter(set, 'wikiTree'),
@@ -282,9 +285,6 @@ export const store = createVanilla<
       // Whether or not the upgrade modal is open
       isUpgradeModalOpen: false,
       setIsUpgradeModalOpen: setter(set, 'isUpgradeModalOpen'),
-      // Cache of block id to backlinks
-      blockIdToBacklinksMap: {},
-      setBlockIdToBacklinksMap: setter(set, 'blockIdToBacklinksMap'),
       sidebarTab: SidebarTab.Silo,
       setSidebarTab: setter(set, 'sidebarTab'),
       sidebarSearchQuery: '',
@@ -305,7 +305,7 @@ export const store = createVanilla<
         });
       },
       // FileSystemDirectoryHandle
-      dirHandle: {},
+      dirHandle: undefined,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setDirHandle: (handle: any) => {
         set((state) => {
