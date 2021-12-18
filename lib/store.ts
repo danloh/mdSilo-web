@@ -107,6 +107,7 @@ export type Store = {
   setHandles: Setter<FileHandles>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   upsertHandle: (key: string, handle: any) => void;
+  deleteHandle: (key: string) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dirHandle: any;  // FileSystemDirectoryHandle
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -289,13 +290,18 @@ export const store = createVanilla<
       sidebarSearchQuery: '',
       setSidebarSearchQuery: setter(set, 'sidebarSearchQuery'),
       // FileSystemFileHandles
-      // map name(title) to FileHandle
+      // map name(title, id) to FileHandle
       handles: {},
       setHandles: setter(set, 'handles'),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       upsertHandle: (key: string, handle: any) => {
         set((state) => {
           state.handles[key] = handle;
+        });
+      },
+      deleteHandle: (key: string) => {
+        set((state) => {
+          delete state.handles[key];
         });
       },
       // FileSystemDirectoryHandle

@@ -1,3 +1,5 @@
+'use strict';
+
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
 import { processImport, getFileName, checkFileIsMd } from './useImport';
@@ -26,8 +28,6 @@ export async function openDirDialog() {
     store.getState().setDirHandle(dirHandle);
   }
 
-  console.log("dirhandles: ", store.getState().dirHandle);
-
   const fileList = []; // File[]
   // key: filename, value: FileSystemFileHandle
   for await (const [_key, value] of dirHandle.entries()) {
@@ -37,11 +37,10 @@ export async function openDirDialog() {
     //console.log(_key, value)
     if (checkFileIsMd(_key)) {
       const key = getFileName(_key);
+      // store, title as key
       store.getState().upsertHandle(key, value);
     }
   }
-
-  console.log("handles: ", store.getState().handles);
 
   await processImport(fileList);
 
@@ -55,6 +54,10 @@ export async function openDirDialog() {
  * @param {string} content Contents to write.
  */
 export async function writeFile(fileHandle, content) {
+  if (!FileSystemAccess.support(window)) {
+    return;
+  }
+
   try {
     // Create a FileSystemWritableFileStream to write to.
     // will prompt to require write permission
@@ -70,27 +73,57 @@ export async function writeFile(fileHandle, content) {
 }
 
 /**
- * get or create new FileHandle.
+ * get or create new FileHandle and upsert to store.
  *
  * @param {string} name name or title
  * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
  */
-export async function getFileHandle(name) {
-  let fileHandle;
-  if (FileSystemAccess.support(window)) {
-    const dirHandle = store.getState().dirHandle;
-    if (dirHandle) {
-      try {
-        const handleName = `${name}.md`;
-        fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
-      } catch (error) {
-        console.log('An error occured: ', error);
-        return undefined;
-      }
-    } else {
-      console.log('An error occured: no directory');
-    }
+export async function getFileHandle(name, id = '') {
+  if (!FileSystemAccess.support(window)) {
+    return undefined;
   }
+
+  let fileHandle;
+  const dirHandle = store.getState().dirHandle;
+  if (dirHandle) {
+    try {
+      const handleName = `${name}.md`; // potential issue: may different extension
+      fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
+      if (fileHandle) {
+        store.getState().upsertHandle(id || name, fileHandle);
+      }
+    } catch (error) {
+      console.log('An error occured: ', error);
+      return undefined;
+    }
+  } else {
+    console.log('no directory');
+  }
+  
   return fileHandle;
+}
+
+/**
+ * del FileHandle
+ *
+ * @param {string} name name or title
+ */
+ export async function delFileHandle(name) {
+  if (!FileSystemAccess.support(window)) {
+    return;
+  }
+
+  const dirHandle = store.getState().dirHandle;
+  if (dirHandle) {
+    try {
+      const handleName = `${name}.md`;
+      await dirHandle.removeEntry(handleName);
+      store.getState().deleteHandle(name);
+    } catch (error) {
+      console.log('An error occured: ', error);
+    }
+  } else {
+    console.log('no directory');
+  }
 }
 

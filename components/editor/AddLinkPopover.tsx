@@ -13,6 +13,7 @@ import {
 import { isUrl, ciStringEqual } from 'utils/helper';
 import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
+import { getFileHandle } from 'editor/hooks/useFSA';
 import useFeature from 'editor/hooks/useFeature';
 import { store, useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
@@ -155,6 +156,8 @@ export default function AddLinkPopover(props: Props) {
         const note = res.data;
         if (note) { 
           store.getState().upsertNote(note); 
+          // new FileHandle and set in store
+          await getFileHandle(note.title);
         }
       } else if (option.type === OptionType.REMOVE_LINK) {
         // Remove the link

@@ -14,7 +14,7 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile, getFileHandle } from 'editor/hooks/useFSA';
+import { writeFile, getFileHandle, delFileHandle } from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
@@ -68,6 +68,7 @@ function Note(props: Props) {
 
   // get title and content value
   const title = store.getState().notes[noteId]?.title ?? '';
+  const [initTitle, ] = useState(title); // an initial title copy
   const value = useStore(
     (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
   );
@@ -77,9 +78,7 @@ function Note(props: Props) {
       store.getState().updateNote({ id: noteId, content: value });
       // write to local disk if hasFSA
       if (FileSystemAccess.support(window)) {
-        console.log("title", title);
         const handle = store.getState().handles[title];// || await getFileHandle(title);
-        console.log("handle", handle);
         const content = value.map((n) => serialize(n)).join('');
         if (handle) {
           await writeFile(handle, content);
@@ -129,16 +128,20 @@ function Note(props: Props) {
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
         // FSA: on rename file
         const newHandle = await getFileHandle(newTitle);
+        // swap value
         if (newHandle) {
-          store.getState().upsertHandle(newTitle, newHandle);
+          const content = value.map((n) => serialize(n)).join('');
+          await writeFile(newHandle, content);
         }
+        // delete the old and redundant
+        await delFileHandle(initTitle);
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`
         );
       }
     },
-    [noteId, updateNote, isWiki]
+    [noteId, updateNote, isWiki, initTitle, value]
   );
 
   const onAttrChange = useCallback(() => {

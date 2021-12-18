@@ -178,6 +178,13 @@ export const processImport = async (fileList: FileList | File[]) => {
       title: fileName,
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
     };
+    // // store FileHandle finally
+    // const handle = store.getState().handles[fileName];
+    // if (handle) {
+    //   store.getState().upsertHandle(newNoteObj.id, handle);
+    //   // store.getState().deleteHandle(fileName);
+    // }
+
     newNotesData.push({
       ...defaultNote,
       ...newNoteObj
