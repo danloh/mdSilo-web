@@ -330,10 +330,10 @@ export const store = createVanilla<
         offlineMode: state.offlineMode,
         noteSort: state.noteSort,
         // note related storage
-        openNoteIds: state.openNoteIds,
-        notes: state.notes,
-        noteTree: state.noteTree,
-        wikiTree: state.wikiTree,
+        // openNoteIds: state.openNoteIds,
+        // notes: state.notes,
+        // noteTree: state.noteTree,
+        // wikiTree: state.wikiTree,
       }),
       onRehydrateStorage: () => () => {
         useStore.setState({ _hasHydrated: true });

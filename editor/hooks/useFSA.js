@@ -25,29 +25,29 @@ export async function openDirDialog() {
     // dialog to open folder
     // will prompt to require view permission
     dirHandle = await window.showDirectoryPicker();
+    // store dirHandle, import files in dir and store FileHandes
+    if (dirHandle) {
+      store.getState().setDirHandle(dirHandle);
+      const fileList = []; // File[]
+      // key: filename, value: FileSystemFileHandle
+      for await (const [_key, value] of dirHandle.entries()) {
+        const fileData = await value.getFile();
+        fileList.push(fileData);
+        // upsert Handle
+        //console.log(_key, value)
+        if (checkFileIsMd(_key)) {
+          // loss file extension info here: 
+          // unique key for Handle and note
+          const key = getFileName(_key);
+          // store, title as key
+          store.getState().upsertHandle(key, value);
+        }
+      }
+      await processImport(fileList);
+    }
   } catch (error) {
     // `showDirectoryPicker` will throw an error when the user cancels
   }
-
-  if (dirHandle) {
-    store.getState().setDirHandle(dirHandle);
-  }
-
-  const fileList = []; // File[]
-  // key: filename, value: FileSystemFileHandle
-  for await (const [_key, value] of dirHandle.entries()) {
-    const fileData = await value.getFile();
-    fileList.push(fileData);
-    // upsert Handle
-    //console.log(_key, value)
-    if (checkFileIsMd(_key)) {
-      const key = getFileName(_key);
-      // store, title as key
-      store.getState().upsertHandle(key, value);
-    }
-  }
-
-  await processImport(fileList);
 
   return dirHandle;
 }
@@ -92,7 +92,7 @@ export async function getFileHandle(name, id = '') {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const handleName = `${name}.md`; // potential issue: may different extension
+      const [,handleName] = getRealHandleName(name);
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
         store.getState().upsertHandle(id || name, fileHandle);
@@ -121,7 +121,7 @@ export async function getFileHandle(name, id = '') {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const handleName = `${name}.md`;
+      const [,handleName] = getRealHandleName(name);
       await dirHandle.removeEntry(handleName);
       store.getState().deleteHandle(name);
     } catch (error) {
@@ -129,6 +129,27 @@ export async function getFileHandle(name, id = '') {
     }
   } else {
     console.log('no directory');
+  }
+}
+
+/**
+ * try to get the FileHandle name from store
+ * @param {string} name name or title
+ * @return {[FileSystemFileHandle, string]} [handle, name]
+ * 
+ * for key(name|title) loss the file extension info when store, 
+ * and FileHandle name includes file extension info
+ */
+function getRealHandleName(name) {
+  if (!FileSystemAccess.support(window)) {
+    return [null, ''];
+  }
+  
+  const existingHandle = store.getState().handles[name];
+  if (existingHandle) {
+    return [existingHandle, existingHandle.name];
+  } else {
+    return [null, `${name}.md`];
   }
 }
 
@@ -143,7 +164,6 @@ export function checkFSA() {
 
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
-    console.log("dir", dirHandle)
     return [true, dirHandle.name, true];
   } else {
     return [false, null, true];
