@@ -168,11 +168,11 @@ export const processImport = async (fileList: FileList | File[]) => {
       .processSync(fileContent);
 
     // process content and creat new notes to which NoteLinks in content linked
-    // notice: newLinkedNote with id and title only, w/o content 
+    // newLinkedNote with id and title only, w/o content 
     const { content: slateContent, newData: newLinkedNotesData } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
 
-    // Notice: sometimes, file note is just the note NoteLink linked to
+    // sometimes, file note is just the note NoteLink linked to
     // here can update the content to such note: 
     // if note created on ProcessNoteLinks is pushed 
     // before the note from file with more content in newNotesData array, 

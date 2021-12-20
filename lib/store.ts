@@ -329,6 +329,7 @@ export const store = createVanilla<
         isCheckSpellOn: state.isCheckSpellOn,
         offlineMode: state.offlineMode,
         noteSort: state.noteSort,
+        exportOnClose: state.exportOnClose,
         // note related storage
         // openNoteIds: state.openNoteIds,
         // notes: state.notes,

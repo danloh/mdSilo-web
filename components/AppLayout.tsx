@@ -346,6 +346,7 @@ export default function AppLayout(props: Props) {
   useHotkeys(hotkeys);
 
   // Prompt user to export json
+  const exportOnClose = useStore((state) => state.exportOnClose);
   useEffect(() => {
     if (!offlineMode) { return; }
     const tipsText = `Will export your works as json.`;
@@ -353,14 +354,14 @@ export default function AppLayout(props: Props) {
       e.preventDefault();
       (e || window.event).returnValue = tipsText;
       // better export works before closing
-      await exportNotesJson();
+      if (exportOnClose) { await exportNotesJson(); }
       return tipsText;
     };
     window.addEventListener('beforeunload', handleWindowClose);
     return () => {
       window.removeEventListener('beforeunload', handleWindowClose);
     };
-  }, [user, router, offlineMode]);
+  }, [user, router, offlineMode, exportOnClose]);
 
   const appContainerClassName = classNames(
     'h-screen',

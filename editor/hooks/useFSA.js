@@ -2,8 +2,8 @@
 
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
+import { exportNotesJson } from 'components/note/NoteExport';
 import { processImport, getFileName, checkFileIsMd } from './useImport';
-
 
 /**
  * open local folder to import files
@@ -15,7 +15,9 @@ export async function openDirDialog() {
     return;
   }
 
-  // clean store notes
+  // export works and clean store notes
+  const exportOnClose = store.getState().exportOnClose;
+  if (exportOnClose) { await exportNotesJson(); }
   store.getState().setNotes({});
   store.getState().setNoteTree([]);
   store.getState().setOpenNoteIds([]);
@@ -36,7 +38,7 @@ export async function openDirDialog() {
         // upsert Handle
         //console.log(_key, value)
         if (checkFileIsMd(_key)) {
-          // loss file extension info here: 
+          // lose file extension info here: 
           // unique key for Handle and note
           const key = getFileName(_key);
           // store, title as key
@@ -137,7 +139,7 @@ export async function getFileHandle(name, id = '') {
  * @param {string} name name or title
  * @return {[FileSystemFileHandle, string]} [handle, name]
  * 
- * for key(name|title) loss the file extension info when store, 
+ * for key(name|title) lose the file extension info when store, 
  * and FileHandle name includes file extension info
  */
 function getRealHandleName(name) {
