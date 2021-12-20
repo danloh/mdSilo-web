@@ -1,8 +1,9 @@
 'use strict';
 
+import { toast } from 'react-toastify';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
-import { exportNotesJson } from 'components/note/NoteExport';
+import { exportNotesJson, buildNotesJson } from 'components/note/NoteExport';
 import { processImport, getFileName, checkFileIsMd } from './useImport';
 
 /**
@@ -32,12 +33,23 @@ export async function openDirDialog() {
     if (dirHandle) {
       store.getState().setDirHandle(dirHandle);
       const fileList = []; // File[]
-      // key: filename, value: FileSystemFileHandle
+      // Show a toast
+      const openToast = toast.info('Open Folder and Importing files, please wait...', {
+        autoClose: false,
+        closeButton: false,
+        draggable: false,
+      });
+      // key: filename or dir name 
+      // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
       for await (const [_key, value] of dirHandle.entries()) {
+        //console.log(_key, value)
+        // may TODO: recursively get the files in sub dirs
+        if (value.kind !== 'file') {
+          continue;
+        }
         const fileData = await value.getFile();
         fileList.push(fileData);
         // upsert Handle
-        //console.log(_key, value)
         if (checkFileIsMd(_key)) {
           // lose file extension info here: 
           // unique key for Handle and note
@@ -47,9 +59,13 @@ export async function openDirDialog() {
         }
       }
       await processImport(fileList);
+      // close the toast
+      toast.dismiss(openToast);
     }
   } catch (error) {
     // `showDirectoryPicker` will throw an error when the user cancels
+    console.log("An error occured when open folder and import files", error);
+    toast.dismiss();
   }
 
   return dirHandle;
@@ -75,7 +91,7 @@ export async function writeFile(fileHandle, content) {
     // Close the file and write the contents to disk.
     await writable.close();
   } catch (error) {
-    console.log('An error occured: ', error);
+    console.log('An error occured on write file: ', error);
     //alert('An error occured, change can not be saved to file');
   }
 }
@@ -84,9 +100,11 @@ export async function writeFile(fileHandle, content) {
  * get or create new FileHandle and upsert to store.
  *
  * @param {string} name name or title
+ * @param {string} id optional, the custom key for handle in store
+ * @param {boolean} keepReal optional, if keep name as the handle name
  * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
  */
-export async function getFileHandle(name, id = '') {
+export async function getFileHandle(name, id='', keepReal=false) {
   if (!FileSystemAccess.support(window)) {
     return undefined;
   }
@@ -95,13 +113,13 @@ export async function getFileHandle(name, id = '') {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name);
+      const [,handleName] = getRealHandleName(name, keepReal);
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
         store.getState().upsertHandle(id || name, fileHandle);
       }
     } catch (error) {
-      console.log('An error occured: ', error);
+      console.log('An error occured on get FileHandle: ', error);
       return undefined;
     }
   } else {
@@ -115,8 +133,9 @@ export async function getFileHandle(name, id = '') {
  * del FileHandle
  *
  * @param {string} name name or title
+ * @param {boolean} keepReal optional, if keep name as the handle name
  */
- export async function delFileHandle(name) {
+ export async function delFileHandle(name, keepReal=false) {
   if (!FileSystemAccess.support(window)) {
     return;
   }
@@ -124,11 +143,11 @@ export async function getFileHandle(name, id = '') {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name);
+      const [,handleName] = getRealHandleName(name, keepReal);
       await dirHandle.removeEntry(handleName);
       store.getState().deleteHandle(name);
     } catch (error) {
-      console.log('An error occured: ', error);
+      console.log('An error occured on delete FileHandle: ', error);
     }
   } else {
     console.log('no directory');
@@ -138,12 +157,13 @@ export async function getFileHandle(name, id = '') {
 /**
  * try to get the FileHandle name from store
  * @param {string} name name or title
+ * @param {boolean} keepReal optional, if keep name as the handle name
  * @return {[FileSystemFileHandle, string]} [handle, name]
  * 
  * for key(name|title) lose the file extension info when store, 
  * and FileHandle name includes file extension info
  */
-function getRealHandleName(name) {
+function getRealHandleName(name, keepReal=false) {
   if (!FileSystemAccess.support(window)) {
     return [null, ''];
   }
@@ -152,7 +172,28 @@ function getRealHandleName(name) {
   if (existingHandle) {
     return [existingHandle, existingHandle.name];
   } else {
-    return [null, `${name}.md`];
+    return [null, keepReal ? name : `${name}.md`];
+  }
+}
+
+/**
+ * Writes all works to json on disk.
+ *
+ * @param {string} json, optional, Contents to write to json Handle.
+ */
+export async function writeJsonFile(json = '') {
+  if (!FileSystemAccess.support(window)) {
+    return;
+  }
+
+  try {
+    const jsonHandle = await getFileHandle('mdSilo_all.json', '', true);
+    const notesJson = json || buildNotesJson();
+    if (jsonHandle) {
+      await writeFile(jsonHandle, notesJson);
+    }
+  } catch (error) {
+    console.log('An error occured on write json file: ', error);
   }
 }
 

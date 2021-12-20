@@ -48,6 +48,7 @@ const isImageUrl = (url: string) => {
   return false;
 };
 
+// TODO: customize image host services
 export const uploadAndInsertImage = async (
   editor: Editor,
   file: File,

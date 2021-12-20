@@ -14,7 +14,7 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile, getFileHandle, delFileHandle } from 'editor/hooks/useFSA';
+import { writeFile, getFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
@@ -82,6 +82,7 @@ function Note(props: Props) {
         const content = value.map((n) => serialize(n)).join('');
         if (handle) {
           await writeFile(handle, content);
+          await writeJsonFile();
         }
       }
     },
@@ -132,6 +133,7 @@ function Note(props: Props) {
         if (newHandle) {
           const content = value.map((n) => serialize(n)).join('');
           await writeFile(newHandle, content);
+          await writeJsonFile();
         }
         // delete the old and redundant
         await delFileHandle(initTitle);
