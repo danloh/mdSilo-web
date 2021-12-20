@@ -18,8 +18,9 @@ export async function openDirDialog() {
   // export works and clean store notes
   const exportOnClose = store.getState().exportOnClose;
   if (exportOnClose) { await exportNotesJson(); }
-  store.getState().setNotes({});
+  // cleaning noteTree first, thus will not trigger noteSort in sidebar
   store.getState().setNoteTree([]);
+  store.getState().setNotes({});
   store.getState().setOpenNoteIds([]);
 
   let dirHandle;
