@@ -23,6 +23,8 @@ export async function openDirDialog() {
   store.getState().setNoteTree([]);
   store.getState().setNotes({});
   store.getState().setOpenNoteIds([]);
+  store.getState().setHandles({});
+  store.getState().setDirHandle(undefined);
 
   let dirHandle;
   try {
@@ -101,10 +103,10 @@ export async function writeFile(fileHandle, content) {
  *
  * @param {string} name name or title
  * @param {string} id optional, the custom key for handle in store
- * @param {boolean} keepReal optional, if keep name as the handle name
+ * @param {boolean} asReal optional, if keep name as the handle name
  * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
  */
-export async function getFileHandle(name, id='', keepReal=false) {
+export async function getFileHandle(name, id='', asReal=false) {
   if (!FileSystemAccess.support(window)) {
     return undefined;
   }
@@ -113,7 +115,7 @@ export async function getFileHandle(name, id='', keepReal=false) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name, keepReal);
+      const [,handleName] = getRealHandleName(name, asReal);
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
         store.getState().upsertHandle(id || name, fileHandle);
@@ -133,9 +135,9 @@ export async function getFileHandle(name, id='', keepReal=false) {
  * del FileHandle
  *
  * @param {string} name name or title
- * @param {boolean} keepReal optional, if keep name as the handle name
+ * @param {boolean} asReal optional, if keep name as the handle name
  */
- export async function delFileHandle(name, keepReal=false) {
+ export async function delFileHandle(name, asReal=false) {
   if (!FileSystemAccess.support(window)) {
     return;
   }
@@ -143,7 +145,7 @@ export async function getFileHandle(name, id='', keepReal=false) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name, keepReal);
+      const [,handleName] = getRealHandleName(name, asReal);
       await dirHandle.removeEntry(handleName);
       store.getState().deleteHandle(name);
     } catch (error) {
@@ -157,13 +159,13 @@ export async function getFileHandle(name, id='', keepReal=false) {
 /**
  * try to get the FileHandle name from store
  * @param {string} name name or title
- * @param {boolean} keepReal optional, if keep name as the handle name
+ * @param {boolean} asReal optional, if keep name as the handle name
  * @return {[FileSystemFileHandle, string]} [handle, name]
  * 
  * for key(name|title) lose the file extension info when store, 
  * and FileHandle name includes file extension info
  */
-function getRealHandleName(name, keepReal=false) {
+function getRealHandleName(name, asReal=false) {
   if (!FileSystemAccess.support(window)) {
     return [null, ''];
   }
@@ -172,7 +174,7 @@ function getRealHandleName(name, keepReal=false) {
   if (existingHandle) {
     return [existingHandle, existingHandle.name];
   } else {
-    return [null, keepReal ? name : `${name}.md`];
+    return [null, asReal ? name : `${name}.md`];
   }
 }
 

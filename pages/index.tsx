@@ -18,8 +18,8 @@ export default function Home() {
                 </h1>
                 <Link href="/app">
                   <a className="inline-flex items-center mt-6 md:mt-8 btn hover:shadow-lg group">
-                    <IconMarkdown size={18} className="ml-1 group-hover:animate-bounce-x" />
-                    {'  Spark of Inspiration '}
+                    <IconMarkdown size={18} className="mx-1 group-hover:animate-bounce-x" />
+                    {'  Start Writing '}
                     <IconArrowRight size={18} className="ml-1 group-hover:animate-bounce-x" />
                   </a>
                 </Link>
@@ -46,9 +46,9 @@ export default function Home() {
                   Enjoy Writing
                 </h3>
                 <p className="pt-1">Real-time WYSIWYG writing</p>
-                <p className="pt-1">Side Menu, Hovering Toolbar</p>
-                <p className="pt-1">Slash commands and Hotkeys</p>
-                <p className="pt-1">Import and Export (md, json)</p>
+                <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
+                <p className="pt-1">Import and Export (Markdown, json)</p>
+                <p className="pt-1">Local File Access<sup className="text-xs text-gray-500">*Chrome/Edge...</sup></p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-blue-600">
                 <h3 className="text-xl font-semibold">

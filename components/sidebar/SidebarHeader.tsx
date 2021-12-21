@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@headlessui/react';
 import { 
-  IconLogin, IconLogout, IconChevronsDown, IconX, IconSettings, IconCreditCard, IconPizza 
+  IconLogin, IconLogout, IconChevronsDown, IconX, 
+  IconSettings, IconWriting, IconCreditCard, IconPizza 
 } from '@tabler/icons';
 import { useAuthContext } from 'utils/useAuth';
 import { useStore } from 'lib/store';
@@ -19,6 +20,7 @@ export default function SidebarHeader(props: Props) {
   const { setIsSettingsOpen, setBillingOpen } = props;
   const { user, signOut } = useAuthContext();
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
+  const linkItemClass = "border-t dark:border-gray-700 hover:bg-gray-100 hover:dark:bg-gray-700";
 
   return (
     <div className="relative">
@@ -56,8 +58,12 @@ export default function SidebarHeader(props: Props) {
             <IconSettings size={18} className="mr-1" />
             <span>Settings</span>
           </DropdownItem>
+          <DropdownItem className={linkItemClass} as='link' href='/app'>
+            <IconWriting size={18} className="mr-1" />
+            <span>New Workspace</span>
+          </DropdownItem>
           <DropdownItem
-            className="border-t dark:border-gray-700 text-green-500 dark:text-green-500"
+            className="border-t dark:border-gray-700 hover:bg-green-400"
             as='link'
             href='/sponsors'
           >
@@ -76,11 +82,7 @@ export default function SidebarHeader(props: Props) {
             <span>Billing</span>
           </DropdownItem> */}
           {!user ? (
-            <DropdownItem
-              className="border-t dark:border-gray-700"
-              as='link'
-              href='/signin'
-            >
+            <DropdownItem className={linkItemClass} as='link' href='/signin'>
               <IconLogin size={18} className="mr-1" />
               <span>Sign in</span>
             </DropdownItem>
