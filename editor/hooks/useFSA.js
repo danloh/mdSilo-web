@@ -66,7 +66,7 @@ export async function openDirDialog() {
     }
   } catch (error) {
     // `showDirectoryPicker` will throw an error when the user cancels
-    console.log("An error occured when open folder and import files", error);
+    console.log("An error occured when open folder and import files: ", error);
     toast.dismiss();
   }
 

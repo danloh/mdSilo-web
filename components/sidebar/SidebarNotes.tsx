@@ -2,7 +2,7 @@ import { Dispatch, memo, SetStateAction, useCallback, useMemo } from 'react';
 import { Notes, NoteTreeItem, useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
 import { ciStringCompare, dateCompare, isMobile } from 'utils/helper';
-import { useImportJson } from 'editor/hooks/useImport';
+import { useImportJson, useImportMds } from 'editor/hooks/useImport';
 import { openDirDialog } from 'editor/hooks/useFSA';
 import { FileSystemAccess } from 'editor/checks';
 import ErrorBoundary from '../misc/ErrorBoundary';
@@ -30,13 +30,14 @@ function SidebarNotes(props: SidebarNotesProps) {
   const myNotes = noteList.filter(n => !n.is_wiki && !n.is_daily);
   const numOfNotes = useMemo(() => myNotes.length, [myNotes]);
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
-  const onCreateNoteClick = useCallback(() => {
+  const onCreateNote = useCallback(() => {
     if (isMobile()) {
       setIsSidebarOpen(false);
     }
     setIsFindOrCreateModalOpen((isOpen) => !isOpen);
   }, [setIsSidebarOpen, setIsFindOrCreateModalOpen]);
-  const onImportJsonClick = useImportJson();
+  const onImportJson = useImportJson();
+  const onImportFile = useImportMds();
 
   const hasFSA = FileSystemAccess.support(window);
   const onOpenFolder = openDirDialog;
@@ -62,8 +63,9 @@ function SidebarNotes(props: SidebarNotesProps) {
               No md yet
             </p>
             {hasFSA ? (<button className={btnClass} onClick={onOpenFolder}>Open Folder</button>) : null}
-            <button className={btnClass} onClick={onCreateNoteClick}>Create New</button>
-            <button className={`${btnClass} mb-4`} onClick={onImportJsonClick}>Import Json</button>
+            <button className={btnClass} onClick={onImportFile}>Import Markdown</button>
+            <button className={btnClass} onClick={onCreateNote}>New File</button>
+            <button className={`${btnClass} mb-4`} onClick={onImportJson}>Import Json</button>
           </>
         )}
         <SidebarFoot />
