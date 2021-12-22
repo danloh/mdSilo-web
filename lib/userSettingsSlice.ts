@@ -36,6 +36,8 @@ export type UserSettings = {
   setReadMode: Setter<boolean>;
   offlineMode: boolean;
   setOfflineMode: Setter<boolean>;
+  exportOnClose: boolean;
+  setExportOnClose: Setter<boolean>;
 };
 
 const userSettingsSlice = (
@@ -57,6 +59,8 @@ const userSettingsSlice = (
   setReadMode: setter(set, 'readMode'),
   offlineMode: true,
   setOfflineMode: setter(set, 'offlineMode'),
+  exportOnClose: true,
+  setExportOnClose: setter(set, 'exportOnClose'),
 });
 
 export default userSettingsSlice;

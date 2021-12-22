@@ -5,16 +5,19 @@ import { useRouter } from 'next/router';
 import Editor from 'components/editor/Editor';
 import Title from 'components/editor/Title';
 import Trait, { TraitKeys } from 'components/editor/Trait';
+import Backlinks from 'components/editor/backlinks/Backlinks';
 import { store, useStore } from 'lib/store';
 import { Attr, defaultAttr, buildAttr } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
+import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { ciStringEqual } from 'utils/helper';
+import { writeFile, getFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
-import Backlinks from '../editor/backlinks/Backlinks';
+import { FileSystemAccess } from 'editor/checks';
+import { ciStringEqual } from 'utils/helper';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import NoteHeader from './NoteHeader';
 
@@ -65,13 +68,25 @@ function Note(props: Props) {
 
   // get title and content value
   const title = store.getState().notes[noteId]?.title ?? '';
+  const [initTitle, ] = useState(title); // an initial title copy
   const value = useStore(
     (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
   );
+
   const setValue = useCallback(
-    (value: Descendant[]) =>
-      store.getState().updateNote({ id: noteId, content: value }),
-    [noteId]
+    async (value: Descendant[]) => {
+      store.getState().updateNote({ id: noteId, content: value });
+      // write to local disk if hasFSA
+      if (FileSystemAccess.support(window)) {
+        const handle = store.getState().handles[title];// || await getFileHandle(title);
+        const content = value.map((n) => serialize(n)).join('');
+        if (handle) {
+          await writeFile(handle, content);
+          await writeJsonFile();
+        }
+      }
+    },
+    [noteId, title]
   );
 
   const noteAttr: Attr = useStore(
@@ -99,7 +114,7 @@ function Note(props: Props) {
   const onTitleChange = useCallback(
     async (title: string) => {
       // update note title in storage as unique title
-      const newTitle = title || getUntitledTitle(noteId);
+      const newTitle = title.trim() || getUntitledTitle(noteId);
       const isTitleUnique = () => {
         const notesArr = Object.values(store.getState().notes);
         return notesArr.findIndex(
@@ -112,13 +127,23 @@ function Note(props: Props) {
         // save backlinked notes to db, may backlinks updated but note not
         await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
+        // FSA: on rename file
+        const newHandle = await getFileHandle(newTitle);
+        // swap value
+        if (newHandle) {
+          const content = value.map((n) => serialize(n)).join('');
+          await writeFile(newHandle, content);
+          await writeJsonFile();
+        }
+        // delete the old and redundant
+        await delFileHandle(initTitle);
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`
         );
       }
     },
-    [noteId, updateNote, isWiki]
+    [noteId, updateNote, isWiki, initTitle, value]
   );
 
   const onAttrChange = useCallback(() => {

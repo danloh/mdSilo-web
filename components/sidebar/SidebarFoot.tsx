@@ -19,7 +19,7 @@ export default function SidebarFoot(props: SidebarFootProps) {
         <a title="About mdSilo"><IconInfoCircle size={18} className="mr-1" /></a>
       </Link>
       <Link href="/sponsors">
-        <a title="Donation"><IconTag size={18} className="mr-1" /></a>
+        <a title="Pricing"><IconTag size={18} className="mr-1" /></a>
       </Link>
       <Link href="/app/demo">
         <a title="Get Started"><IconHelp size={18} className="mr-1" /></a>

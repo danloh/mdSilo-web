@@ -6,6 +6,8 @@ export default function EditorSettings() {
   const setIsPageStackingOn = useStore((state) => state.setIsPageStackingOn);
   const isCheckSpellOn = useStore((state) => state.isCheckSpellOn);
   const setIsCheckSpellOn = useStore((state) => state.setIsCheckSpellOn);
+  const exportOnClose = useStore((state) => state.exportOnClose);
+  const setExportOnClose = useStore((state) => state.setExportOnClose);
 
   return (
     <div className="flex-1 w-full h-full p-6 overflow-y-auto dark:bg-gray-800 dark:text-gray-100">
@@ -41,6 +43,23 @@ export default function EditorSettings() {
           setIsChecked={setIsCheckSpellOn}
         />
         <span className="text-sm text-gray-600 dark:text-gray-300">On</span>
+      </div>
+      <div className="py-2"></div>
+      <div className="mb-4 border-t dark:border-gray-700">
+        <h1 className="text-lg font-medium">Auto-Export Json on Close/Reload</h1>
+        <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+          Avoid Loss of Works
+        </p>
+      </div>
+      <div className="flex items-center">
+        <span className="text-sm text-gray-600 dark:text-gray-300">No</span>
+        <Toggle
+          id="export-on-close"
+          className="mx-2"
+          isChecked={exportOnClose}
+          setIsChecked={setExportOnClose}
+        />
+        <span className="text-sm text-gray-600 dark:text-gray-300">Yes</span>
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ export const getNoteAsBlob = (note: Note) => {
   return blob;
 };
 
-const buildNotesJson = () => {
+export const buildNotesJson = () => {
   const notesObj = store.getState().notes;
   const noteTree = store.getState().noteTree;
   const wikiTree = store.getState().wikiTree;

@@ -1,3 +1,4 @@
+import { store } from 'lib/store';
 import { exportNotesJson } from './note/NoteExport';
 
 export default function UpdateBanner() {
@@ -14,7 +15,8 @@ export default function UpdateBanner() {
 
 const updateAndReloadApp = async () => {
   // export works before reloading to avoid works lost
-  await exportNotesJson();
+  const exportOnClose = store.getState().exportOnClose;
+  if (exportOnClose) { await exportNotesJson(); }
 
   const wb = window.workbox;
   // Reload the app once the new service worker is controlling it

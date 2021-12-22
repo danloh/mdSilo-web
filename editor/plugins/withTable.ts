@@ -110,7 +110,7 @@ export const resizeTable = (table: Table, row = 0, col = 0): Table => {
 const withTables = (editor: Editor) => {
   const { deleteForward } = editor;
 
-  // merger override deleteBackward to withCustomDeleteBackward
+  // merge override deleteBackward to withCustomDeleteBackward
   // merge override insertBreak to withBlockBreakout
   // here override deleteForward
   editor.deleteForward = (...args) => {

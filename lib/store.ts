@@ -38,6 +38,8 @@ const storage: StateStorage = {
 };
 
 export type Notes = Record<Note['id'], Note>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FileHandles = Record<string, any>; // FileSystemFileHandle
 
 export type NoteTreeItem = {
   id: Note['id'];
@@ -100,6 +102,16 @@ export type Store = {
   setSidebarTab: Setter<SidebarTab>;
   sidebarSearchQuery: string;
   setSidebarSearchQuery: Setter<string>;
+  // FileSystemFileHandle
+  handles: FileHandles;
+  setHandles: Setter<FileHandles>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  upsertHandle: (key: string, handle: any) => void;
+  deleteHandle: (key: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dirHandle: any;  // FileSystemDirectoryHandle
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setDirHandle: (handle: any) => void;
 } & UserSettings;
 
 type FunctionPropertyNames<T> = {
@@ -136,27 +148,21 @@ export const store = createVanilla<
   persist(
     immer((set) => ({
       _hasHydrated: false,
-      /**
-       * The billing details of the current user
-       */
+      // The billing details of the current user
       billingDetails: { planId: 'Preparing' },
       setBillingDetails: setter(set, 'billingDetails'),
-      /**
-       * Map of note id to notes
-       */
+      //  Map of note id to notes
       notes: {},  // all private notes and related wiki notes
-      /**
-       * Sets the notes
-       */
+      // Sets the notes
       setNotes: setter(set, 'notes'),
-      /**
-       * If the note id exists, then update the note. Otherwise, insert it
-       */
+      // update or insert the note
       upsertNote: (note: Note, ifUpTree = true) => {
         set((state) => {
           if (state.notes[note.id]) {
+            // if existing per id
             state.notes[note.id] = { ...state.notes[note.id], ...note };
           } else {
+            // if existing per title
             const existingNote = Object.values(state.notes).find((n) =>
               ciStringEqual(n.title, note.title)
             );
@@ -197,9 +203,7 @@ export const store = createVanilla<
           }
         });
       },
-      /**
-       * Update the given note
-       */
+      // Update the given note
       updateNote: (note: NoteUpdate) => {
         set((state) => {
           if (state.notes[note.id]) {
@@ -211,9 +215,7 @@ export const store = createVanilla<
           }
         });
       },
-      /**
-       * Delete the note with the given noteId
-       */
+      // Delete the note with the given noteId
       deleteNote: (noteId: string) => {
         set((state) => {
           delete state.notes[noteId];
@@ -225,13 +227,9 @@ export const store = createVanilla<
           }
         });
       },
-      /**
-       * The notes that have their content visible, including the main note and the stacked notes
-       */
+      // The visible notes, including the main note and the stacked notes
       openNoteIds: [],
-      /**
-       * Replaces the open notes at the given index (0 by default)
-       */
+      // Replaces the open notes at the given index (0 by default)
       setOpenNoteIds: (newOpenNoteIds: string[], index?: number) => {
         if (!index) {
           set((state) => {
@@ -248,14 +246,10 @@ export const store = createVanilla<
           );
         });
       },
-      /**
-       * The tree of notes visible in the sidebar
-       */
+      // The tree of notes visible in the sidebar
       noteTree: [], // private notes
       setNoteTree: setter(set, 'noteTree'),
-      /**
-       * Moves the tree item with the given noteId to the given newParentNoteId's children
-       */
+      // Moves the tree item with the given noteId to the given newParentNoteId's children
       moveNoteTreeItem: (noteId: string, newParentNoteId: string | null) => {
         // Don't do anything if the note ids are the same
         if (noteId === newParentNoteId) {
@@ -268,9 +262,7 @@ export const store = createVanilla<
           }
         });
       },
-      /**
-       * Expands or collapses the tree item with the given noteId
-       */
+      // Expands or collapses the tree item with the given noteId
       toggleNoteTreeItemCollapsed: (noteId: string) => {
         set((state) => {
           toggleNoteTreeItemCollapsed(state.noteTree, noteId);
@@ -281,6 +273,9 @@ export const store = createVanilla<
           insertTreeItem(state.noteTree, item, target);
         });
       },
+      // Cache of block id to backlinks
+      blockIdToBacklinksMap: {},
+      setBlockIdToBacklinksMap: setter(set, 'blockIdToBacklinksMap'),
       // wiki tree
       wikiTree: [],
       setWikiTree: setter(set, 'wikiTree'),
@@ -289,20 +284,36 @@ export const store = createVanilla<
           insertWikiTree(state.wikiTree, wikiId, noteId);
         });
       },
-      /**
-       * Whether or not the upgrade modal is open
-       */
+      // Whether or not the upgrade modal is open
       isUpgradeModalOpen: false,
       setIsUpgradeModalOpen: setter(set, 'isUpgradeModalOpen'),
-      /**
-       * Cache of block id to backlinks
-       */
-      blockIdToBacklinksMap: {},
-      setBlockIdToBacklinksMap: setter(set, 'blockIdToBacklinksMap'),
       sidebarTab: SidebarTab.Silo,
       setSidebarTab: setter(set, 'sidebarTab'),
       sidebarSearchQuery: '',
       setSidebarSearchQuery: setter(set, 'sidebarSearchQuery'),
+      // FileSystemFileHandles
+      // map name(title, id) to FileHandle
+      handles: {},
+      setHandles: setter(set, 'handles'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      upsertHandle: (key: string, handle: any) => {
+        set((state) => {
+          state.handles[key] = handle;
+        });
+      },
+      deleteHandle: (key: string) => {
+        set((state) => {
+          delete state.handles[key];
+        });
+      },
+      // FileSystemDirectoryHandle
+      dirHandle: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setDirHandle: (handle: any) => {
+        set((state) => {
+          state.dirHandle = handle;
+        });
+      },
       ...userSettingsSlice(set),
     })),
     {
@@ -318,11 +329,12 @@ export const store = createVanilla<
         isCheckSpellOn: state.isCheckSpellOn,
         offlineMode: state.offlineMode,
         noteSort: state.noteSort,
+        exportOnClose: state.exportOnClose,
         // note related storage
-        openNoteIds: state.openNoteIds,
-        notes: state.notes,
-        noteTree: state.noteTree,
-        wikiTree: state.wikiTree,
+        // openNoteIds: state.openNoteIds,
+        // notes: state.notes,
+        // noteTree: state.noteTree,
+        // wikiTree: state.wikiTree,
       }),
       onRehydrateStorage: () => () => {
         useStore.setState({ _hasHydrated: true });

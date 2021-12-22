@@ -4,10 +4,11 @@ import logo from 'public/logo.webp';
 type Props = {
   width: number;
   height: number;
+  className?: string;
 };
 
 export default function Logo(props: Props) {
-  const { width, height } = props;
+  const { width, height, className = 'rounded' } = props;
   return (
     <Image
       src={logo}
@@ -15,6 +16,7 @@ export default function Logo(props: Props) {
       height={height}
       alt="mdsilo"
       layout="fixed"
+      className={className}
     />
   );
 }

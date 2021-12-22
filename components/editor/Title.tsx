@@ -58,7 +58,7 @@ function Title(props: Props) {
           text = text.replace(/\r?\n|\r/g, ' ');
           document.execCommand('insertText', false, text);
         }}
-        onInput={emitChange}
+        onBlur={emitChange}
         contentEditable={!(readMode || isDaily || isPub)}
         spellCheck={isCheckSpellOn}
       />

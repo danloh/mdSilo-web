@@ -51,15 +51,6 @@ export default function AppLayout(props: Props) {
   const setOfflineMode = useStore((state) => state.setOfflineMode);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
 
-  // useEffect(() => {
-  //   if (!isPageLoaded && isAuthed && user) {
-  //     useStore.persist.setOptions({
-  //       name: `mdSilo-${user.id}`,
-  //     });
-  //     useStore.persist.rehydrate();
-  //   }
-  // }, [isPageLoaded, isAuthed, user]);
-
   const setNotes = useStore((state) => state.setNotes);
   const setNoteTree = useStore((state) => state.setNoteTree);
   //const setWikiTree = useStore((state) => state.setWikiTree);
@@ -188,11 +179,6 @@ export default function AppLayout(props: Props) {
       console.log(e);
     }
 
-    // const noteArr = Object.values(DemoNotes);
-    // noteArr.forEach(n => upsertNote(n as Note));
-    // const treeItem = { id: 'cb4e686d-4c6d-419b-a053-c9a0a1d24bec', children: [], collapsed: true };
-    // updateNoteTree(treeItem, null);
-
     router.replace(`/app/tasks`);
 
     setIsPageLoaded(true);
@@ -200,10 +186,7 @@ export default function AppLayout(props: Props) {
 
   useEffect(() => {
     if (router.pathname === '/app/demo') {
-      //useStore.persist.setOptions({ name: `mdSilo-demo`,});
-      //useStore.persist.rehydrate();
       initDemo();
-      return;
     } else if (offlineMode) {
       initLocal();
     } else {
@@ -346,6 +329,7 @@ export default function AppLayout(props: Props) {
   useHotkeys(hotkeys);
 
   // Prompt user to export json
+  const exportOnClose = useStore((state) => state.exportOnClose);
   useEffect(() => {
     if (!offlineMode) { return; }
     const tipsText = `Will export your works as json.`;
@@ -353,14 +337,14 @@ export default function AppLayout(props: Props) {
       e.preventDefault();
       (e || window.event).returnValue = tipsText;
       // better export works before closing
-      await exportNotesJson();
+      if (exportOnClose) { await exportNotesJson(); }
       return tipsText;
     };
     window.addEventListener('beforeunload', handleWindowClose);
     return () => {
       window.removeEventListener('beforeunload', handleWindowClose);
     };
-  }, [user, router, offlineMode]);
+  }, [user, router, offlineMode, exportOnClose]);
 
   const appContainerClassName = classNames(
     'h-screen',

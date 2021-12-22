@@ -91,23 +91,26 @@ type DropdownItemProps =
       children: ReactNode;
       onClick: MouseEventHandler<HTMLButtonElement>;
       as?: 'button';
+      target?: string;
       className?: string;
     }
   | {
       children: ReactNode;
       href: string;
       as: 'a';
+      target?: string;
       className?: string;
     }
   | {
       children: ReactNode;
       href: string;
       as: 'link';
+      target?: string;
       className?: string;
     };
 
 export function DropdownItem(props: DropdownItemProps) {
-  const { children, className = '' } = props;
+  const { children, target = '_blank', className = '' } = props;
 
   const itemClassName = useCallback(
     (active) =>
@@ -124,14 +127,14 @@ export function DropdownItem(props: DropdownItemProps) {
           <a
             className={itemClassName(active)}
             href={props.href}
-            target="_blank"
+            target={target}
             rel="noopener noreferrer"
           >
             {children}
           </a>
         ) : props.as === 'link' ? (
           <Link href={props.href}>
-            <a className={itemClassName(active)} target="_blank">
+            <a className={itemClassName(active)} target={target}>
              {children}
             </a>
           </Link>
