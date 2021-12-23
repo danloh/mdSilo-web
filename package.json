@@ -36,7 +36,7 @@
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0",
     "file-saver": "^2.0.5",
-    "fuse.js": "^6.5.0",
+    "fuse.js": "^6.5.3",
     "immer": "^9.0.7",
     "is-hotkey": "^0.2.0",
     "jszip": "^3.7.1",
