@@ -28,9 +28,10 @@ export type NodeDatum = {
   id: string;
   name: string;
   radius: number;
+  ty: 'tag' | 'link';
 } & SimulationNodeDatum;
 
-export type LinkDatum = SimulationLinkDatum<NodeDatum>;
+export type LinkDatum = SimulationLinkDatum<NodeDatum> & { ty: 'tag' | 'link' };
 
 export type GraphData = { nodes: NodeDatum[]; links: LinkDatum[] };
 
@@ -94,6 +95,7 @@ export default function ForceGraph(props: Props) {
       const isSourceHovered = source.id === hoveredNode.current?.id;
       const isTargetHovered = target.id === hoveredNode.current?.id;
       const isLinkHighlighted = isSourceHovered || isTargetHovered;
+      const isTag = link.ty == 'tag';
 
       context.save();
 
@@ -101,7 +103,9 @@ export default function ForceGraph(props: Props) {
       context.moveTo(source.x, source.y);
       context.lineWidth = 0.5;
       context.lineTo(target.x, target.y);
-      if (isLinkHighlighted) {
+      if (isTag) {
+        context.strokeStyle = 'transparent';
+      } else if (isLinkHighlighted) {
         context.strokeStyle = colors.emerald[300];
       } else if (darkMode) {
         context.strokeStyle = colors.trueGray[700];
@@ -121,6 +125,7 @@ export default function ForceGraph(props: Props) {
         return;
       }
       const isHovered = node.id === hoveredNode.current?.id;
+      const isTag = node.ty == 'tag';
 
       context.save();
 
@@ -130,7 +135,9 @@ export default function ForceGraph(props: Props) {
       context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
 
       // Fill node color
-      if (isHovered) {
+      if (isTag) {
+        context.fillStyle = colors.yellow[400];
+      } else if (isHovered) {
         context.strokeStyle = colors.emerald[900];
         context.stroke();
         context.fillStyle = colors.emerald[400];
@@ -271,7 +278,7 @@ export default function ForceGraph(props: Props) {
         const clickedNode = getNode(simulation, context.canvas, x, y);
 
         // Redirect to note when a node is clicked
-        if (clickedNode) {
+        if (clickedNode && clickedNode.ty == 'link') {
           router.push(`/app/md/${clickedNode.id}`);
         }
       });
