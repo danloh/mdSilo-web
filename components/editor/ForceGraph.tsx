@@ -137,15 +137,18 @@ export default function ForceGraph(props: Props) {
       // Fill node color
       if (isTag) {
         context.fillStyle = colors.yellow[400];
-      } else if (isHovered) {
-        context.strokeStyle = colors.emerald[900];
-        context.stroke();
-        context.fillStyle = colors.emerald[400];
       } else if (areNeighbors(hoveredNode.current?.id, node.id)) {
         context.fillStyle = colors.emerald[400];
       } else {
         context.fillStyle = colors.trueGray[400];
       }
+
+      if (isHovered) {
+        context.strokeStyle = colors.emerald[900];
+        context.stroke();
+        context.fillStyle = isTag ? colors.yellow[600] : colors.emerald[400];
+      }
+
       context.fill();
 
       // Add node text
@@ -237,7 +240,7 @@ export default function ForceGraph(props: Props) {
           'collide',
           forceCollide<NodeDatum>().radius((node) => node.radius)
         )
-        .force('charge', forceManyBody().strength(-80))
+        .force('charge', forceManyBody().strength(-60))
         .force('center', forceCenter(width / 2, height / 2))
         .force('x', forceX(width / 2))
         .force('y', forceY(height / 2));
