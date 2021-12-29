@@ -108,9 +108,9 @@ export default function ForceGraph(props: Props) {
       } else if (isLinkHighlighted) {
         context.strokeStyle = colors.emerald[300];
       } else if (darkMode) {
-        context.strokeStyle = colors.trueGray[700];
+        context.strokeStyle = colors.neutral[700];
       } else {
-        context.strokeStyle = colors.trueGray[200];
+        context.strokeStyle = colors.neutral[200];
       }
       context.stroke();
 
@@ -140,7 +140,7 @@ export default function ForceGraph(props: Props) {
       } else if (areNeighbors(hoveredNode.current?.id, node.id)) {
         context.fillStyle = colors.emerald[400];
       } else {
-        context.fillStyle = colors.trueGray[400];
+        context.fillStyle = colors.neutral[400];
       }
 
       if (isHovered) {
@@ -160,8 +160,8 @@ export default function ForceGraph(props: Props) {
         context.globalAlpha = 0;
       }
       context.fillStyle = darkMode
-        ? colors.trueGray[100]
-        : colors.trueGray[600];
+        ? colors.neutral[100]
+        : colors.neutral[600];
       context.font = `4px font-sans`;
 
       const lines = getLines(context, node.name, 50);

@@ -63,6 +63,7 @@ export default function Graph() {
 
         // Skip the node if it doesn't link to an existing note
         if (!linksByNoteId[noteLinkElement.noteId]) {
+          linksByNoteId[note.id].add(noteLinkElement.noteId);
           continue;
         }
 
