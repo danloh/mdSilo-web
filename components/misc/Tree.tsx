@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, ReactNode, memo } from 'react';
+import { useState, useMemo, useCallback, useEffect, ReactNode, memo } from 'react';
 import TreeNode from './TreeNode';
 
 export type TreeNode = {
@@ -23,21 +23,34 @@ type Props = {
   data: TreeNode[];
   className?: string;
   collapseAll?: boolean;
+  collapseIds?: string[];
 };
 
 function Tree(props: Props) {
-  const { data, className, collapseAll = false } = props;
+  const { data, className, collapseAll = false, collapseIds = [] } = props; 
   const [closedNodeIds, setClosedNodeIds] = useState<string[]>(
-    collapseAll ? data.map((node) => node.id) : []
+    collapseAll ? data.map((node) => node.id) : collapseIds
   );
 
   const onNodeClick = useCallback(
-    (node: FlattenedTreeNode) =>
+    (node: FlattenedTreeNode) => {
       node.collapsed
         ? setClosedNodeIds(closedNodeIds.filter((id) => id !== node.id))
-        : setClosedNodeIds([...closedNodeIds, node.id]),
-    [closedNodeIds]
+        : setClosedNodeIds([...closedNodeIds, node.id]);
+      
+      // avoid trigger useEffect
+      while(collapseIds.length > 0) {
+        collapseIds.pop();
+      }
+    },[closedNodeIds, collapseIds]
   );
+
+  // change state per props changed
+  useEffect(() => {
+    if (collapseIds.length > 0 && collapseIds !== closedNodeIds) {
+      setClosedNodeIds(collapseIds);
+    }
+  }, [collapseIds, closedNodeIds]);
 
   const flattenNode = useCallback(
     (node: TreeNode, depth: number, result: FlattenedTreeNode[]) => {
@@ -53,6 +66,8 @@ function Tree(props: Props) {
         collapsed,
       });
 
+      // collapse trigger: 
+      // if parent id in collapseIds, the children won't be flattened
       if (!collapsed && children) {
         for (const child of children) {
           flattenNode(child, depth + 1, result);

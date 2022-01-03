@@ -43,7 +43,6 @@ type Props = {
 export default function AppLayout(props: Props) {
   const { children, className = '' } = props;
   // auth user
-  // TODO: WHAT IS: user, isAuthed, isPageLoaded?
   const { user, } = useAuthContext();
   const router = useRouter();
 

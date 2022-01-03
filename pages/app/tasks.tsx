@@ -1,4 +1,4 @@
-//import { useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { useStore } from 'lib/store';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
@@ -15,6 +15,11 @@ export default function Tasks() {
   const notesArr = Object.values(notes);
   const myNotes = notesArr.filter(n => !n.is_wiki);
   myNotes.sort((n1, n2) => dateCompare(n2.updated_at, n1.updated_at));
+
+  const [collapseIds, setCollapseIds] = useState<string[]>([]);
+  const onClose = useCallback(
+    (ids: string[]) => setCollapseIds(ids), []
+  );
 
   const search = useNoteSearch({ searchContent: true, extendedSearch: true });
   const getTaskNotes = (searchQuery: string) => {
@@ -98,14 +103,18 @@ export default function Tasks() {
             />
           </div>
           <div className="flex my-1 p-1 rounded">
-            <p className="py-1 text-xl dark:text-gray-200">
-              Tasks: <span className="text-red-500 pr-1">#doing</span>  
-              <span className="text-blue-500 pr-1">#todo</span>  
-              <span className="text-green-500 pr-1">#done</span>
-            </p>
+            <button className="text-red-500 pr-1" onClick={() => onClose(['done','todo'])}>
+              #doing
+            </button>  
+            <button className="text-blue-500 pr-1" onClick={() => onClose(['done','doing'])}>
+              #todo
+            </button>
+            <button className="text-green-500 pr-1" onClick={() => onClose(['doing','todo'])}>
+              #done
+            </button>
           </div>
           <div className="overlfow-y-auto">
-            <Tree data={tasks} className={""} collapseAll={false} />
+            <Tree data={tasks} className={""} collapseAll={false} collapseIds={collapseIds} />
           </div>
         </div>
       </ErrorBoundary>
