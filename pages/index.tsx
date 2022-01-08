@@ -14,7 +14,7 @@ export default function Home() {
             <div className="py-16 md:py-24">
               <div className="container px-6 text-center">
                 <h1 className="text-4xl font-semibold leading-tight md:leading-tight md:text-5xl">
-                  Promise to Network Minds Better.
+                  Enhanced Networking for Our Minds
                 </h1>
                 <Link href="/app">
                   <a className="inline-flex items-center mt-6 md:mt-8 btn hover:shadow-lg group">
@@ -24,7 +24,7 @@ export default function Home() {
                   </a>
                 </Link>
                 <p className="max-w-3xl pt-6 mx-auto text-xl md:pt-8 md:text-2xl">
-                  mdSilo is the silo for storing ideas with a powerful networked-writing app, privacy-first and work offline well.
+                  mdSilo is a silo for storing ideas in a networked-writing app.
                 </p>
                 <Link href="/app/demo">
                   <a className="inline-flex mt-2 link hover:shadow-lg">
@@ -37,9 +37,6 @@ export default function Home() {
         </div>
         <div className="py-8 md:py-16">
           <div className="container px-6">
-            <h2 className="text-3xl font-semibold text-center md:text-4xl">
-              mdSilo as a buffering for your daily I/O
-            </h2>
             <div className="grid gap-6 pt-6 md:pt-8 md:grid-cols-3">
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-green-600">
                 <h3 className="text-xl font-semibold">
@@ -47,7 +44,7 @@ export default function Home() {
                 </h3>
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
-                <p className="pt-1">Import and Export (Markdown, json)</p>
+                <p className="pt-1">Import and Export (Markdown, Json)</p>
                 <p className="pt-1">Local File Access<sup className="text-xs text-gray-500">*Chrome/Edge...</sup></p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-blue-600">
@@ -61,7 +58,7 @@ export default function Home() {
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-yellow-600">
                 <h3 className="text-xl font-semibold">
-                  View Different
+                  Different Views
                 </h3>
                 <p className="pt-1">Stacking View</p>
                 <p className="pt-1">Chronicle View</p>
@@ -82,13 +79,13 @@ export default function Home() {
                 </h3>
                 <p className="pt-1">
                   Store the ideas, thoughts, knowledge in the networked way and 
-                  view them from different perspective.
+                  view them from different perspectives.
                 </p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-pink-600">
-                <h3 className="text-xl font-semibold">Document own life</h3>
+                <h3 className="text-xl font-semibold">Document your own life</h3>
                 <p className="pt-2">
-                  Markdown our lives locally, the data even can sit in a single json file.
+                  Your data sits in a local folder, and even can sit in a single json file.
                 </p>
                 <p className="pt-2 text-xs text-gray-500">
                   *a Desktop App is coming soon. 
