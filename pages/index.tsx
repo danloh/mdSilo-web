@@ -49,7 +49,7 @@ export default function Home() {
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600 border-l-4 border-blue-600">
                 <h3 className="text-xl font-semibold">
-                  Connect Everyting
+                  Connect Everything
                 </h3>
                 <p className="pt-1">(( Block Reference ))</p>
                 <p className="pt-1">[[ Bidirection BackLink ]]</p>

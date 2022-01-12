@@ -59,7 +59,7 @@ const userSettingsSlice = (
   setReadMode: setter(set, 'readMode'),
   offlineMode: true,
   setOfflineMode: setter(set, 'offlineMode'),
-  exportOnClose: true,
+  exportOnClose: false,
   setExportOnClose: setter(set, 'exportOnClose'),
 });
 
