@@ -132,7 +132,7 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           className={`w-full py-4 px-2 text-xl border-none rounded-tl rounded-tr focus:ring-0 dark:bg-gray-800 dark:text-gray-200 ${
             options.length <= 0 ? 'rounded-bl rounded-br' : ''
           }`}
-          placeholder="Search note to move to"
+          placeholder="Search to move to"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={onKeyDown}
