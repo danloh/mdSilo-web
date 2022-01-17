@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import type { User } from '@supabase/supabase-js';
 import classNames from 'classnames';
 import colors from 'tailwindcss/colors';
 import {
@@ -14,12 +13,7 @@ import {
   SidebarTab,
 } from 'lib/store';
 import apiClient from 'lib/apiClient';
-import {
-  Note,
-  Subscription,
-  SubscriptionStatus,
-  User as DbUser,
-} from 'types/model';
+import { Note, User as DbUser } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import useHotkeys from 'editor/hooks/useHotkeys';
 import demo from 'public/demo.json';
@@ -192,43 +186,6 @@ export default function AppLayout(props: Props) {
       initData(); // Initialize data from db
     }
   }, [router, offlineMode, initData, initLocal, initDemo]);
-
-  // TODO: if subscribe any add-on services
-  const setBillingDetails = useStore((state) => state.setBillingDetails);
-  const initBillingDetails = useCallback(
-    async (user: User) => {
-      const { data } = await apiClient
-        .from<Subscription>('subscriptions')
-        .select(
-          'plan_id, subscription_status, frequency, current_period_end, cancel_at_period_end'
-        )
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      // subscription existing
-      if (data) {
-        const currentPeriodEndDate = new Date(data.current_period_end);
-        const isSubscriptionActiveAndNotEnded =
-          data.subscription_status === SubscriptionStatus.Active &&
-          Date.now() < currentPeriodEndDate.getTime();
-
-        setBillingDetails({
-          planId: isSubscriptionActiveAndNotEnded ? data.plan_id : 'Preparing',
-          frequency: data.frequency,
-          currentPeriodEnd: currentPeriodEndDate,
-          cancelAtPeriodEnd: data.cancel_at_period_end,
-        });
-      }
-    },
-    [setBillingDetails]
-  );
-
-  useEffect(() => {
-    if (offlineMode || !user) {
-      return;
-    }
-    initBillingDetails(user);
-  }, [initBillingDetails, user, offlineMode]);
 
   const [isFindOrCreateModalOpen, setIsFindOrCreateModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);

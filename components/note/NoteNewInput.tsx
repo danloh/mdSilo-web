@@ -10,11 +10,8 @@ import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getFileHandle } from 'editor/hooks/useFSA';
 import { ciStringEqual } from 'utils/helper';
-import useFeature from 'editor/hooks/useFeature';
-import { Feature } from 'constants/pricing';
 import { store, useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
-import UpgradeButton from '../UpgradeButton';
 
 enum OptionType {
   NOTE,
@@ -72,21 +69,12 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
   }, [searchResults, inputText]);
 
   const offlineMode = useStore((state) => state.offlineMode);
-  const canCreateNote = useFeature(Feature.NumOfNotes);
-  const setIsUpgradeModalOpen = useStore(
-    (state) => state.setIsUpgradeModalOpen
-  );
 
   const onOptionClick = useCallback(
     async (option: Option) => {
       onOptionClickCallback?.();
 
       if (option.type === OptionType.NEW_NOTE) {
-        if (!offlineMode && !canCreateNote) {
-          setIsUpgradeModalOpen(true);
-          return;
-        }
-
         const noteId = uuidv4();
         const res = offlineMode || !user 
           ? {
@@ -113,10 +101,8 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
       user,
       router,
       offlineMode,
-      canCreateNote,
       inputText,
       onOptionClickCallback,
-      setIsUpgradeModalOpen,
     ]
   );
 
@@ -185,24 +171,13 @@ type OptionProps = {
 
 const OptionItem = (props: OptionProps) => {
   const { option, isSelected, onClick } = props;
-  const canCreateNote = useFeature(Feature.NumOfNotes);
-  const offlineMode = useStore((state) => state.offlineMode);
-
-  const isDisabled = useMemo(
-    () => !offlineMode && !canCreateNote && option.type === OptionType.NEW_NOTE,
-    [offlineMode, canCreateNote, option]
-  );
 
   return (
     <button
       className={`flex flex-row w-full items-center px-4 py-2 text-gray-800 hover:bg-gray-100 active:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600 ${
-        isSelected ? 'bg-gray-100 dark:bg-gray-900' : ''
-      } ${isDisabled ? 'text-gray-400 dark:text-gray-600' : ''}`}
+        isSelected ? 'bg-gray-100 dark:bg-gray-900' : ''}`}
       onClick={onClick}
     >
-      {isDisabled ? (
-        <UpgradeButton feature={Feature.NumOfNotes} className="mr-1" />
-      ) : null}
       {option.icon ? (
         <option.icon size={18} className="flex-shrink-0 mr-1" />
       ) : null}

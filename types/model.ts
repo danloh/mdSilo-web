@@ -1,17 +1,11 @@
 import type { Descendant } from 'slate';
 import { v4 as uuidv4 } from 'uuid';
-import { BillingFrequency, PlanId } from 'constants/pricing';
 import { NoteTreeItem, WikiTreeItem } from 'lib/store';
 import { getDefaultEditorValue } from 'editor/constants';
 
-export enum SubscriptionStatus {
-  Active = 'active',
-  Inactive = 'inactive',
-}
-
 export type User = {
   id: string;
-  subscription_id: Subscription['id'] | null;
+  subscription_id: string | null;
   note_tree: NoteTreeItem[];
   wiki_tree: WikiTreeItem[] | null;
 };
@@ -29,18 +23,6 @@ export type Note = {
   is_pub: boolean;
   is_wiki: boolean;
   is_daily: boolean;
-};
-
-export type Subscription = {
-  id: string;
-  user_id: User['id'];
-  stripe_customer_id: string;
-  stripe_subscription_id: string | null;
-  plan_id: PlanId;
-  subscription_status: SubscriptionStatus;
-  frequency: BillingFrequency;
-  current_period_end: string;
-  cancel_at_period_end: boolean;
 };
 
 export type Attr = { -readonly [key in string]-?: string };

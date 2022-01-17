@@ -14,11 +14,8 @@ import { isUrl, ciStringEqual } from 'utils/helper';
 import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getFileHandle } from 'editor/hooks/useFSA';
-import useFeature from 'editor/hooks/useFeature';
 import { store, useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
-import { Feature } from 'constants/pricing';
-import UpgradeButton from 'components/UpgradeButton';
 import EditorPopover from './EditorPopover';
 import type { AddLinkPopoverState } from './Editor';
 
@@ -115,10 +112,6 @@ export default function AddLinkPopover(props: Props) {
   }, [editor, addLinkPopoverState, setAddLinkPopoverState]);
 
   const offlineMode = useStore((state) => state.offlineMode);
-  const canCreateNote = useFeature(Feature.NumOfNotes);
-  const setIsUpgradeModalOpen = useStore(
-    (state) => state.setIsUpgradeModalOpen
-  );
 
   const onOptionClick = useCallback(
     async (option?: Option) => {
@@ -138,10 +131,6 @@ export default function AddLinkPopover(props: Props) {
         insertExternalLink(editor, linkText);
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
       } else if (option.type === OptionType.NEW_NOTE) {
-        if (!canCreateNote) {
-          setIsUpgradeModalOpen(true);
-          return;
-        }
         // Add a new note and insert a link to it with the note title as the link text
         const noteId = uuidv4();
         insertNoteLink(editor, noteId, linkText);
@@ -166,7 +155,7 @@ export default function AddLinkPopover(props: Props) {
         throw new Error(`Option type ${option.type} is not supported`);
       }
     },
-    [editor, user, offlineMode, hidePopover, linkText, canCreateNote, setIsUpgradeModalOpen]
+    [editor, user, offlineMode, hidePopover, linkText]
   );
 
   const onKeyDown = useCallback(
@@ -232,19 +221,11 @@ type OptionProps = {
 
 const OptionItem = (props: OptionProps) => {
   const { option, isSelected, onClick } = props;
-  const canCreateNote = useFeature(Feature.NumOfNotes);
-  const offlineMode = useStore((state) => state.offlineMode);
-
-  const isDisabled = useMemo(
-    () => !offlineMode && !canCreateNote && option.type === OptionType.NEW_NOTE,
-    [offlineMode, canCreateNote, option]
-  );
 
   return (
     <div
       className={`flex flex-row items-center px-4 py-1 cursor-pointer text-gray-800 hover:bg-gray-100 active:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600 ${
-        isSelected ? 'bg-gray-100 dark:bg-gray-700' : ''
-      } ${isDisabled ? 'text-gray-400 dark:text-gray-600' : ''}`}
+        isSelected ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
       onPointerDown={(event) => event.preventDefault()}
       onPointerUp={(event) => {
         if (event.button === 0) {
@@ -253,9 +234,6 @@ const OptionItem = (props: OptionProps) => {
         }
       }}
     >
-      {isDisabled ? (
-        <UpgradeButton feature={Feature.NumOfNotes} className="mr-1" />
-      ) : null}
       {option.icon ? (
         <option.icon size={18} className="flex-shrink-0 mr-1" />
       ) : null}

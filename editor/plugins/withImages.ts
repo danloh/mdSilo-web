@@ -5,8 +5,6 @@ import { insertImage } from 'editor/formatting';
 import { isUrl } from 'utils/helper';
 import imageExtensions from 'utils/image-extensions';
 import apiClient from 'lib/apiClient';
-import { store } from 'lib/store';
-import { PlanId } from 'constants/pricing';
 
 // upload image and insert to note, must be online
 const withImages = (editor: Editor) => {
@@ -61,22 +59,10 @@ export const uploadAndInsertImage = async (
   }
 
   // Enforce upload limits
-  const PREPARING_UPLOAD_LIMIT = 5 * 1024 * 1024; // 5 MB
-  const PRO_UPLOAD_LIMIT = 20 * 1024 * 1024; // 20 MB
-  const planId = store.getState().billingDetails.planId;
+  const UPLOAD_LIMIT = 5 * 1024 * 1024; // 5 MB
 
-  if (planId === 'Preparing' && file.size > PREPARING_UPLOAD_LIMIT) {
-    toast.error(
-      'Your image is over the 5 MB limit. Upgrade to the Pro plan for 20 MB file uploads.'
-    );
-    return;
-  } else if (
-    (planId === PlanId.Pro || planId === PlanId.Promised) &&
-    file.size > PRO_UPLOAD_LIMIT
-  ) {
-    toast.error(
-      'Your image is over the 20 MB limit. Please upload a smaller image.'
-    );
+  if (file.size > UPLOAD_LIMIT) {
+    toast.error('Your image is over the 5 MB limit.');
     return;
   }
 

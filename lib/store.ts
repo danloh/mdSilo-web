@@ -4,7 +4,6 @@ import { persist, StateStorage, StoreApiWithPersist } from 'zustand/middleware';
 import produce, { Draft } from 'immer';
 import localforage from 'localforage';
 import type { Note } from 'types/model';
-import { BillingFrequency, PlanId } from 'constants/pricing';
 import { ciStringEqual } from 'utils/helper';
 import { Backlink } from 'editor/backlinks/useBacklinks';
 import userSettingsSlice, { UserSettings } from './userSettingsSlice';
@@ -58,24 +57,14 @@ export type NotesData = {
   wikiTree: WikiTreeItem[];
 }
 
-export type BillingDetails =
-  | { planId: 'Preparing';}
-  | {
-      planId: PlanId;
-      frequency: BillingFrequency;
-      currentPeriodEnd: Date;
-      cancelAtPeriodEnd: boolean;
-    };
-
 export enum SidebarTab {
   Silo,
   Search,
 }
 
 export type Store = {
-  _hasHydrated: boolean; // TODO: temporary until https://github.com/pmndrs/zustand/issues/562 gets fixed
-  billingDetails: BillingDetails;
-  setBillingDetails: Setter<BillingDetails>;
+  // TODO: temporary until https://github.com/pmndrs/zustand/issues/562 gets fixed
+  _hasHydrated: boolean; 
   // note
   notes: Notes;
   setNotes: Setter<Notes>;
@@ -148,9 +137,6 @@ export const store = createVanilla<
   persist(
     immer((set) => ({
       _hasHydrated: false,
-      // The billing details of the current user
-      billingDetails: { planId: 'Preparing' },
-      setBillingDetails: setter(set, 'billingDetails'),
       //  Map of note id to notes
       notes: {},  // all private notes and related wiki notes
       // Sets the notes
