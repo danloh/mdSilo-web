@@ -146,9 +146,17 @@ const computeUnlinkedMatches = (nodes: Descendant[], noteTitle: string) => {
 
   const result: BacklinkMatch[] = [];
   for (const [node, path] of matchingLeaves) {
-    // Skip matches that are part of a note link (those are linked matches)
+    // Skip matches that are part of a linking(those are linked matches) or table
     const [parent] = Editor.parent(editor, path);
-    if (Element.isElement(parent) && parent.type === ElementType.NoteLink) {
+    if (Element.isElement(parent) && 
+      (
+        parent.type === ElementType.NoteLink || 
+        parent.type === ElementType.PubLink ||
+        parent.type === ElementType.Table ||
+        parent.type === ElementType.TableCell ||
+        parent.type === ElementType.TableRow
+      )
+    ) {
       continue;
     }
 
