@@ -13,12 +13,14 @@ import handleMark from './handleMark';
 import handleExternalLink from './handleExternalLink';
 import handleNoteLink from './handleNoteLink';
 import handleCustomNoteLink from './handleCustomNoteLink';
+import handleCustomPubLink from './handleCustomPubLink';
 import handlePubLink from './handlePubLink';
 import handleBlockReference from './handleBlockReference';
 import handleTag from './handleTag';
 
 enum CustomInlineShortcuts {
   CustomNoteLink = 'custom-note-link',
+  CustomPubLink = 'custom-pub-link',
 }
 
 const INLINE_SHORTCUTS: Array<{
@@ -39,15 +41,19 @@ const INLINE_SHORTCUTS: Array<{
   { match: /(?:^|\s)(_)([^_]+)(_)/, type: Mark.Italic },
   { match: /(?:^|\s)(`)([^`]+)(`)/, type: Mark.Code },
   { match: /(?:^|\s)(~~)([^~]+)(~~)/, type: Mark.Strikethrough },
-  {
-    match: /(?:^|\s)(\[)(.+)(\]\(\[\[)(.+)(\]\]\))/, // []([[]])
-    type: CustomInlineShortcuts.CustomNoteLink,
-  },
   { match: /(?:^|\s)(\[)(.+)(\]\()(.+)(\))/, type: ElementType.ExternalLink }, // []()
   { match: /(?:^|\s)(\[\[)(.+)(\]\])/, type: ElementType.NoteLink },
   { match: /(?:^|\s)(\{\{)(.+)(\}\})/, type: ElementType.PubLink },
   { match: /(?:^|\s)(\(\()(.+)(\)\))/, type: ElementType.BlockReference },
   { match: /(?:^|\s)(#[^\s]+)(\s)/, type: ElementType.Tag },
+  {
+    match: /(?:^|\s)(\[)(.+)(\]\(\[\[)(.+)(\]\]\))/, // []([[]])
+    type: CustomInlineShortcuts.CustomNoteLink,
+  },
+  {
+    match: /(?:^|\s)(\[)(.+)(\]\(\{\{)(.+)(\}\}\))/, // []({{}})
+    type: CustomInlineShortcuts.CustomPubLink,
+  },
 ];
 
 // Handle inline shortcuts
@@ -64,7 +70,8 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
     //   isWiki && 
     //   ( type === ElementType.BlockReference || 
     //     type === ElementType.NoteLink || 
-    //     type === CustomInlineShortcuts.CustomNoteLink
+    //     type === CustomInlineShortcuts.CustomNoteLink || 
+    //     type === CustomInlineShortcuts.CustomPubLink
     //   )
     // ) {
     //   continue;
@@ -127,6 +134,13 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
       );
     } else if (type === ElementType.PubLink) {
       handled = handlePubLink(editor, result, endOfMatchPoint, text.length);
+    } else if (type === CustomInlineShortcuts.CustomPubLink) {
+      handled = isWiki ? false : handleCustomPubLink(
+        editor,
+        result,
+        endOfMatchPoint,
+        text.length
+      );
     } else if (type === ElementType.Tag) {
       handled = handleTag(editor, result, endOfMatchPoint, text.length);
     }
@@ -178,8 +192,13 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
       }
       const userId = authId || defaultUserId;
       const upsertData = {...newNote, user_id: is_wiki ? defaultUserId : userId };
+      
+      // The note id may update on upsert old Note, 
+      // noteid (db/link) consistence issue:
+      // private notes: can assert new in this else branch
+      // wiki notes: the id maybe used in others' PubLink, must be consistent
+      // FIXME: stopgap - ignore dup on upsert, minimize the effect
       upsertDbNote(upsertData, userId); 
-      store.getState().upsertNote(upsertData);
     }
   }
 

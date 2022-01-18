@@ -13,12 +13,13 @@ export type NoteUpsert = PickPartial<
 
 export async function upsertDbNote(note: NoteUpsert, userId: string) {
   // for userId
-  const user_id = note.is_wiki ? defaultUserId : userId;
+  const isWiki = note.is_wiki;
+  const user_id = isWiki ? defaultUserId : userId;
   const response = await apiClient
     .from<Note>('notes')
     .upsert(
       { ...note, user_id, updated_at: new Date().toISOString() },
-      { onConflict: 'user_id, title' }
+      { onConflict: 'user_id, title', ignoreDuplicates: isWiki }
     )
     .single();
 
