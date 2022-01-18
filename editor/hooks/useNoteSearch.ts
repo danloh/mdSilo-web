@@ -42,7 +42,7 @@ export default function useNoteSearch({
         searchContent,
         extendedSearch
       );
-      return fuse.search(searchText, { limit: numOfResults });
+      return fuse.search(searchText.trim(), { limit: numOfResults });
     },
     [numOfResults, searchContent, extendedSearch, myNotes]
   );

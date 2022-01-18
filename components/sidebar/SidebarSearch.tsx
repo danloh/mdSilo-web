@@ -57,7 +57,7 @@ export default function SidebarSearch(props: Props) {
           className="block py-1 mx-4 my-2 bg-white border-gray-200 rounded dark:bg-gray-700 dark:border-gray-700"
           placeholder="Search..."
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => setInputText(e.target.value.trim())}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();

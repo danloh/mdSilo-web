@@ -84,7 +84,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           : await upsertDbNote({ user_id: user.id, id: noteId, title: inputText }, user.id);
         const note = res.data;
         if (!note) {
-          toast.error(`An error occurred when creating the note ${inputText}.`);
+          toast.error(`An error occurred when creating the note: ${inputText}.`);
           return;
         }
         store.getState().upsertNote(note);
@@ -136,7 +136,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           }`}
           placeholder="new or find"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => setInputText(e.target.value.trim())}
           onKeyDown={onKeyDown}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {

@@ -40,10 +40,10 @@ const INLINE_SHORTCUTS: Array<{
   { match: /(?:^|\s)(`)([^`]+)(`)/, type: Mark.Code },
   { match: /(?:^|\s)(~~)([^~]+)(~~)/, type: Mark.Strikethrough },
   {
-    match: /(?:^|\s)(\[)(.+)(\]\(\[\[)(.+)(\]\]\))/,
+    match: /(?:^|\s)(\[)(.+)(\]\(\[\[)(.+)(\]\]\))/, // []([[]])
     type: CustomInlineShortcuts.CustomNoteLink,
   },
-  { match: /(?:^|\s)(\[)(.+)(\]\()(.+)(\))/, type: ElementType.ExternalLink },
+  { match: /(?:^|\s)(\[)(.+)(\]\()(.+)(\))/, type: ElementType.ExternalLink }, // []()
   { match: /(?:^|\s)(\[\[)(.+)(\]\])/, type: ElementType.NoteLink },
   { match: /(?:^|\s)(\{\{)(.+)(\}\})/, type: ElementType.PubLink },
   { match: /(?:^|\s)(\(\()(.+)(\)\))/, type: ElementType.BlockReference },
@@ -141,9 +141,9 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
 
 // If the normalized note title exists, then returns the existing note id.
 // Otherwise, creates a new note id.
-export const getOrCreateNoteId = (noteTitle: string, is_wiki = false): string | null => {
+export const getOrCreateNoteId = (title: string, is_wiki = false): string | null => {
   let noteId;
-
+  const noteTitle = title.trim();
   const notes = store.getState().notes;
   const notesArr = Object.values(notes);
   const myNotes = notesArr.filter(n => !n.is_wiki);

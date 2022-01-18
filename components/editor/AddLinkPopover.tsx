@@ -188,7 +188,7 @@ export default function AddLinkPopover(props: Props) {
         type="text"
         className="mx-4 input dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700"
         value={linkText}
-        onChange={(e) => setLinkText(e.target.value)}
+        onChange={(e) => setLinkText(e.target.value.trim())}
         placeholder="Search for a note or enter web page link"
         onKeyPress={(event) => {
           if (event.key === 'Enter') {

@@ -41,7 +41,7 @@ export default function TableModal(props: Props) {
           className={inputClass}
           placeholder="Rows"
           value={row}
-          onChange={(e) => setRow(e.target.value)}
+          onChange={(e) => setRow(e.target.value.trim())}
           autoFocus
         />
         <input
@@ -49,7 +49,7 @@ export default function TableModal(props: Props) {
           className={inputClass}
           placeholder="Columns"
           value={col}
-          onChange={(e) => setCol(e.target.value)}
+          onChange={(e) => setCol(e.target.value.trim())}
           autoFocus
         />
         <button className="mt-2 pop-btn" onClick={() => onClick(row, col)}>Ok</button>

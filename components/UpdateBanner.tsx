@@ -8,7 +8,7 @@ export default function UpdateBanner() {
       className="hidden w-full py-1 font-semibold text-center text-blue-900 bg-blue-300"
       onClick={updateAndReloadApp}
     >
-      Click here to reload the new version of mdSilo app.
+      Save your work and Click here to reload the new version of mdSilo app.
     </button>
   );
 }

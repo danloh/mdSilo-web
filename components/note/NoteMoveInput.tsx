@@ -134,7 +134,7 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           }`}
           placeholder="Search to move to"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => setInputText(e.target.value.trim())}
           onKeyDown={onKeyDown}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {
