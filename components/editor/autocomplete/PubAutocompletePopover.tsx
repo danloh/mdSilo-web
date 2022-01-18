@@ -54,7 +54,7 @@ export default function PubAutocompletePopover() {
     const notesRes = await loadDbWikiNotes(linkText);
     const notes = notesRes?.data;
     if (notes) { 
-      notes.forEach(n => upsertNote(n)); 
+      notes.forEach(n => upsertNote(n, false));
     }
   }, [upsertNote]);
   

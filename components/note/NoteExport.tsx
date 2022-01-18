@@ -5,6 +5,7 @@ import { IconFileExport, IconFileDownload } from '@tabler/icons';
 import { Note } from 'types/model';
 import { store, NotesData } from 'lib/store';
 import serialize from 'editor/serialization/serialize';
+import { purgeUnLinkedWikiNotes } from 'editor/backlinks/useBacklinks';
 import { DropdownItem } from 'components/misc/Dropdown';
 
 type Props = {
@@ -79,6 +80,7 @@ export const getNoteAsBlob = (note: Note) => {
 };
 
 export const buildNotesJson = () => {
+  purgeUnLinkedWikiNotes();
   const notesObj = store.getState().notes;
   const noteTree = store.getState().noteTree;
   const wikiTree = store.getState().wikiTree;

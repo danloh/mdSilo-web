@@ -8,8 +8,10 @@ import ForceGraph from 'components/editor/ForceGraph';
 import { NoteTreeItem, useStore } from 'lib/store';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
+import { purgeUnLinkedWikiNotes } from 'editor/backlinks/useBacklinks';
 
 export default function Graph() {
+  purgeUnLinkedWikiNotes();
   const notes = useStore((state) => state.notes);
   const noteTree = useStore((state) => state.noteTree);
   const isSidebarOpen = useStore((state) => state.isSidebarOpen);

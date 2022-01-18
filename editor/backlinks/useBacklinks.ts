@@ -9,8 +9,8 @@ import {
   Text,
 } from 'slate';
 import { ElementType, FormattedText } from 'editor/slate';
-import type { Notes } from 'lib/store';
-import { useStore } from 'lib/store';
+import { Notes, store, useStore } from 'lib/store';
+import type { Note } from 'types/model';
 import useDebounce from 'editor/hooks/useDebounce';
 import { ciStringEqual } from 'utils/helper';
 
@@ -170,4 +170,36 @@ const computeUnlinkedMatches = (nodes: Descendant[], noteTitle: string) => {
     }
   }
   return result;
+};
+
+// FIXME: could be heavy task, can be optimized at the beginning?
+// the issue traced back to PubAutoCom.. load - upset in store - search
+// or to isolate the searching for wiki notes? // TODO
+export const purgeUnLinkedWikiNotes = (notes?: Note[]) => {
+  const allNotes = notes ? notes : Object.values(store.getState().notes);
+  const wikiNotes = allNotes.filter(n => n.is_wiki);
+  const delNote = store.getState().deleteNote;
+  for (const wikiNote of wikiNotes) {
+    const wikiNoteId = wikiNote.id;
+    const matchArr = [];
+    for (const note of allNotes) {
+      const editor = createEditor();
+      editor.children = note.content;
+
+      // Find PubLink elements that match wikinoteId
+      const linkingElements = Editor.nodes(editor, {
+        at: [],
+        match: (n) =>
+          Element.isElement(n) &&
+          n.type === ElementType.PubLink &&
+          n.noteId === wikiNoteId,
+      });
+
+      matchArr.push(...Array.from(linkingElements));
+    }
+
+    if (matchArr.length == 0) {
+      delNote(wikiNoteId);
+    }
+  }
 };
