@@ -63,11 +63,13 @@ export async function updateDbNote(note: NoteUpdate, userId: string) {
 }
 
 // get
-// 
+//
+const selectColumns = 'id, title, content, user_id, md_content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily';
+
 export async function loadDbNote(noteId: string) {
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('id', noteId)
     .single();
 
@@ -80,7 +82,7 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
   const kword = `%${kw.replaceAll(' ', '%')}%`;
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('is_wiki', true)
     .ilike('title', kword)
     .order('title')
@@ -92,7 +94,7 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
 export async function loadDbNotePerTitle(noteTitle: string) {
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('title', noteTitle)
     .single();
 
