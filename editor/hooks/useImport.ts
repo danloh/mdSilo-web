@@ -47,7 +47,7 @@ export function useImportJson() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, please wait...', {
+      const importingToast = toast.info('Importing notes, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
@@ -120,7 +120,7 @@ export function useImportMds() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, please wait...', {
+      const importingToast = toast.info('Importing notes, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,

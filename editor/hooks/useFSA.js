@@ -36,7 +36,7 @@ export async function openDirDialog() {
       store.getState().setDirHandle(dirHandle);
       const fileList = []; // File[]
       // Show a toast
-      const openToast = toast.info('Open Folder and Importing files, please wait...', {
+      const openToast = toast.info('Open Folder and Importing files, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
@@ -60,6 +60,10 @@ export async function openDirDialog() {
           store.getState().upsertHandle(key, value);
         }
       }
+      // TODO: for performance:
+      // delay the processImport on Open Folder, 
+      // just get file list first
+      // can do process when open specific file 
       await processImport(fileList);
       // close the toast
       toast.dismiss(openToast);

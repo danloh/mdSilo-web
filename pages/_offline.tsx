@@ -12,10 +12,7 @@ export default function Offline() {
           size={64}
           className="p-2 text-white bg-yellow-500 rounded-full"
         />
-        <p className="mt-4 text-2xl text-center">
-          It looks like you are offline. To view this page, please reconnect
-          to the Internet.
-        </p>
+        <p className="mt-4 text-2xl text-center">It looks like you are offline.</p>
       </div>
     </>
   );
