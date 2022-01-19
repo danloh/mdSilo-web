@@ -197,8 +197,10 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
       // noteid (db/link) consistence issue:
       // private notes: can assert new in this else branch
       // wiki notes: the id maybe used in others' PubLink, must be consistent
+      //   PubLink: searching triggered before autocomplete, minimal issue
+      //   CustomPubLink: trigger bug as input the title of a old note
       // FIXME: stopgap - ignore dup on upsert, minimize the effect
-      upsertDbNote(upsertData, userId); 
+      upsertDbNote(upsertData, userId); // cannot await
     }
   }
 

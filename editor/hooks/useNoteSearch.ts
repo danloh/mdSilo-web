@@ -21,6 +21,7 @@ type searchOptions = {
   searchContent?: boolean;
   extendedSearch?: boolean;
   searchWiki?: boolean;
+  notesBase?: Note[];
 };
 
 // search Notes per kw or hashtag
@@ -29,22 +30,27 @@ export default function useNoteSearch({
   searchContent = false,
   extendedSearch = false,
   searchWiki = false,
+  notesBase = [],
 }: searchOptions = {}) {
-  const notes = store.getState().notes;
-  const notesArr = Object.values(notes);
-  const myNotes = searchWiki 
-    ? notesArr.filter(n => n.is_wiki) 
-    : notesArr.filter(n => !n.is_wiki);
+  const myNotes = useCallback(() => {
+    const notes = store.getState().notes;
+    const notesArr = Object.values(notes);
+    const allNotes = searchWiki 
+      ? notesArr.filter(n => n.is_wiki) 
+      : notesArr.filter(n => !n.is_wiki);
+    return allNotes;
+  }, [searchWiki]);
+
   const search = useCallback(
     (searchText: string) => {
       const fuse = initFuse(
-        myNotes,
+        notesBase.length > 0 ? notesBase : myNotes(),
         searchContent,
         extendedSearch
       );
       return fuse.search(searchText.trim(), { limit: numOfResults });
     },
-    [numOfResults, searchContent, extendedSearch, myNotes]
+    [numOfResults, searchContent, extendedSearch, myNotes, notesBase]
   );
   return search;
 }
