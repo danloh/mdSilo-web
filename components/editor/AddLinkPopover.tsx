@@ -48,36 +48,37 @@ export default function AddLinkPopover(props: Props) {
 
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0);
 
+  const linkTxt = linkText.trim();
   const search = useNoteSearch({ numOfResults: 10 });
-  const searchResults = useMemo(() => search(linkText), [search, linkText]);
+  const searchResults = useMemo(() => search(linkTxt), [search, linkTxt]);
 
   const options = useMemo(() => {
     const result: Array<Option> = [];
-    if (linkText) {
-      // Show url option if `linkText` is a url
-      if (isUrl(linkText)) {
+    if (linkTxt) {
+      // Show url option if `linkTxt` is a url
+      if (isUrl(linkTxt)) {
         result.push({
           id: 'URL',
           type: OptionType.URL,
-          text: `Link to web page: ${linkText}`,
+          text: `Link to web page: ${linkTxt}`,
           icon: IconLink,
         });
       }
-      // Show new note option if there isn't already a note called `linkText`
+      // Show new note option if there isn't already a note called `linkTxt`
       // (We assume if there is a note, then it will be the first result)
       else if (
         searchResults.length <= 0 || 
-        !ciStringEqual(linkText, searchResults[0].item.title)
+        !ciStringEqual(linkTxt, searchResults[0].item.title)
       ) {
         result.push({
           id: 'NEW_NOTE',
           type: OptionType.NEW_NOTE,
-          text: `New: ${linkText}`,
+          text: `New: ${linkTxt}`,
           icon: IconFilePlus,
         });
       }
     }
-    // Show remove link option if there is no `linkText` and the selected text is part of a link
+    // Show remove link option if there is no `linkTxt` and the selected text is part of a link
     else if (addLinkPopoverState.isLink) {
       result.push({
         id: 'REMOVE_LINK',
@@ -86,7 +87,7 @@ export default function AddLinkPopover(props: Props) {
         icon: IconUnlink,
       });
     }
-    // Show notes that match `linkText`
+    // Show notes that match `linkTxt`
     result.push(
       ...searchResults.map((result) => ({
         id: result.item.id,
@@ -95,7 +96,7 @@ export default function AddLinkPopover(props: Props) {
       }))
     );
     return result;
-  }, [addLinkPopoverState.isLink, searchResults, linkText]);
+  }, [addLinkPopoverState.isLink, searchResults, linkTxt]);
 
   const hidePopover = useCallback(() => {
     if (!addLinkPopoverState.selection) {
@@ -128,20 +129,20 @@ export default function AddLinkPopover(props: Props) {
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
       } else if (option.type === OptionType.URL) {
         // Insert a link to a url
-        insertExternalLink(editor, linkText);
+        insertExternalLink(editor, linkTxt);
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
       } else if (option.type === OptionType.NEW_NOTE) {
         // Add a new note and insert a link to it with the note title as the link text
         const noteId = uuidv4();
-        insertNoteLink(editor, noteId, linkText);
+        insertNoteLink(editor, noteId, linkTxt);
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
         // update to store or db
         const res = offlineMode || !user 
           ? {
-              data: { ...defaultNote, id: noteId, title: linkText },
+              data: { ...defaultNote, id: noteId, title: linkTxt },
               error: null,
             }
-          : await upsertDbNote({ id: noteId, user_id: user.id, title: linkText }, user.id);
+          : await upsertDbNote({ id: noteId, user_id: user.id, title: linkTxt }, user.id);
         const note = res.data;
         if (note) { 
           store.getState().upsertNote(note); 
@@ -155,7 +156,7 @@ export default function AddLinkPopover(props: Props) {
         throw new Error(`Option type ${option.type} is not supported`);
       }
     },
-    [editor, user, offlineMode, hidePopover, linkText]
+    [editor, user, offlineMode, hidePopover, linkTxt]
   );
 
   const onKeyDown = useCallback(
@@ -188,7 +189,7 @@ export default function AddLinkPopover(props: Props) {
         type="text"
         className="mx-4 input dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700"
         value={linkText}
-        onChange={(e) => setLinkText(e.target.value.trim())}
+        onChange={(e) => setLinkText(e.target.value)}
         placeholder="Search for a note or enter web page link"
         onKeyPress={(event) => {
           if (event.key === 'Enter') {

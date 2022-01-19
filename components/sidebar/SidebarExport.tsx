@@ -1,5 +1,8 @@
 import { Menu } from '@headlessui/react';
-import { IconFileUpload, IconFileDownload, IconClearAll, IconFolderPlus } from '@tabler/icons';
+import { 
+  IconFileUpload, IconFileDownload, IconClearAll, IconFolderPlus 
+} from '@tabler/icons';
+import { useStore } from 'lib/store';
 import { DropdownItem } from 'components/misc/Dropdown';
 import { checkFSA, openDirDialog } from 'editor/hooks/useFSA';
 
@@ -10,11 +13,14 @@ type Props = {
   onCleanupClick: () => void;
 };
 
-export default function Header(props: Props) {
+export default function SidebarExport(props: Props) {
   const { numOfNotes, onImportClick, onExportClick, onCleanupClick} = props;
+  // FIXME: some issue on FSA
+  useStore((state) => state.dirHandle);
   const [inDir, dirName, hasFSA] = checkFSA();
-  const barClass = `px-2 text-sm overflow-hidden overflow-ellipsis whitespace-nowrap ${inDir ? 'bg-blue-500 text-gray-200 rounded' : ''}`; 
   const onOpenFolder = openDirDialog;
+
+  const barClass = `px-2 text-sm overflow-hidden overflow-ellipsis whitespace-nowrap ${inDir ? 'bg-blue-500 text-gray-200 rounded' : ''}`; 
 
   return (
     <div className="relative">

@@ -20,7 +20,8 @@ export default function SidebarSearch(props: Props) {
   const inputText = useStore((state) => state.sidebarSearchQuery);
   const setInputText = useStore((state) => state.setSidebarSearchQuery);
 
-  const [searchQuery, setSearchQuery] = useDebounce(inputText, DEBOUNCE_MS);
+  const inputTxt = inputText.trim();
+  const [searchQuery, setSearchQuery] = useDebounce(inputTxt, DEBOUNCE_MS);
   const search = useNoteSearch({ searchContent: true, extendedSearch: true });
 
   const searchResultsData = useMemo(() => {
@@ -57,11 +58,11 @@ export default function SidebarSearch(props: Props) {
           className="block py-1 mx-4 my-2 bg-white border-gray-200 rounded dark:bg-gray-700 dark:border-gray-700"
           placeholder="Search..."
           value={inputText}
-          onChange={(e) => setInputText(e.target.value.trim())}
+          onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
-              setSearchQuery(inputText);
+              setSearchQuery(inputTxt);
             }
           }}
           autoFocus

@@ -50,6 +50,7 @@ You can self-host mdSilo, though it is currently not focused on self-hosting.
 - The environment variables needed for deployment can be found [here](https://github.com/danloh/mdSilo-web/blob/main/.env.local.example); 
 - [Supabase](https://supabase.io) as backend. Please follow the instructions in [Supabase docs](https://supabase.io/docs/guides/self-hosting); 
 - The schema for database is [here](https://github.com/danloh/mdSilo-web/blob/main/schema/schema.sql).
+- Sentry to mornitor error;
 
 (Vercel and Supabase can be free-to-use for Personal Account)
 

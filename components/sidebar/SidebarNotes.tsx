@@ -30,6 +30,7 @@ function SidebarNotes(props: SidebarNotesProps) {
   const noteList = Object.values(notes);
   const myNotes = noteList.filter(n => !n.is_wiki && !n.is_daily);
   const numOfNotes = useMemo(() => myNotes.length, [myNotes]);
+  
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
   const onCreateNote = useCallback(() => {
     if (isMobile()) {
