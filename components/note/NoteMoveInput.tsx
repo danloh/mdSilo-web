@@ -39,12 +39,13 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
   const noteTree = useStore((state) => state.noteTree);
   const moveNoteTreeItem = useStore((state) => state.moveNoteTreeItem);
 
+  const inputTxt = inputText.trim();
   const search = useNoteSearch({ numOfResults: 10 });
-  const searchResults = useMemo(() => search(inputText), [search, inputText]);
+  const searchResults = useMemo(() => search(inputTxt), [search, inputTxt]);
 
   const options = useMemo(() => {
     const result: Option[] = [];
-    if (!inputText) {
+    if (!inputTxt) {
       const notes = store.getState().notes;
       // Include the root and nine top-level notes sorted alphabetically
       result.push({
@@ -76,7 +77,7 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
       );
     }
     return result;
-  }, [searchResults, noteId, inputText, noteTree]);
+  }, [searchResults, noteId, inputTxt, noteTree]);
 
   const offlineMode = useStore((state) => state.offlineMode);
 
@@ -134,7 +135,7 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           }`}
           placeholder="Search to move to"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value.trim())}
+          onChange={(e) => setInputText(e.target.value)}
           onKeyDown={onKeyDown}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {

@@ -14,6 +14,7 @@ import remarkToSlate from 'editor/serialization/remarkToSlate';
 import { ciStringEqual } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
+import { getFileHandle, writeFile } from './useFSA';
 
 export function useImportJson() {
   const upsertNote = useStore((state) => state.upsertNote);
@@ -47,11 +48,15 @@ export function useImportJson() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, please wait...', {
+      const importingToast = toast.info('Importing, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
       });
+
+      // clean up store entries related FSA
+      store.getState().setHandles({});
+      store.getState().setDirHandle(undefined);
 
       const fileContent = await file.text();
       const jsonNotesData: NoteUpsert[] = []; // for upsert to db
@@ -76,8 +81,7 @@ export function useImportJson() {
       // Show a toast with the number of successfully imported notes
       toast.dismiss(importingToast);
       toast.info(
-        `JSON was imported and processed: 
-        ${jsonNotesData?.filter((note) => !!note).length ?? 0}`
+        `Imported and Processed: ${jsonNotesData?.filter((note) => !!note).length ?? 0}`
       );
       
       // Create new notes import from json
@@ -120,7 +124,7 @@ export function useImportMds() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, please wait...', {
+      const importingToast = toast.info('Importing notes, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
@@ -144,7 +148,12 @@ export function useImportMds() {
   return onImportMds;
 }
 
-export const processImport = async (fileList: FileList | File[]) => {
+// on Import Mds: 
+// 0- procee txt to Descendant[],
+// 1- process Linking in content, create needed note; 
+// 2- FSA: save txt to File System;
+// 3- Store: set Descendant[] to store system of App
+export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
   const offlineMode = store.getState().offlineMode;
  
@@ -160,6 +169,7 @@ export const processImport = async (fileList: FileList | File[]) => {
     }
     const fileContent = await file.text();
 
+    // process Markdown/txt to Descendant[]
     const { result } = unified()
       .use(remarkParse)
       .use(remarkGfm)
@@ -167,18 +177,20 @@ export const processImport = async (fileList: FileList | File[]) => {
       .use(remarkToSlate)
       .processSync(fileContent);
 
-    // process content and creat new notes to which NoteLinks in content linked
+    // process content and create new notes to which NoteLinks in content linked
     // newLinkedNote with id and title only, w/o content 
-    const { content: slateContent, newData: newLinkedNotesData } =
+    const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
 
-    // sometimes, file note is just the note NoteLink linked to
-    // here can update the content to such note: 
-    // if note created on ProcessNoteLinks is pushed 
-    // before the note from file with more content in newNotesData array, 
-    // can be updated when upsertNote.
-    // if the same note is created from file already, will not create note on processNoteLinks.
-    newNotesData.push(...newLinkedNotesData);
+    // Two type of note on process/import: 
+    // 1- note imported from file and 
+    // 2- new created simple note on process NoteLink in content;
+    // sometimes, imported note has the same title to the noteTitle of NoteLink, 
+    // here how to update the content of such note: 
+    // if note created on Process NoteLinks is pushed to newNotesData array
+    // before the note-imported which has more content, can be updated when upsertNote.
+    // if the same note is already created from file, will not create note on processNoteLinks.
+    newNotesData.push(...newLinkedNotes);
 
     // new note from file
     const newNoteObj = {
@@ -189,12 +201,14 @@ export const processImport = async (fileList: FileList | File[]) => {
     // save to title-id cache when new note from file
     noteTitleToIdCache[fileName.toLowerCase()] = newNoteObj.id;
 
-    // // store FileHandle finally
-    // const handle = store.getState().handles[fileName];
-    // if (handle) {
-    //   store.getState().upsertHandle(newNoteObj.id, handle);
-    //   // store.getState().deleteHandle(fileName);
-    // }
+    // FSA fileHandle: get or create if not-exist, then upsert in store
+    if (ifHandle) {
+      const fHandle = await getFileHandle(fileName);
+      // save fileContent to File System
+      if (fHandle) {
+        await writeFile(fHandle, fileContent);
+      }
+    }
 
     newNotesData.push({
       ...defaultNote,
@@ -226,21 +240,21 @@ export const processImport = async (fileList: FileList | File[]) => {
 const processNoteLinks = (
   content: Descendant[],
   noteTitleToIdCache: Record<string, string | undefined> = {}
-): { content: Descendant[]; newData: Note[] } => {
-  const newData: Note[] = [];
+): { content: Descendant[]; newLinkedNoteArr: Note[] } => {
+  const newLinkedNoteArr: Note[] = [];
 
   // Update note link elements with noteId
   const newContent = content.map((node) =>
-    setNoteLinkIds(node, noteTitleToIdCache, newData)
+    setNoteLinkIds(node, noteTitleToIdCache, newLinkedNoteArr)
   );
 
-  return { content: newContent, newData };
+  return { content: newContent, newLinkedNoteArr };
 };
 
 const setNoteLinkIds = (
   node: Descendant,
   noteTitleToIdCache: Record<string, string | undefined>,
-  newData: Note[]
+  newLinkedNoteArr: Note[]
 ): Descendant => {
   if (
     Element.isElement(node) && 
@@ -249,10 +263,10 @@ const setNoteLinkIds = (
     return {
       ...node,
       ...(node.type === ElementType.NoteLink
-        ? { noteId: getNoteId(node, noteTitleToIdCache, newData) }
+        ? { noteId: getNoteId(node, noteTitleToIdCache, newLinkedNoteArr) }
         : {}),
       children: node.children.map((child) =>
-        setNoteLinkIds(child, noteTitleToIdCache, newData)
+        setNoteLinkIds(child, noteTitleToIdCache, newLinkedNoteArr)
       ),
     };
   } else {
@@ -263,7 +277,7 @@ const setNoteLinkIds = (
 const getNoteId = (
   node: NoteLink,
   noteTitleToIdCache: Record<string, string | undefined>,
-  newData: Note[]
+  newLinkedNoteArr: Note[]
 ): string => {
   const noteTitle = node.noteTitle;
   const notesArr = Object.values(store.getState().notes);
@@ -279,13 +293,13 @@ const getNoteId = (
   } else {
     // Create new note from NoteLink, w/ id and title only
     noteId = uuidv4(); 
-    const newObj = {
+    const newLinkedNoteObj = {
       id: noteId, 
       title: noteTitle,
     };
-    newData.push({ 
+    newLinkedNoteArr.push({ 
       ...defaultNote,
-      ...newObj,
+      ...newLinkedNoteObj,
     });
   }
   // save to title-id cache when new note from NoteLink
@@ -296,6 +310,11 @@ const getNoteId = (
 
 /* #endregion: import process */
 
+/**
+ * file name without extension
+ *
+ * @param {string} fname, file name with extension.
+ */
 export const getFileName = (fname: string) => {
   return fname.replace(/\.[^/.]+$/, '');
 }

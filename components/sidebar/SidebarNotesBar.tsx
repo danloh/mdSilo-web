@@ -3,10 +3,7 @@ import { IconFeather } from '@tabler/icons';
 import { useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
 import Tooltip from 'components/misc/Tooltip';
-import { exportNotesJson } from 'components/note/NoteExport';
-import { delDemoNotes } from 'components/AppLayout';
 import { isMobile } from 'utils/helper';
-import { useImportJson } from 'editor/hooks/useImport';
 import SidebarExport from './SidebarExport';
 import SidebarNotesSortDropdown from './SidebarNotesSortDropdown';
 
@@ -28,9 +25,6 @@ function SidebarNotesBar(props: Props) {
     setIsFindOrCreateModalOpen((isOpen) => !isOpen);
   }, [setIsSidebarOpen, setIsFindOrCreateModalOpen]);
 
-  const onExportJsonClick = useCallback(exportNotesJson, []);
-  const onImportJsonClick = useImportJson();
-
   return (
     <div className="flex items-center justify-between border-t dark:border-gray-700">
       <div className="flex mx-2 my-1">
@@ -39,14 +33,9 @@ function SidebarNotesBar(props: Props) {
           setCurrentSort={setNoteSort}
         />
       </div>
-      <Tooltip content="Export / Import Json">
+      <Tooltip content="Export, Import...">
         <div className="flex mx-2 my-1">
-          <SidebarExport
-            numOfNotes={numOfNotes}
-            onImportClick={onImportJsonClick}
-            onExportClick={onExportJsonClick}
-            onCleanupClick={delDemoNotes}
-          />
+          <SidebarExport numOfNotes={numOfNotes} />
         </div>
       </Tooltip>
       <Tooltip content="New (Alt+N)">

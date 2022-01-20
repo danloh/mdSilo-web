@@ -21,8 +21,9 @@ export default function NoteMetadata(props: Props) {
 
 const getReadableDatetime = (dateStr: string) => {
   return new Date(dateStr).toLocaleString(undefined, {
-    dateStyle: 'short',
+    dateStyle: 'medium',
     timeStyle: 'short',
+    hourCycle: 'h24',
   });
 };
 

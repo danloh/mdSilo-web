@@ -3,6 +3,8 @@ import { Editor, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import type { TablerIcon } from '@tabler/icons';
 import { store } from 'lib/store';
+import type { Note } from 'types/model';
+import { defaultNote } from 'types/model';
 import updateDbUser from 'lib/api/updateUser';
 import { insertPubLink } from 'editor/formatting';
 import { deleteText } from 'editor/transforms';
@@ -15,7 +17,7 @@ import EditorPopover from '../EditorPopover';
 
 // when type `{{w`, pub-link
 const PUB_LINK_REGEX = /(?:^|\s)(\{\{)(.+)/;
-const DEBOUNCE_MS = 100;
+const DEBOUNCE_MS = 10;
 
 enum OptionType {
   PUB,
@@ -47,16 +49,16 @@ export default function PubAutocompletePopover() {
 
   // seach is_wiki = true only and from serve directly
   // 1- search from serve
-  // 2- store
+  // 2- store in a temp array
   // 3- useNoteSearch locally
-  const upsertNote = store.getState().upsertNote;
+  const [tempNotes, setTempNotes] = useState<Note[]>([]);
   const getSearch = useCallback(async (linkText: string) => {
     const notesRes = await loadDbWikiNotes(linkText);
     const notes = notesRes?.data;
-    if (notes) { 
-      notes.forEach(n => upsertNote(n, false));
+    if (notes) {
+      setTempNotes(notes);
     }
-  }, [upsertNote]);
+  }, []);
   
   // limit the min linkText length to trigger load search
   useEffect(() => { 
@@ -65,7 +67,10 @@ export default function PubAutocompletePopover() {
       getSearch(linkText); 
     }
   }, [linkText, getSearch]);
-  const search = useNoteSearch({ numOfResults: 10, searchWiki: true });
+
+  const search = useNoteSearch(
+    { numOfResults: 10, searchWiki: true, notesBase: tempNotes }
+  );
   const searchResults = useMemo(() => search(linkText), [search, linkText]);
 
   const options = useMemo(
@@ -133,13 +138,25 @@ export default function PubAutocompletePopover() {
 
       deleteText(editor, selectionPath, endOfSelection, lengthToDelete);
 
-      // Handle inserting note link
+      // Handle inserting PubLink
       if (option.type === OptionType.PUB) {
         // Insert a link to an existing note with the note title as the link text
         insertPubLink(editor, option.id, option.text);
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
+        // upsertNote locally, and 
         // update wikitree locally, but cannot get currentNoteID
-        store.getState().updateWikiTree(option.id, null);
+        let selectedNote: Note = {
+          ...defaultNote,
+          id: option.id,
+          title: option.text,
+          is_wiki: true,
+        };
+        for (const note of tempNotes) {
+          if (note.id === option.id) {
+            selectedNote = note;
+          }
+        }
+        store.getState().upsertNote(selectedNote);
         // update wikiTree to db 
         if (!offlineMode && user) { 
           updateDbUser(user.id, 1); 
@@ -150,7 +167,7 @@ export default function PubAutocompletePopover() {
 
       hidePopover();
     },
-    [editor, hidePopover, regexResult, user, offlineMode]
+    [editor, hidePopover, regexResult, tempNotes, user, offlineMode]
   );
 
   const onKeyDown = useCallback(

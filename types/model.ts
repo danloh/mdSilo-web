@@ -1,5 +1,4 @@
 import type { Descendant } from 'slate';
-import { v4 as uuidv4 } from 'uuid';
 import { NoteTreeItem, WikiTreeItem } from 'lib/store';
 import { getDefaultEditorValue } from 'editor/constants';
 
@@ -45,7 +44,6 @@ export const defaultAttr: Attr = {
 };
 export const defaultUserId =  '00000000-0000-0000-0000-000000000000';
 export const defaultNote =  {
-  id: uuidv4(),
   title: 'untitled',
   content: getDefaultEditorValue(),
   user_id: defaultUserId,

@@ -1,13 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 import { Menu } from '@headlessui/react';
-import { 
-  IconDots, IconFileImport, IconX, IconTrash, IconCornerDownRight 
-} from '@tabler/icons';
+import { IconDots, IconX, IconTrash, IconCornerDownRight } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { useRouter } from 'next/router';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import { store, useStore } from 'lib/store';
-import { useImportMds } from 'editor/hooks/useImport';
 import { queryParamToArray } from 'utils/helper';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import Tooltip from 'components/misc/Tooltip';
@@ -27,7 +24,6 @@ type Props = {
 export default function NoteHeader(props: Props) {
   const { isWiki = false, isPub = false } = props;
   const currentNote = useCurrentContext();
-  const onImport = useImportMds();
   const router = useRouter();
   const {
     query: { stack: stackQuery },
@@ -133,10 +129,6 @@ export default function NoteHeader(props: Props) {
                       style={styles.popper}
                       {...attributes.popper}
                     >
-                      <DropdownItem onClick={onImport}>
-                        <IconFileImport size={18} className="mr-1" />
-                        <span>Import</span>
-                      </DropdownItem>
                       <NoteExport note={note} />
                       <NoteExportAll />
                       <DropdownItem

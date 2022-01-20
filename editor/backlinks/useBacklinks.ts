@@ -146,9 +146,17 @@ const computeUnlinkedMatches = (nodes: Descendant[], noteTitle: string) => {
 
   const result: BacklinkMatch[] = [];
   for (const [node, path] of matchingLeaves) {
-    // Skip matches that are part of a note link (those are linked matches)
+    // Skip matches that are part of a linking(those are linked matches) or table
     const [parent] = Editor.parent(editor, path);
-    if (Element.isElement(parent) && parent.type === ElementType.NoteLink) {
+    if (Element.isElement(parent) && 
+      (
+        parent.type === ElementType.NoteLink || 
+        parent.type === ElementType.PubLink ||
+        parent.type === ElementType.Table ||
+        parent.type === ElementType.TableCell ||
+        parent.type === ElementType.TableRow
+      )
+    ) {
       continue;
     }
 
@@ -172,9 +180,10 @@ const computeUnlinkedMatches = (nodes: Descendant[], noteTitle: string) => {
   return result;
 };
 
-// FIXME: could be heavy task, can be optimized at the beginning?
-// the issue traced back to PubAutoCom.. load - upset in store - search
-// or to isolate the searching for wiki notes? // TODO
+// could be heavy task, can be optimized at the beginning?
+// the issue traced back to PubAutocomletePopover..
+// avoid upserting search result to store locally(PubAutocomplete) to ease the load 
+// still need to purge, in case: unlinked, but the note in store
 export const purgeUnLinkedWikiNotes = (notes?: Note[]) => {
   const allNotes = notes ? notes : Object.values(store.getState().notes);
   const wikiNotes = allNotes.filter(n => n.is_wiki);
@@ -195,7 +204,12 @@ export const purgeUnLinkedWikiNotes = (notes?: Note[]) => {
           n.noteId === wikiNoteId,
       });
 
-      matchArr.push(...Array.from(linkingElements));
+      const linkArr = Array.from(linkingElements);
+      // no need to lookup exhaustedly
+      if (linkArr.length > 0) {
+        matchArr.push(...linkArr);
+        break;
+      }
     }
 
     if (matchArr.length == 0) {

@@ -38,26 +38,27 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
   const [inputText, setInputText] = useState('');
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0);
 
+  const inputTxt = inputText.trim();
   const search = useNoteSearch({ numOfResults: 10 });
-  const searchResults = useMemo(() => search(inputText), [search, inputText]);
+  const searchResults = useMemo(() => search(inputTxt), [search, inputTxt]);
 
   const options = useMemo(() => {
     const result: Array<Option> = [];
-    // Show new note option if there isn't already a note called `inputText`
+    // Show new note option if there isn't already a note called `inputTxt`
     // (We assume if there is a note, then it will be the first result)
     if (
-      inputText &&
+      inputTxt &&
       (searchResults.length <= 0 ||
-        !ciStringEqual(inputText, searchResults[0].item.title))
+        !ciStringEqual(inputTxt, searchResults[0].item.title))
     ) {
       result.push({
         id: 'NEW_NOTE',
         type: OptionType.NEW_NOTE,
-        text: `New: ${inputText}`,
+        text: `New: ${inputTxt}`,
         icon: IconFilePlus,
       });
     }
-    // Show notes that match `inputText`
+    // Show notes that match `inputTxt`
     result.push(
       ...searchResults.map((result) => ({
         id: result.item.id,
@@ -66,7 +67,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
       }))
     );
     return result;
-  }, [searchResults, inputText]);
+  }, [searchResults, inputTxt]);
 
   const offlineMode = useStore((state) => state.offlineMode);
 
@@ -78,17 +79,17 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         const noteId = uuidv4();
         const res = offlineMode || !user 
           ? {
-              data: { ...defaultNote, id: noteId, title: inputText },
+              data: { ...defaultNote, id: noteId, title: inputTxt },
               error: null,
             }
-          : await upsertDbNote({ user_id: user.id, id: noteId, title: inputText }, user.id);
+          : await upsertDbNote({ user_id: user.id, id: noteId, title: inputTxt }, user.id);
         const note = res.data;
         if (!note) {
-          toast.error(`An error occurred when creating the note: ${inputText}.`);
+          toast.error(`An error occurred when creating the note: ${inputTxt}.`);
           return;
         }
         store.getState().upsertNote(note);
-        // new FileHandle and set in store
+        // new FileHandle for the new create note and set in store
         await getFileHandle(note.title);
         router.push(`/app/md/${note.id}`);
       } else if (option.type === OptionType.NOTE) {
@@ -101,7 +102,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
       user,
       router,
       offlineMode,
-      inputText,
+      inputTxt,
       onOptionClickCallback,
     ]
   );
@@ -136,7 +137,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           }`}
           placeholder="new or find"
           value={inputText}
-          onChange={(e) => setInputText(e.target.value.trim())}
+          onChange={(e) => setInputText(e.target.value)}
           onKeyDown={onKeyDown}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {

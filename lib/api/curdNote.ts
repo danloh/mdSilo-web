@@ -13,12 +13,13 @@ export type NoteUpsert = PickPartial<
 
 export async function upsertDbNote(note: NoteUpsert, userId: string) {
   // for userId
-  const user_id = note.is_wiki ? defaultUserId : userId;
+  const isWiki = note.is_wiki;
+  const user_id = isWiki ? defaultUserId : userId;
   const response = await apiClient
     .from<Note>('notes')
     .upsert(
       { ...note, user_id, updated_at: new Date().toISOString() },
-      { onConflict: 'user_id, title' }
+      { onConflict: 'user_id, title', ignoreDuplicates: isWiki }
     )
     .single();
 
@@ -62,11 +63,13 @@ export async function updateDbNote(note: NoteUpdate, userId: string) {
 }
 
 // get
-// 
+//
+const selectColumns = 'id, title, content, user_id, md_content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily';
+
 export async function loadDbNote(noteId: string) {
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('id', noteId)
     .single();
 
@@ -79,7 +82,7 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
   const kword = `%${kw.replaceAll(' ', '%')}%`;
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('is_wiki', true)
     .ilike('title', kword)
     .order('title')
@@ -91,7 +94,7 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
 export async function loadDbNotePerTitle(noteTitle: string) {
   const response = await apiClient
     .from<Note>('notes')
-    .select('id, title, content, cover, attr, created_at, updated_at, is_pub, is_wiki, is_daily')
+    .select(selectColumns)
     .eq('title', noteTitle)
     .single();
 

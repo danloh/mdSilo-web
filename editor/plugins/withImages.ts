@@ -66,7 +66,7 @@ export const uploadAndInsertImage = async (
     return;
   }
 
-  const uploadingToast = toast.info('Uploading image, please wait...', {
+  const uploadingToast = toast.info('Uploading image, Please wait...', {
     autoClose: false,
     closeButton: false,
     draggable: false,
