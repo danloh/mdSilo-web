@@ -27,7 +27,7 @@ type Props = {
 export default function NoteHeader(props: Props) {
   const { isWiki = false, isPub = false } = props;
   const currentNote = useCurrentContext();
-  const onImport = useImportMds();
+  const onImportFile = useImportMds();
   const router = useRouter();
   const {
     query: { stack: stackQuery },
@@ -133,7 +133,7 @@ export default function NoteHeader(props: Props) {
                       style={styles.popper}
                       {...attributes.popper}
                     >
-                      <DropdownItem onClick={onImport}>
+                      <DropdownItem onClick={onImportFile}>
                         <IconFileImport size={18} className="mr-1" />
                         <span>Import</span>
                       </DropdownItem>

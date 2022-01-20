@@ -89,7 +89,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           return;
         }
         store.getState().upsertNote(note);
-        // new FileHandle and set in store
+        // new FileHandle for the new create note and set in store
         await getFileHandle(note.title);
         router.push(`/app/md/${note.id}`);
       } else if (option.type === OptionType.NOTE) {

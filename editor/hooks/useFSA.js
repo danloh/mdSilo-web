@@ -64,7 +64,7 @@ export async function openDirDialog() {
       // delay the processImport on Open Folder, 
       // just get file list first
       // can do process when open specific file 
-      await processImport(fileList);
+      await processImport(fileList, false);
       // close the toast
       toast.dismiss(openToast);
     }
@@ -103,7 +103,7 @@ export async function writeFile(fileHandle, content) {
 }
 
 /**
- * get or create new FileHandle and upsert to store.
+ * get or create FileHandle, verify permission and upsert to store.
  *
  * @param {string} name name or title
  * @param {string} id optional, the custom key for handle in store
@@ -122,6 +122,11 @@ export async function getFileHandle(name, id='', asReal=false) {
       const [,handleName] = getRealHandleName(name, asReal);
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
+        const hasPermission = await verifyPermission(fileHandle, true);
+        if (!hasPermission) {
+          console.log(`No permission to '${fileHandle.name}'`);
+          return undefined;
+        }
         store.getState().upsertHandle(id || name, fileHandle);
       }
     } catch (error) {
@@ -218,4 +223,30 @@ export function checkFSA() {
   } else {
     return [false, null, true];
   }
+}
+
+
+/**
+ * Verify read/write permission, otherwise request permission.
+ *
+ * @param {FileSystemFileHandle} fileHandle File handle to check.
+ * @param {boolean} ifWrite True if to check write permission.
+ * @return {boolean} if read/write permission granted.
+ */
+export async function verifyPermission(fileHandle, ifWrite) {
+  const opts = {};
+  if (ifWrite) {
+    opts.writable = true;
+    opts.mode = 'readwrite';
+  }
+  // Check if permission granted.
+  if (await fileHandle.queryPermission(opts) === 'granted') {
+    return true;
+  }
+  // Request permission, see if the user will grant permission.
+  if (await fileHandle.requestPermission(opts) === 'granted') {
+    return true;
+  }
+  // The user did not grant permission, return false.
+  return false;
 }
