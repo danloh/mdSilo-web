@@ -288,7 +288,7 @@ export default function AppLayout(props: Props) {
   const exportOnClose = useStore((state) => state.exportOnClose);
   useEffect(() => {
     if (!offlineMode) { return; }
-    const tipsText = `Will export your works as json.`;
+    const tipsText = `Will export your works as JSON.`;
     const handleWindowClose = async (e: BeforeUnloadEvent) => {
       e.preventDefault();
       (e || window.event).returnValue = tipsText;

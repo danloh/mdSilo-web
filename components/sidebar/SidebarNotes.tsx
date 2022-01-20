@@ -67,7 +67,7 @@ function SidebarNotes(props: SidebarNotesProps) {
             {hasFSA ? (<button className={btnClass} onClick={onOpenFolder}>Open Folder</button>) : null}
             <button className={btnClass} onClick={onImportFile}>Import File(.txt,.md)</button>
             <button className={btnClass} onClick={onCreateNote}>New File</button>
-            <button className={btnClass} onClick={onImportJson}>Import Json</button>
+            <button className={btnClass} onClick={onImportJson}>Import JSON</button>
             <Link href="/app/demo">
               <a className={`${btnClass} mb-4 text-center`}>Live Demo</a>
             </Link>

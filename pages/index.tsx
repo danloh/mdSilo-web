@@ -41,7 +41,7 @@ export default function Home() {
                 </h3>
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
-                <p className="pt-1">Import and Export (Markdown, Json)</p>
+                <p className="pt-1">Import and Export (Markdown, JSON)</p>
                 <p className="pt-1">Local File Access<sup className="text-xs text-gray-500">*Chrome/Edge...</sup></p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600">
@@ -82,7 +82,7 @@ export default function Home() {
               <div className="p-8 rounded-md shadow bg-gray-600">
                 <h3 className="text-xl font-semibold">Document your own life</h3>
                 <p className="pt-2">
-                  Your data sits in a local folder, and even can sit in a single json file.
+                  Your data sits in a local folder, and even can sit in a single JSON file.
                 </p>
                 <p className="pt-2 text-xs text-gray-500">
                   *a Desktop App is coming soon. 

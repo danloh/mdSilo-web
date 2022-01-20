@@ -4,7 +4,7 @@
 A mind silo for storing ideas, thought, knowledge with a powerful writing tool,
 which runs entirely in the browser and has Local File System Access ability. 
 No installation is required, No registering is required.
-The data is stored on your computer or in your browser and can be exported as a single json file.
+The data is stored on your computer or in your browser and can be exported as a single JSON file.
 
 [Demo](https://mdsilo.com/app)  
 [Gitter](https://gitter.im/mdSilo)  
@@ -26,7 +26,7 @@ The data is stored on your computer or in your browser and can be exported as a 
 - Full-text search 
 - Local File System Access 
 - Import or Export at any time  
-- Your works stored in one single json file 
+- Your works stored in one single JSON file 
 
 
 ## Live Demo
