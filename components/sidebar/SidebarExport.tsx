@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Menu } from '@headlessui/react';
 import { 
-  IconFileUpload, IconFileDownload, IconClearAll, IconFolderPlus 
+  IconFileUpload, IconFileDownload, IconFileText, IconClearAll, IconFolderPlus 
 } from '@tabler/icons';
 import { useStore } from 'lib/store';
 import { delDemoNotes } from 'components/AppLayout';
@@ -39,17 +39,17 @@ export default function SidebarExport(props: Props) {
         <Menu.Items className="absolute z-20 w-auto overflow-hidden bg-white rounded top-full shadow-popover dark:bg-gray-800 focus:outline-none">
           <DropdownItem onClick={onExportJson}>
             <IconFileDownload size={18} className="mr-1" />
-            <Tooltip content="Json"><span>Export</span></Tooltip>
+            <Tooltip content="Export Json"><span>Export</span></Tooltip>
           </DropdownItem>
           {(hasFSA && !inDir) ? (
             <DropdownItem onClick={onOpenFolder}>
               <IconFolderPlus size={18} className="mr-1" />
-              <span>Folder</span>
+              <Tooltip content="Open Folder"><span>Folder</span></Tooltip>
             </DropdownItem>) : null}
           {!inDir ? (
           <>
             <DropdownItem onClick={onImportFile}>
-              <IconFileUpload size={18} className="mr-1" />
+              <IconFileText size={18} className="mr-1" />
               <Tooltip content="Import .md | .txt"><span>File</span></Tooltip>
             </DropdownItem>
             <DropdownItem onClick={onImportJson}>

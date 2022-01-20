@@ -194,13 +194,14 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
       const upsertData = {...newNote, user_id: is_wiki ? defaultUserId : userId };
       
       // The note id may update on upsert old Note, 
-      // noteid (db/link) consistence issue:
-      // private notes: can assert new in this else branch
-      // wiki notes: the id maybe used in others' PubLink, must be consistent
-      //   PubLink: searching triggered before autocomplete, minimal issue
-      //   CustomPubLink: trigger bug as input the title of a old note
-      // FIXME: stopgap - ignore dup on upsert, minimize the effect
-      upsertDbNote(upsertData, userId); // cannot await
+      // noteid (db/linking) consistence issue:
+      // private notes: can assert new in this else branch, no such issue,
+      // wiki notes: the id maybe used in others' PubLink, must be consistent:
+      //   handle PubLink: searching triggered before autocomplete, minimal issue,
+      //   handle CustomPubLink: trigger bug if input the title of a old note,
+      // FIXME: stopgap - ignore dup on upsert, minimize the effect on linking, 
+      //                  but will confuse user: new linking is invalid.
+      upsertDbNote(upsertData, userId); // cannot await here for it will propagate awaits
     }
   }
 
