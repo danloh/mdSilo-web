@@ -14,7 +14,7 @@ import remarkToSlate from 'editor/serialization/remarkToSlate';
 import { ciStringEqual } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
-import { getFileHandle } from './useFSA';
+import { getFileHandle, writeFile } from './useFSA';
 
 export function useImportJson() {
   const upsertNote = useStore((state) => state.upsertNote);
@@ -148,7 +148,11 @@ export function useImportMds() {
   return onImportMds;
 }
 
-// on Import Mds
+// on Import Mds: 
+// 0- procee txt to Descendant[],
+// 1- process Linking in content, create needed note; 
+// 2- FSA: save txt to File System;
+// 3- Store: set Descendant[] to store system of App
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
   const offlineMode = store.getState().offlineMode;
@@ -165,6 +169,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
     }
     const fileContent = await file.text();
 
+    // process Markdown/txt to Descendant[]
     const { result } = unified()
       .use(remarkParse)
       .use(remarkGfm)
@@ -198,7 +203,11 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
 
     // FSA fileHandle: get or create if not-exist, then upsert in store
     if (ifHandle) {
-      await getFileHandle(fileName);
+      const fHandle = await getFileHandle(fileName);
+      // save fileContent to File System
+      if (fHandle) {
+        await writeFile(fHandle, fileContent);
+      }
     }
 
     newNotesData.push({

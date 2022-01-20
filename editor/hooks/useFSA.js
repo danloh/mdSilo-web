@@ -120,9 +120,10 @@ export async function getFileHandle(name, id='', asReal=false) {
   if (dirHandle) {
     try {
       const [,handleName] = getRealHandleName(name, asReal);
+      // Error may occur here: NotAllowedError, PermissionStatus is not 'granted'.
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
-        const hasPermission = await verifyPermission(fileHandle, true);
+        const hasPermission = verifyPermission(fileHandle, true);
         if (!hasPermission) {
           console.log(`No permission to '${fileHandle.name}'`);
           return undefined;
@@ -130,6 +131,10 @@ export async function getFileHandle(name, id='', asReal=false) {
         store.getState().upsertHandle(id || name, fileHandle);
       }
     } catch (error) {
+      // FIXME: sometimes on import, no prompt to request permission but error occur 
+      // msg: DOMException: User activation is required to request permissions.
+      // especially on new open web browser. 
+      // sometime, error occur first import but prompt on second. 
       console.log('An error occured on get FileHandle: ', error);
       return undefined;
     }

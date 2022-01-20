@@ -46,10 +46,17 @@ export default function SidebarExport(props: Props) {
               <IconFolderPlus size={18} className="mr-1" />
               <span>Folder</span>
             </DropdownItem>) : null}
-          <DropdownItem onClick={inDir ? onImportFile : onImportJson}>
-            <IconFileUpload size={18} className="mr-1" />
-            <Tooltip content={inDir ? '.md | .txt' : 'Json'}><span>Import</span></Tooltip>
-          </DropdownItem>
+          {!inDir ? (
+          <>
+            <DropdownItem onClick={onImportFile}>
+              <IconFileUpload size={18} className="mr-1" />
+              <Tooltip content="Import .md | .txt"><span>File</span></Tooltip>
+            </DropdownItem>
+            <DropdownItem onClick={onImportJson}>
+              <IconFileUpload size={18} className="mr-1" />
+              <Tooltip content="Import Json"><span>Json</span></Tooltip>
+            </DropdownItem>
+          </>) : null}
           <DropdownItem onClick={delDemoNotes}>
             <IconClearAll size={18} className="mr-1" />
             <span>DeDemo</span>
