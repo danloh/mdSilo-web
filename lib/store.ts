@@ -278,7 +278,7 @@ export const store = createVanilla<
       sidebarSearchQuery: '',
       setSidebarSearchQuery: setter(set, 'sidebarSearchQuery'),
       // FileSystemFileHandles
-      // map name(title, id) to FileHandle
+      // map name(title) to FileHandle
       handles: {},
       setHandles: setter(set, 'handles'),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

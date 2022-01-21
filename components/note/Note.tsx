@@ -14,7 +14,9 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile, getFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';
+import { 
+  writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile 
+} from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
@@ -76,11 +78,13 @@ function Note(props: Props) {
   const setValue = useCallback(
     async (value: Descendant[]) => {
       store.getState().updateNote({ id: noteId, content: value });
-      // write to local disk if hasFSA
+      // write to local file system if hasFSA
       if (FileSystemAccess.support(window)) {
-        const handle = store.getState().handles[title];// || await getFileHandle(title);
-        const content = value.map((n) => serialize(n)).join('');
+        const fileName = `${title}.md`; // add extension
+        const handle = store.getState().handles[fileName]
+          || await getOrNewFileHandle(fileName);
         if (handle) {
+          const content = value.map((n) => serialize(n)).join('');
           await writeFile(handle, content);
           await writeJsonFile();
         }
@@ -127,16 +131,17 @@ function Note(props: Props) {
         // save backlinked notes to db, may backlinks updated but note not
         await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
-        // FSA: on rename file
-        const newHandle = await getFileHandle(newTitle);
+        // FSA: on rename file 
+        const newFileName = `${newTitle}.md`; // add extension
+        const newHandle = await getOrNewFileHandle(newFileName);
         // swap value
         if (newHandle) {
           const content = value.map((n) => serialize(n)).join('');
           await writeFile(newHandle, content);
           await writeJsonFile();
         }
-        // delete the old and redundant
-        await delFileHandle(initTitle);
+        // delete the old redundant FileHandle
+        await delFileHandle(`${initTitle}.md`);
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`

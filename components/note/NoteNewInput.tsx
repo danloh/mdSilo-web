@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { upsertDbNote } from 'lib/api/curdNote';
 import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
-import { getFileHandle } from 'editor/hooks/useFSA';
+import { getOrNewFileHandle } from 'editor/hooks/useFSA';
 import { ciStringEqual } from 'utils/helper';
 import { store, useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
@@ -90,7 +90,9 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         }
         store.getState().upsertNote(note);
         // new FileHandle for the new create note and set in store
-        await getFileHandle(note.title);
+        const fileName = `${note.title}.md`; // add extension
+        await getOrNewFileHandle(fileName);
+        // navigate to md view
         router.push(`/app/md/${note.id}`);
       } else if (option.type === OptionType.NOTE) {
         router.push(`/app/md/${option.id}`);

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ElementType, Mark } from 'editor/slate';
 import { defaultUserId, defaultNote } from 'types/model';
 import { isMark } from 'editor/formatting';
-import { getFileHandle } from 'editor/hooks/useFSA';
+import { getOrNewFileHandle } from 'editor/hooks/useFSA';
 import { store } from 'lib/store';
 import { upsertDbNote } from 'lib/api/curdNote';
 import apiClient from 'lib/apiClient';
@@ -181,7 +181,8 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
     store.getState().upsertNote(newNote);
     // new FileHandle and set in store
     if (!is_wiki) {
-      getFileHandle(newNote.title);
+      const fileName = `${newNote.title}.md`; // add extension
+      getOrNewFileHandle(fileName);
     }
 
     const offlineMode = store.getState().offlineMode;

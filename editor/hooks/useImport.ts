@@ -14,7 +14,7 @@ import remarkToSlate from 'editor/serialization/remarkToSlate';
 import { ciStringEqual } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
-import { getFileHandle, writeFile } from './useFSA';
+import { getOrNewFileHandle, writeFile } from './useFSA';
 
 export function useImportJson() {
   const upsertNote = useStore((state) => state.upsertNote);
@@ -43,8 +43,8 @@ export function useImportJson() {
       if (file.type !== 'application/json') {
         return;
       }
-      const fileName = file.name.replace(/\.[^/.]+$/, '');
-      if (!fileName) {
+      const fname = file.name.replace(/\.[^/.]+$/, '');
+      if (!fname) {
         return;
       }
 
@@ -148,11 +148,13 @@ export function useImportMds() {
   return onImportMds;
 }
 
-// on Import Mds: 
-// 0- procee txt to Descendant[],
-// 1- process Linking in content, create needed note; 
-// 2- FSA: save txt to File System;
-// 3- Store: set Descendant[] to store system of App
+/**
+ * on Import Mds: 
+ * 0- procee txt to Descendant[],
+ * 1- process Linking in content, create needed note; 
+ * 2- FSA: save txt to File System;
+ * 3- Store: set Descendant[] to store system of App 
+ */
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
   const offlineMode = store.getState().offlineMode;
@@ -161,9 +163,8 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
   const newNotesData: Note[] = [];
 
   for (const file of fileList) {
-    const fname = file.name;
-    const checkMd = checkFileIsMd(fname);
-    const fileName = getFileName(fname);
+    const fileName = file.name;
+    const checkMd = checkFileIsMd(fileName);
     if (!fileName || !checkMd) {
       continue;
     }
@@ -193,17 +194,20 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
     newNotesData.push(...newLinkedNotes);
 
     // new note from file
+    const newNoteTitle = rmFileNameExt(fileName);
     const newNoteObj = {
-      id: noteTitleToIdCache[fileName.toLowerCase()] ?? uuidv4(),
-      title: fileName,
+      id: noteTitleToIdCache[newNoteTitle.toLowerCase()] ?? uuidv4(),
+      title: newNoteTitle,
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
     };
     // save to title-id cache when new note from file
-    noteTitleToIdCache[fileName.toLowerCase()] = newNoteObj.id;
+    noteTitleToIdCache[newNoteTitle.toLowerCase()] = newNoteObj.id;
 
     // FSA fileHandle: get or create if not-exist, then upsert in store
     if (ifHandle) {
-      const fHandle = await getFileHandle(fileName);
+      // unify filename's extension to .md
+      const uniFileName = `${newNoteTitle}.md`;
+      const fHandle = await getOrNewFileHandle(uniFileName);
       // save fileContent to File System
       if (fHandle) {
         await writeFile(fHandle, fileContent);
@@ -236,7 +240,9 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
   return newNotesData;
 };
 
-// Add the proper note id to the note links.
+/** 
+ *  Add the proper note id to the note links. 
+ */
 const processNoteLinks = (
   content: Descendant[],
   noteTitleToIdCache: Record<string, string | undefined> = {}
@@ -311,11 +317,11 @@ const getNoteId = (
 /* #endregion: import process */
 
 /**
- * file name without extension
+ * remove file name extension
  *
- * @param {string} fname, file name with extension.
+ * @param {string} fname, file name.
  */
-export const getFileName = (fname: string) => {
+export const rmFileNameExt = (fname: string) => {
   return fname.replace(/\.[^/.]+$/, '');
 }
 

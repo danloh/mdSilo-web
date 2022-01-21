@@ -114,9 +114,7 @@ function SidebarNotesTree(props: Props) {
           await updateDbUser(user.id, 0);
         }
       } else {
-        toast.error(
-          'An unexpected error: you are not logged in and your changes could not be saved.'
-        );
+        toast.error('An unexpected error occured.');
       }
 
       resetState();
