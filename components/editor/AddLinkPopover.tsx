@@ -147,8 +147,7 @@ export default function AddLinkPopover(props: Props) {
         if (note) { 
           store.getState().upsertNote(note); 
           // new FileHandle and set in store
-          const fileName = `${note.title}.md`;  // add extension
-          await getOrNewFileHandle(fileName);
+          await getOrNewFileHandle(note.title);
         }
       } else if (option.type === OptionType.REMOVE_LINK) {
         // Remove the link

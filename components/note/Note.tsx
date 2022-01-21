@@ -80,9 +80,8 @@ function Note(props: Props) {
       store.getState().updateNote({ id: noteId, content: value });
       // write to local file system if hasFSA
       if (FileSystemAccess.support(window)) {
-        const fileName = `${title}.md`; // add extension
-        const handle = store.getState().handles[fileName]
-          || await getOrNewFileHandle(fileName);
+        const handle = store.getState().handles[title]
+          || await getOrNewFileHandle(title);
         if (handle) {
           const content = value.map((n) => serialize(n)).join('');
           await writeFile(handle, content);
@@ -131,17 +130,16 @@ function Note(props: Props) {
         // save backlinked notes to db, may backlinks updated but note not
         await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
-        // FSA: on rename file 
-        const newFileName = `${newTitle}.md`; // add extension
-        const newHandle = await getOrNewFileHandle(newFileName);
+        // FSA: on rename file: 1- new FileHandle 
+        const newHandle = await getOrNewFileHandle(newTitle);
         // swap value
         if (newHandle) {
           const content = value.map((n) => serialize(n)).join('');
           await writeFile(newHandle, content);
           await writeJsonFile();
         }
-        // delete the old redundant FileHandle
-        await delFileHandle(`${initTitle}.md`);
+        // FSA: on rename file: 2- delete the old redundant FileHandle
+        await delFileHandle(initTitle);
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`

@@ -194,6 +194,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
     newNotesData.push(...newLinkedNotes);
 
     // new note from file
+    // Issue Alert: same title but diff ext, only one file can be imported
     const newNoteTitle = rmFileNameExt(fileName);
     const newNoteObj = {
       id: noteTitleToIdCache[newNoteTitle.toLowerCase()] ?? uuidv4(),
@@ -205,9 +206,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
 
     // FSA fileHandle: get or create if not-exist, then upsert in store
     if (ifHandle) {
-      // unify filename's extension to .md
-      const uniFileName = `${newNoteTitle}.md`;
-      const fHandle = await getOrNewFileHandle(uniFileName);
+      const fHandle = await getOrNewFileHandle(newNoteTitle);
       // save fileContent to File System
       if (fHandle) {
         await writeFile(fHandle, fileContent);

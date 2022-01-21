@@ -181,8 +181,7 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
     store.getState().upsertNote(newNote);
     // new FileHandle and set in store
     if (!is_wiki) {
-      const fileName = `${newNote.title}.md`; // add extension
-      getOrNewFileHandle(fileName);
+      getOrNewFileHandle(newNote.title); // cannot await here, to avoid awaits propagation
     }
 
     const offlineMode = store.getState().offlineMode;

@@ -90,8 +90,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         }
         store.getState().upsertNote(note);
         // new FileHandle for the new create note and set in store
-        const fileName = `${note.title}.md`; // add extension
-        await getOrNewFileHandle(fileName);
+        await getOrNewFileHandle(note.title);
         // navigate to md view
         router.push(`/app/md/${note.id}`);
       } else if (option.type === OptionType.NOTE) {

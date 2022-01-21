@@ -49,28 +49,17 @@ export async function openDirDialog() {
         if (value.kind !== 'file') {
           continue;
         }
-        const fileData = await value.getFile();
         // upsert Handle in store
         if (checkFileIsMd(key)) {
-          // store, title.ext as key, keep the extension info
-          // unify filename's extension to .md
+          // remove filename's extension, unique title as key to store Handle
+          // Issue Alert: same title but diff ext, only one file can be imported
           const title = rmFileNameExt(key);
-          const uniFileName = `${title}.md`;
-          // rename
-          if (uniFileName !== key) {
-            const newHandle = await getOrNewFileHandle(uniFileName);
-            const fileContent = await fileData.text();
-            await writeFile(newHandle, fileContent);
-            await delFileHandle(key);
-            const newFileData = await newHandle.getFile();
-            fileList.push(newFileData);
-            store.getState().upsertHandle(uniFileName, newHandle);
-          } else {
-            fileList.push(fileData);
-            store.getState().upsertHandle(uniFileName, value);
-          }
+          const fileData = await value.getFile();
+          fileList.push(fileData);
+          store.getState().upsertHandle(title, value);
         }
       }
+      // console.log("handles", store.getState().handles)
       // TODO: for performance:
       // delay the processImport on Open Folder, 
       // just get file list first
@@ -115,11 +104,15 @@ export async function writeFile(fileHandle, content) {
 
 /**
  * get or create FileHandle, verify permission and upsert to store.
+ * Importtant: unique title or filename as key to store Handle, 
+ * Note: to consistent with Notes store, use unique title
+ * Other: can use filename
  *
- * @param {string} fileName file.name, name.ext
+ * @param {string} name name(name.ext or title)
+ * @param {boolean} withExt default False, optional, True if name with extension
  * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
  */
-export async function getOrNewFileHandle(fileName) {
+export async function getOrNewFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {
     return undefined;
   }
@@ -128,15 +121,16 @@ export async function getOrNewFileHandle(fileName) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
+      const [,handleName] = getRealHandleName(name, withExt);
       // Error may occur here: NotAllowedError, PermissionStatus is not 'granted'.
-      fileHandle = await dirHandle.getFileHandle(fileName, {create: true});
+      fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
         const hasPermission = verifyPermission(fileHandle, true);
         if (!hasPermission) {
           console.log(`No permission to '${fileHandle.name}'`);
           return undefined;
         }
-        store.getState().upsertHandle(fileName, fileHandle);
+        store.getState().upsertHandle(name, fileHandle);
       }
     } catch (error) {
       // FIXME: sometimes on import, no prompt to request permission but error occur 
@@ -156,9 +150,10 @@ export async function getOrNewFileHandle(fileName) {
 /**
  * del FileHandle
  *
- * @param {string} filename file.name
+ * @param {string} name file.name or title
+ * @param {boolean} withExt default False, optional, True if name with extension
  */
- export async function delFileHandle(fileName) {
+ export async function delFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {
     return;
   }
@@ -166,8 +161,9 @@ export async function getOrNewFileHandle(fileName) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      await dirHandle.removeEntry(fileName);
-      store.getState().deleteHandle(fileName);
+      const [,handleName] = getRealHandleName(name, withExt);
+      await dirHandle.removeEntry(handleName);
+      store.getState().deleteHandle(name);
     } catch (error) {
       console.log('An error occured on delete FileHandle: ', error);
     }
@@ -178,11 +174,12 @@ export async function getOrNewFileHandle(fileName) {
 
 /**
  * try to get the FileHandle name from store
- * @param {string} name name or title
- * @return {[FileSystemFileHandle, string]} [handle, name]
+ * @param {string} name file.name or title
+ * @param {boolean} withExt optional, True if name with extension
+ * @return {[FileSystemFileHandle, string]} [handle, name], default ext: .md
  * 
  */
-export function getRealHandleName(name) {
+function getRealHandleName(name, withExt) {
   if (!FileSystemAccess.support(window)) {
     return [null, ''];
   }
@@ -191,7 +188,7 @@ export function getRealHandleName(name) {
   if (existingHandle) {
     return [existingHandle, existingHandle.name];
   } else {
-    return [null, `${name}.md`];
+    return [null, withExt ? name : `${name}.md`];
   }
 }
 
