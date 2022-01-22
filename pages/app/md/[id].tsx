@@ -8,23 +8,41 @@ import { useStore } from 'lib/store';
 import usePrevious from 'editor/hooks/usePrevious';
 import { queryParamToArray } from 'utils/helper';
 import useBlockBacklinks from 'editor/backlinks/useBlockBacklinks';
+import useRefresh from 'editor/hooks/useRefresh';
 
 export default function NotePage() {
   const router = useRouter();
-  const {
-    query: { id: noteId, stack: stackQuery },
-  } = router;
+  const { query: { id: noteId, stack: stackQuery }, } = router;
 
   const openNoteIds = useStore((state) => state.openNoteIds);
   const setOpenNoteIds = useStore((state) => state.setOpenNoteIds);
   const prevOpenNoteIds = usePrevious(openNoteIds);
 
+  const siteTitle = 'mdSilo';
   const pageTitle = useStore((state) => {
     if (!noteId || typeof noteId !== 'string' || !state.notes[noteId]?.title) {
-      return 'mdSilo';
+      return siteTitle;
     }
     return state.notes[noteId].title;
   });
+
+  // refresh 
+  // const refreshValue = async (title: string) => { 
+  //   const reNote = await refreshFile(title); 
+  //   if (reNote) {
+  //     console.log("refresh...", reNote)
+  //     //console.log("in store:", store.getState().notes[noteId]?.content)
+  //     //console.log("value here:", value)
+  //   }
+  // };
+
+  // useEffect(() => { 
+  //   if (pageTitle !== siteTitle) {
+  //     refreshValue(pageTitle);
+  //   }
+  // }, [pageTitle]);
+
+  useRefresh(pageTitle !== siteTitle ? pageTitle : '');
 
   useBlockBacklinks();
 

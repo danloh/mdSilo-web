@@ -158,8 +158,7 @@ export function useImportMds() {
  */
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
-  const offlineMode = store.getState().offlineMode;
- 
+
   const noteTitleToIdCache: Record<string, string | undefined> = {};
   const newNotesData: Note[] = [];
 
@@ -229,6 +228,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
 
   // upsert new notes to db 
   // Alert: could be a heavy task
+  const offlineMode = store.getState().offlineMode;
   const upsertData: NoteUpsert[] = [];
   if (!offlineMode) {
     upsertData.push(...newNotesData);
@@ -243,6 +243,82 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
   }
 
   return newNotesData;
+};
+
+/**
+ * Refresh Import File
+ * @param file
+ * @returns 
+ */
+export const refreshImport = async (file: File, title: string) => {
+  // build title-id cache from store
+  const noteTitleToIdCache: Record<string, string | undefined> = {};
+  const notesArr = Object.values(store.getState().notes);
+  const allNotes = notesArr.filter(n => !n.is_wiki);
+  for (const note of allNotes) {
+    noteTitleToIdCache[note.title.toLowerCase()] = note.id;
+  }
+
+  // if the file rename?
+  const fileName = file.name;
+  const checkMd = checkFileIsMd(fileName);
+  if (!fileName || !checkMd) {
+    return;
+  }
+
+  const fileContent = await file.text();
+
+  // process Markdown/txt to Descendant[]
+  const { result } = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(wikiLinkPlugin, { aliasDivider: '|' })
+    .use(remarkToSlate)
+    .processSync(fileContent);
+
+  // process content and create new notes to which NoteLinks in content linked
+  // newLinkedNote has and must has id and title only, w/ default content...
+  const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
+    processNoteLinks(result as Descendant[], noteTitleToIdCache);
+
+  // new note from file
+  const noteId = noteTitleToIdCache[title.toLowerCase()];
+  if (!noteId) {
+    return;
+  }
+  
+  const lastModDate = new Date(file.lastModified).toISOString();
+  const newNoteObj = {
+    id: noteId,
+    title,
+    content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
+    created_at: lastModDate,
+    updated_at: lastModDate,
+  };
+  const reProcessedNote: Note = {...defaultNote, ...newNoteObj};
+
+  // upsert into store
+  const upsertNote = store.getState().upsertNote;
+  // can make sure that: the note existing in store will not be re-created.
+  newLinkedNotes.forEach(simpleNote => upsertNote(simpleNote));
+  upsertNote(reProcessedNote); // upsert processed note with content
+
+  // upsert new notes to db 
+  const offlineMode = store.getState().offlineMode;
+  const upsertData: NoteUpsert[] = [];
+  if (!offlineMode) {
+    upsertData.push(reProcessedNote);
+    // fix with actual user id
+    const userId = apiClient.auth.user()?.id; 
+    if (userId) {
+      upsertData.forEach(n => n.user_id = userId);
+      await apiClient
+        .from<Note>('notes')
+        .upsert(upsertData, { onConflict: 'user_id, title' });
+    }
+  }
+
+  return reProcessedNote;
 };
 
 /** 
@@ -303,6 +379,7 @@ const getNoteId = (
     noteId = existingNoteId;
   } else {
     // Create new note from NoteLink, w/ id and title only
+    // newLinkedNote here:
     noteId = uuidv4(); 
     const newLinkedNoteObj = {
       id: noteId, 
