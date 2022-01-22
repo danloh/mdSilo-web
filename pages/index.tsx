@@ -36,9 +36,7 @@ export default function Home() {
           <div className="container px-6">
             <div className="grid gap-6 pt-6 md:pt-8 md:grid-cols-3">
               <div className="p-8 rounded-md shadow bg-gray-600">
-                <h3 className="text-xl font-semibold">
-                  Enjoy Writing
-                </h3>
+                <h3 className="text-xl font-semibold">📝 Enjoy Writing</h3>
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
                 <p className="pt-1">Import and Export (Markdown, JSON)</p>
@@ -46,7 +44,7 @@ export default function Home() {
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600">
                 <h3 className="text-xl font-semibold">
-                  Connect Everything
+                  🔗 Connect Everything
                 </h3>
                 <p className="pt-1">(( Block Reference ))</p>
                 <p className="pt-1">[[ Bidirection BackLink ]]</p>
@@ -54,38 +52,32 @@ export default function Home() {
                 <p className="pt-1">{`#HashTag and ( External Link )`}</p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600">
-                <h3 className="text-xl font-semibold">
-                  Different Views
-                </h3>
+                <h3 className="text-xl font-semibold">🪟 Different Views</h3>
                 <p className="pt-1">Stacking View</p>
                 <p className="pt-1">Chronicle View</p>
                 <p className="pt-1">Graph View</p>
                 <p className="pt-1">Task View</p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600">
-                <h3 className="text-xl font-semibold">
-                  Reading Companion
-                </h3>
-                <p className="pt-1">Collect Reading list</p>
-                <p className="pt-1">Jot down the inspiration instantly</p>
-                <p className="pt-1">Track the accomplishments and keep promises.</p>
-              </div>
-              <div className="p-8 rounded-md shadow bg-gray-600">
-                <h3 className="text-xl font-semibold">
-                  Personal knowledge Silo
-                </h3>
+                <h3 className="text-xl font-semibold">💡 Knowledge Silo</h3>
                 <p className="pt-1">
                   Store the ideas, thoughts, knowledge in the networked way and 
                   view them from different perspectives.
                 </p>
               </div>
               <div className="p-8 rounded-md shadow bg-gray-600">
-                <h3 className="text-xl font-semibold">Document your own life</h3>
+                <h3 className="text-xl font-semibold">🧬 Document Life</h3>
                 <p className="pt-2">
-                  Your data sits in a local folder, and even can sit in a single JSON file.
+                  The data sits in a local folder, and even can sit in a single JSON file.
                 </p>
                 <p className="pt-2 text-xs text-gray-500">
                   *a Desktop App is coming soon. 
+                </p>
+              </div>
+              <div className="p-8 rounded-md shadow bg-gray-600">
+                <h3 className="text-xl font-semibold">🤝🏼 Liaison to Knowledge</h3>
+                <p className="pt-1">
+                  PubLink opens a window for each private digital garden, links to liaison points where knowledge is growing.
                 </p>
               </div>
             </div>
