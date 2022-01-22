@@ -5,12 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
+import remarkToSlate from 'editor/serialization/remarkToSlate';
 import wikiLinkPlugin from 'editor/serialization/wikilink/index';
+import pubLinkPlugin from 'editor/serialization/publink/index';
 import { store, useStore, Notes, NoteTreeItem, WikiTreeItem, NotesData } from 'lib/store';
 import type { NoteUpsert } from 'lib/api/curdNote';
 import apiClient from 'lib/apiClient';
 import { getDefaultEditorValue } from 'editor/constants';
-import remarkToSlate from 'editor/serialization/remarkToSlate';
 import { ciStringEqual } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
@@ -175,11 +176,18 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       .use(remarkParse)
       .use(remarkGfm)
       .use(wikiLinkPlugin, { aliasDivider: '|' })
+      .use(pubLinkPlugin, { aliasDivider: '|' })
       .use(remarkToSlate)
       .processSync(fileContent);
+    
+    console.log('res: ', result);
 
     // process content and create new notes to which NoteLinks in content linked
     // newLinkedNote has and must has id and title only, w/ default content...
+    // 
+    // but ignore processing the PubLink to avoid using await on get wiki note id, 
+    // will tackle the isssue of no-noteId on click: PubLinkElement 
+    // 
     const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
 
@@ -273,11 +281,14 @@ export const refreshImport = async (file: File, title: string) => {
     .use(remarkParse)
     .use(remarkGfm)
     .use(wikiLinkPlugin, { aliasDivider: '|' })
+    .use(pubLinkPlugin, { aliasDivider: '|' })
     .use(remarkToSlate)
     .processSync(fileContent);
 
   // process content and create new notes to which NoteLinks in content linked
   // newLinkedNote has and must has id and title only, w/ default content...
+  // new NoteLink may be added on modification even though 
+  // the notes are already existing in most case, 
   const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
     processNoteLinks(result as Descendant[], noteTitleToIdCache);
 

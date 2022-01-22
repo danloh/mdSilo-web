@@ -5,7 +5,7 @@ import { fromMarkdown } from './fromMarkdown'
 
 let warningIssued
 
-function wikiLinkPlugin (opts = {}) {
+function pubLinkPlugin (opts = {}) {
   const data = this.data()
 
   function add (field, value) {
@@ -30,5 +30,5 @@ function wikiLinkPlugin (opts = {}) {
   add('fromMarkdownExtensions', fromMarkdown(opts))
 }
 
-wikiLinkPlugin.wikiLinkPlugin = wikiLinkPlugin
-export default wikiLinkPlugin
+pubLinkPlugin.pubLinkPlugin = pubLinkPlugin
+export default pubLinkPlugin

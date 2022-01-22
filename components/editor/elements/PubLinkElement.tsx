@@ -5,6 +5,7 @@ import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import { PubLink } from 'editor/slate';
 import Tooltip from 'components/misc/Tooltip';
+import { loadDbWikiNotePerTitle } from 'lib/api/curdNote'
 
 type PubLinkElementProps = {
   element: PubLink;
@@ -20,6 +21,20 @@ export default function PubLinkElement(props: PubLinkElementProps) {
   const currentNote = useCurrentContext();
   const { onClick: onNoteLinkClick, defaultStackingBehavior } =
     useOnNoteLinkClick(currentNote.id);
+  
+  // Load wiki note first to get noteId if no noteId in Element, 
+  const getWikiNoteId = async (title: string, id: string) => {
+    if (id.trim()) {
+      return id;
+    } else if (title.trim()) {
+      const wikiNoteRes = await loadDbWikiNotePerTitle(title);
+      const wikiNote = wikiNoteRes.data;
+      // TODO: update the real noteId in element? 
+      if (wikiNote) {
+        return wikiNote.id;
+      }
+    }
+  }
 
   return (
     <Tooltip
@@ -29,9 +44,11 @@ export default function PubLinkElement(props: PubLinkElementProps) {
       <span
         role="button"
         className={linkClassName}
-        onClick={(e) => {
+        onClick={async (e) => {
           e.stopPropagation();
-          onNoteLinkClick(element.noteId, defaultStackingBehavior(e));
+          const wikiNoteId = await getWikiNoteId(element.noteTitle, element.noteId);
+          if (!wikiNoteId) return;
+          onNoteLinkClick(wikiNoteId, defaultStackingBehavior(e));
         }}
         contentEditable={false}
         {...attributes}
