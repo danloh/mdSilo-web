@@ -127,7 +127,7 @@ function SidebarNotesTree(props: Props) {
       const node = flattenedData[index];
       return (
         <DraggableSidebarNoteLink
-          key={node.id}
+          key={`${node.id}-${index}`}
           node={node}
           isHighlighted={node.id === currentNoteId}
           style={style}

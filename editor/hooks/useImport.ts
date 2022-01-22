@@ -124,7 +124,7 @@ export function useImportMds() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, Please wait...', {
+      const importingToast = toast.info('Importing, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
@@ -154,6 +154,7 @@ export function useImportMds() {
  * 1- process Linking in content, create needed note; 
  * 2- FSA: save txt to File System;
  * 3- Store: set Descendant[] to store system of App 
+ * 4- Upsert to db in some cases
  */
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
@@ -179,19 +180,9 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       .processSync(fileContent);
 
     // process content and create new notes to which NoteLinks in content linked
-    // newLinkedNote with id and title only, w/o content 
+    // newLinkedNote has and must has id and title only, w/ default content...
     const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
-
-    // Two type of note on process/import: 
-    // 1- note imported from file and 
-    // 2- new created simple note on process NoteLink in content;
-    // sometimes, imported note has the same title to the noteTitle of NoteLink, 
-    // here how to update the content of such note: 
-    // if note created on Process NoteLinks is pushed to newNotesData array
-    // before the note-imported which has more content, can be updated when upsertNote.
-    // if the same note is already created from file, will not create note on processNoteLinks.
-    newNotesData.push(...newLinkedNotes);
 
     // new note from file
     // Issue Alert: same title but diff ext, only one file can be imported
@@ -201,8 +192,27 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       title: newNoteTitle,
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
     };
-    // save to title-id cache when new note from file
+    const newProcessedNote = {...defaultNote, ...newNoteObj};
+
+    // save to title-id cache when new note from file: newProcessedNote
     noteTitleToIdCache[newNoteTitle.toLowerCase()] = newNoteObj.id;
+
+    // Two type of note on process/import: 
+    // 1- note imported from file (newProcessedNote) and 
+    // 2- new created simple note on process NoteLink in content: newLinkedNote, {id, title};
+    // sometimes, imported note has the same title to the noteTitle of NoteLink, 
+    // here how to update the content of such note: 
+    // 1- if newLinkedNote created on Process NoteLinks is pushed to newNotesData array before 
+    // the newProcessedNote imported which has real content, can be updated when upsertNote.
+    // 2- if the same note is already created from file, will not create note on processNoteLinks.
+    // noteTitleToIdCache will record the created notes's title and id.
+    //
+    // upsert into store, order may matters:
+    newLinkedNotes.forEach(simpleNote => upsertNote(simpleNote)); // upsert Simple Note first
+    upsertNote(newProcessedNote); // upsert processed note with content later, good override
+    // push to Array
+    newNotesData.push(...newLinkedNotes);
+    newNotesData.push(newProcessedNote);
 
     // FSA fileHandle: get or create if not-exist, then upsert in store
     if (ifHandle) {
@@ -212,17 +222,10 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
         await writeFile(fHandle, fileContent);
       }
     }
-
-    newNotesData.push({
-      ...defaultNote,
-      ...newNoteObj
-    });
   }
 
-  // update to store
-  newNotesData.forEach(note => upsertNote(note));
-
-  // update new notes to db
+  // upsert new notes to db 
+  // Alert: could be a heavy task
   const upsertData: NoteUpsert[] = [];
   if (!offlineMode) {
     upsertData.push(...newNotesData);
@@ -307,7 +310,7 @@ const getNoteId = (
       ...newLinkedNoteObj,
     });
   }
-  // save to title-id cache when new note from NoteLink
+  // save to title-id cache when new note from NoteLink: newLinkedNote
   noteTitleToIdCache[noteTitle.toLowerCase()] = noteId;
 
   return noteId;
