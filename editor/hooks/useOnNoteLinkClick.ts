@@ -10,6 +10,8 @@ export default function useOnNoteLinkClick(currentNoteId: string) {
   const openNoteIds = useStore((state) => state.openNoteIds);
   const isPageStackingOn = useStore((state) => state.isPageStackingOn);
 
+  // TODO: try refresh note if FSA to sync modification by other app
+
   const onClick = useCallback(
     (noteId: string, stackNote: boolean, highlightedPath?: Path) => {
       // If stackNote is false, open the note in its own page

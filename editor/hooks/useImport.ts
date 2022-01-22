@@ -187,10 +187,13 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
     // new note from file
     // Issue Alert: same title but diff ext, only one file can be imported
     const newNoteTitle = rmFileNameExt(fileName);
+    const lastModDate = new Date(file.lastModified).toISOString();
     const newNoteObj = {
       id: noteTitleToIdCache[newNoteTitle.toLowerCase()] ?? uuidv4(),
       title: newNoteTitle,
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
+      created_at: lastModDate,
+      updated_at: lastModDate,
     };
     const newProcessedNote = {...defaultNote, ...newNoteObj};
 
