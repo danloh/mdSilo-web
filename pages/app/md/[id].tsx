@@ -8,7 +8,6 @@ import { useStore } from 'lib/store';
 import usePrevious from 'editor/hooks/usePrevious';
 import { queryParamToArray } from 'utils/helper';
 import useBlockBacklinks from 'editor/backlinks/useBlockBacklinks';
-import useRefresh from 'editor/hooks/useRefresh';
 
 export default function NotePage() {
   const router = useRouter();
@@ -26,7 +25,6 @@ export default function NotePage() {
     return state.notes[noteId].title;
   });
 
-  useRefresh(pageTitle !== siteTitle ? pageTitle : '');
   useBlockBacklinks();
 
   const [highlightedPath, setHighlightedPath] = useState<{
