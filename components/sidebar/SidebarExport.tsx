@@ -50,7 +50,7 @@ export default function SidebarExport(props: Props) {
           <>
             <DropdownItem onClick={onImportFile}>
               <IconFileText size={18} className="mr-1" />
-              <Tooltip content="Import .md | .txt"><span>File</span></Tooltip>
+              <Tooltip content="Import .md | .txt"><span>Text</span></Tooltip>
             </DropdownItem>
             <DropdownItem onClick={onImportJson}>
               <IconFileUpload size={18} className="mr-1" />

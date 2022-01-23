@@ -21,7 +21,7 @@ export default function Home() {
                   </a>
                 </Link>
                 <p className="max-w-3xl pt-6 mx-auto md:pt-8 md:text-2xl">
-                  mdSilo is a silo for storing ideas in a networked-writing app.
+                  mdSilo is a plain-text knowledge silo and a networked-writing app.
                 </p>
                 <Link href="/app/demo">
                   <a className="inline-flex mt-4 text-2xl link hover:shadow-lg">
@@ -77,7 +77,7 @@ export default function Home() {
               <div className="p-8 rounded-md shadow bg-gray-600">
                 <h3 className="text-xl font-semibold">🤝🏼 Liaison to Knowledge</h3>
                 <p className="pt-1">
-                  PubLink opens a window for each private digital garden, links to liaison points where knowledge is growing.
+                  PubLink opens a window for each private digital garden, links to liaison points between knowledge.
                 </p>
               </div>
             </div>

@@ -48,6 +48,7 @@ function useProvideAuth(): AuthContextType {
 
   useEffect(() => {
     if (offlineMode) {
+      setIsAuthed(true);
       return;
     }
     initUser();

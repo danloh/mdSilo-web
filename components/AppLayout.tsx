@@ -36,7 +36,7 @@ type Props = {
 
 export default function AppLayout(props: Props) {
   const { children, className = '' } = props;
-  // auth user
+  // auth 
   const { user, } = useAuthContext();
   const router = useRouter();
 
@@ -203,7 +203,7 @@ export default function AppLayout(props: Props) {
 
   const hasHydrated = useStore((state) => state._hasHydrated);
   useEffect(() => {
-    // If the user is mobile, the persisted data has been hydrated, and there are no open note ids (a proxy for the first load),
+    // If on mobile, the persisted data has been hydrated, and there are no open note ids (a proxy for the first load),
     // change the initial values of isSidebarOpen and isPageStackingOn to better suit mobile devices
     // We need to wait until after hydration because otherwise the persisted state gets overridden and thrown away
     // After https://github.com/pmndrs/zustand/issues/562 is fixed, we can change this
@@ -222,7 +222,7 @@ export default function AppLayout(props: Props) {
       return;
     }
 
-    // Subscribe to changes on the notes table for the logged in user
+    // Subscribe to changes on the notes table for the logged-in
     const subscription = apiClient
       .from<Note>(`notes:user_id=eq.${user.id}`)
       .on('*', (payload) => {
@@ -284,7 +284,7 @@ export default function AppLayout(props: Props) {
   );
   useHotkeys(hotkeys);
 
-  // Prompt user to export json
+  // Prompt to export json
   const exportOnClose = useStore((state) => state.exportOnClose);
   useEffect(() => {
     if (!offlineMode) { return; }
@@ -300,7 +300,7 @@ export default function AppLayout(props: Props) {
     return () => {
       window.removeEventListener('beforeunload', handleWindowClose);
     };
-  }, [user, router, offlineMode, exportOnClose]);
+  }, [router, offlineMode, exportOnClose]);
 
   const appContainerClassName = classNames(
     'h-screen',
