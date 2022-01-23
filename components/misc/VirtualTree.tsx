@@ -71,11 +71,11 @@ function VirtualTree(props: Props) {
           position: 'relative',
         }}
       >
-        {rowVirtualizer.virtualItems.map((virtualRow) => {
+        {rowVirtualizer.virtualItems.map((virtualRow, index) => {
           const node = flattenedData[virtualRow.index];
           return (
             <TreeNode
-              key={node.id}
+              key={`${node.id}-${index}`}
               ref={virtualRow.measureRef}
               node={node}
               onClick={onNodeClick}

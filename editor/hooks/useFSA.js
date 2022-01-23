@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
 import { exportNotesJson, buildNotesJson } from 'components/note/NoteExport';
-import { processImport, getFileName, checkFileIsMd } from './useImport';
+import { processImport, checkFileIsMd, rmFileNameExt } from './useImport';
 
 /**
  * open local folder to import files
@@ -29,41 +29,42 @@ export async function openDirDialog() {
   let dirHandle;
   try {
     // dialog to open folder
-    // will prompt to require view permission
+    // will prompt to require read permission
     dirHandle = await window.showDirectoryPicker();
     // store dirHandle, import files in dir and store FileHandes
     if (dirHandle) {
       store.getState().setDirHandle(dirHandle);
       const fileList = []; // File[]
       // Show a toast
-      const openToast = toast.info('Open Folder and Importing files, Please wait...', {
+      const openToast = toast.info('Opening files, Please wait...', {
         autoClose: false,
-        closeButton: false,
+        closeButton: true,
         draggable: false,
       });
       // key: filename or dir name 
       // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
-      for await (const [_key, value] of dirHandle.entries()) {
-        //console.log(_key, value)
+      for await (const [key, value] of dirHandle.entries()) {
+        //console.log(key, value)
         // may TODO: recursively get the files in sub dirs
         if (value.kind !== 'file') {
           continue;
         }
-        const fileData = await value.getFile();
-        fileList.push(fileData);
-        // upsert Handle
-        if (checkFileIsMd(_key)) {
-          // lose file extension info here: 
-          // unique key for Handle and note
-          const key = getFileName(_key);
-          // store, title as key
-          store.getState().upsertHandle(key, value);
+        // upsert Handle in store
+        if (checkFileIsMd(key)) {
+          // remove filename's extension, unique title as key to store Handle
+          // Issue Alert: same title but diff ext, only one file can be imported
+          const title = rmFileNameExt(key);
+          const fileData = await value.getFile();
+          fileList.push(fileData);
+          store.getState().upsertHandle(title, value);
         }
       }
-      // TODO: for performance:
-      // delay the processImport on Open Folder, 
+      // console.log("handles", store.getState().handles)
+      // for performance:
+      // can delay the processImport on Open Folder? 
       // just get file list first
-      // can do process when open specific file 
+      // and process when open specific file 
+      // stopgap: show process on process
       await processImport(fileList, false);
       // close the toast
       toast.dismiss(openToast);
@@ -78,7 +79,7 @@ export async function openDirDialog() {
 }
 
 /**
- * Writes the content to disk.
+ * Writes the content to local File system.
  *
  * @param {FileSystemFileHandle} fileHandle File handle to write to.
  * @param {string} content Contents to write.
@@ -94,7 +95,7 @@ export async function writeFile(fileHandle, content) {
     const writable = await fileHandle.createWritable();
     // Write the contents of the file to the stream.
     await writable.write(content);
-    // Close the file and write the contents to disk.
+    // Close the file and write the contents to local File syetem.
     await writable.close();
   } catch (error) {
     console.log('An error occured on write file: ', error);
@@ -104,13 +105,15 @@ export async function writeFile(fileHandle, content) {
 
 /**
  * get or create FileHandle, verify permission and upsert to store.
+ * Importtant: unique title or filename as key to store Handle, 
+ * Note: to consistent with Notes store, use unique title
+ * Other: can use filename
  *
- * @param {string} name name or title
- * @param {string} id optional, the custom key for handle in store
- * @param {boolean} asReal optional, if keep name as the handle name
+ * @param {string} name name(name.ext or title)
+ * @param {boolean} withExt default False, optional, True if name with extension
  * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
  */
-export async function getFileHandle(name, id='', asReal=false) {
+export async function getOrNewFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {
     return undefined;
   }
@@ -119,7 +122,7 @@ export async function getFileHandle(name, id='', asReal=false) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name, asReal);
+      const [,handleName] = getRealHandleName(name, withExt);
       // Error may occur here: NotAllowedError, PermissionStatus is not 'granted'.
       fileHandle = await dirHandle.getFileHandle(handleName, {create: true});
       if (fileHandle) {
@@ -128,7 +131,7 @@ export async function getFileHandle(name, id='', asReal=false) {
           console.log(`No permission to '${fileHandle.name}'`);
           return undefined;
         }
-        store.getState().upsertHandle(id || name, fileHandle);
+        store.getState().upsertHandle(name, fileHandle);
       }
     } catch (error) {
       // FIXME: sometimes on import, no prompt to request permission but error occur 
@@ -148,10 +151,10 @@ export async function getFileHandle(name, id='', asReal=false) {
 /**
  * del FileHandle
  *
- * @param {string} name name or title
- * @param {boolean} asReal optional, if keep name as the handle name
+ * @param {string} name file.name or title
+ * @param {boolean} withExt default False, optional, True if name with extension
  */
- export async function delFileHandle(name, asReal=false) {
+ export async function delFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {
     return;
   }
@@ -159,7 +162,7 @@ export async function getFileHandle(name, id='', asReal=false) {
   const dirHandle = store.getState().dirHandle;
   if (dirHandle) {
     try {
-      const [,handleName] = getRealHandleName(name, asReal);
+      const [,handleName] = getRealHandleName(name, withExt);
       await dirHandle.removeEntry(handleName);
       store.getState().deleteHandle(name);
     } catch (error) {
@@ -172,14 +175,12 @@ export async function getFileHandle(name, id='', asReal=false) {
 
 /**
  * try to get the FileHandle name from store
- * @param {string} name name or title
- * @param {boolean} asReal optional, if keep name as the handle name
- * @return {[FileSystemFileHandle, string]} [handle, name]
+ * @param {string} name file.name or title
+ * @param {boolean} withExt optional, True if name with extension
+ * @return {[FileSystemFileHandle, string]} [handle, name], default ext: .md
  * 
- * for key(name|title) lose the file extension info when store, 
- * and FileHandle name includes file extension info
  */
-function getRealHandleName(name, asReal=false) {
+function getRealHandleName(name, withExt) {
   if (!FileSystemAccess.support(window)) {
     return [null, ''];
   }
@@ -188,12 +189,12 @@ function getRealHandleName(name, asReal=false) {
   if (existingHandle) {
     return [existingHandle, existingHandle.name];
   } else {
-    return [null, asReal ? name : `${name}.md`];
+    return [null, withExt ? name : `${name}.md`];
   }
 }
 
 /**
- * Writes all works to json on disk.
+ * Writes all works to json on local file system.
  *
  * @param {string} json, optional, Contents to write to json Handle.
  */
@@ -203,7 +204,7 @@ export async function writeJsonFile(json = '') {
   }
 
   try {
-    const jsonHandle = await getFileHandle('mdSilo_all.json', '', true);
+    const jsonHandle = await getOrNewFileHandle('mdSilo_all.json', true);
     const notesJson = json || buildNotesJson();
     if (jsonHandle) {
       await writeFile(jsonHandle, notesJson);

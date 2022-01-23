@@ -91,6 +91,17 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
   return response;
 }
 
+export async function loadDbWikiNotePerTitle(noteTitle: string) {
+  const response = await apiClient
+    .from<Note>('notes')
+    .select(selectColumns)
+    .eq('is_wiki', true)
+    .eq('title', noteTitle)
+    .single();
+
+  return response;
+}
+
 export async function loadDbNotePerTitle(noteTitle: string) {
   const response = await apiClient
     .from<Note>('notes')

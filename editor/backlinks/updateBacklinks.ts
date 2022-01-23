@@ -7,8 +7,16 @@ import apiClient from 'lib/apiClient';
 import { updateDbNote } from 'lib/api/curdNote';
 import { computeLinkedBacklinks } from './useBacklinks';
 
-// Updates the backlink properties on the current note title changed.
-const updateBacklinks = async (newTitle: string, noteId: string) => {
+
+/**
+ * Updates the backlink properties of notes on the current note title changed,and 
+ * id changed for a special case.
+ * the current note is the note other notes link to
+ * @param newTitle of note other notes link to
+ * @param noteId of note other notes link to
+ * @param newId of note other notes link to
+ */
+const updateBacklinks = async (newTitle: string, noteId: string, newId = '') => {
   const notes = store.getState().notes;
   const backlinks = computeLinkedBacklinks(notes, noteId);
   const updateData: Pick<Note, 'id' | 'content'>[] = [];
@@ -45,6 +53,11 @@ const updateBacklinks = async (newTitle: string, noteId: string) => {
 
         // Update noteTitle property on the node
         linkNode.noteTitle = newTitle;
+        // special case for update pub-link's noteId 
+        // for the noteId omitted when procee PubLink on import
+        if (newId && newTitle == noteId) {
+          linkNode.noteId = newId;
+        }
 
         // If there is no custom text, then the link text should be the same as the note title
         if (!linkNode.customText) {

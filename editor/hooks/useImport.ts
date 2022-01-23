@@ -5,16 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
+import remarkToSlate from 'editor/serialization/remarkToSlate';
 import wikiLinkPlugin from 'editor/serialization/wikilink/index';
+import pubLinkPlugin from 'editor/serialization/publink/index';
 import { store, useStore, Notes, NoteTreeItem, WikiTreeItem, NotesData } from 'lib/store';
 import type { NoteUpsert } from 'lib/api/curdNote';
 import apiClient from 'lib/apiClient';
 import { getDefaultEditorValue } from 'editor/constants';
-import remarkToSlate from 'editor/serialization/remarkToSlate';
 import { ciStringEqual } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
-import { getFileHandle, writeFile } from './useFSA';
+import { getOrNewFileHandle, writeFile } from './useFSA';
 
 export function useImportJson() {
   const upsertNote = useStore((state) => state.upsertNote);
@@ -43,8 +44,8 @@ export function useImportJson() {
       if (file.type !== 'application/json') {
         return;
       }
-      const fileName = file.name.replace(/\.[^/.]+$/, '');
-      if (!fileName) {
+      const fname = file.name.replace(/\.[^/.]+$/, '');
+      if (!fname) {
         return;
       }
 
@@ -124,7 +125,7 @@ export function useImportMds() {
         return;
       }
 
-      const importingToast = toast.info('Importing notes, Please wait...', {
+      const importingToast = toast.info('Importing, Please wait...', {
         autoClose: false,
         closeButton: false,
         draggable: false,
@@ -148,22 +149,23 @@ export function useImportMds() {
   return onImportMds;
 }
 
-// on Import Mds: 
-// 0- procee txt to Descendant[],
-// 1- process Linking in content, create needed note; 
-// 2- FSA: save txt to File System;
-// 3- Store: set Descendant[] to store system of App
+/**
+ * on Import Mds: 
+ * 0- procee txt to Descendant[],
+ * 1- process Linking in content, create needed note; 
+ * 2- FSA: save txt to File System;
+ * 3- Store: set Descendant[] to store system of App 
+ * 4- Upsert to db in some cases
+ */
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;
-  const offlineMode = store.getState().offlineMode;
- 
+
   const noteTitleToIdCache: Record<string, string | undefined> = {};
   const newNotesData: Note[] = [];
 
   for (const file of fileList) {
-    const fname = file.name;
-    const checkMd = checkFileIsMd(fname);
-    const fileName = getFileName(fname);
+    const fileName = file.name;
+    const checkMd = checkFileIsMd(fileName);
     if (!fileName || !checkMd) {
       continue;
     }
@@ -174,52 +176,65 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       .use(remarkParse)
       .use(remarkGfm)
       .use(wikiLinkPlugin, { aliasDivider: '|' })
+      .use(pubLinkPlugin, { aliasDivider: '|' })
       .use(remarkToSlate)
       .processSync(fileContent);
 
     // process content and create new notes to which NoteLinks in content linked
-    // newLinkedNote with id and title only, w/o content 
+    // newLinkedNote has and must has id and title only, w/ default content...
+    // 
+    // but ignore processing the PubLink to avoid using await on get wiki note id, 
+    // will tackle the isssue of no-noteId on click: PubLinkElement 
+    // 
     const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
       processNoteLinks(result as Descendant[], noteTitleToIdCache);
 
+    // new note from file
+    // Issue Alert: same title but diff ext, only one file can be imported
+    const newNoteTitle = rmFileNameExt(fileName);
+    const lastModDate = new Date(file.lastModified).toISOString();
+    const newNoteObj = {
+      id: noteTitleToIdCache[newNoteTitle.toLowerCase()] ?? uuidv4(),
+      title: newNoteTitle,
+      content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
+      created_at: lastModDate,
+      updated_at: lastModDate,
+    };
+    const newProcessedNote = {...defaultNote, ...newNoteObj};
+
+    // save to title-id cache when new note from file: newProcessedNote
+    noteTitleToIdCache[newNoteTitle.toLowerCase()] = newNoteObj.id;
+
     // Two type of note on process/import: 
-    // 1- note imported from file and 
-    // 2- new created simple note on process NoteLink in content;
+    // 1- note imported from file (newProcessedNote) and 
+    // 2- new created simple note on process NoteLink in content: newLinkedNote, {id, title};
     // sometimes, imported note has the same title to the noteTitle of NoteLink, 
     // here how to update the content of such note: 
-    // if note created on Process NoteLinks is pushed to newNotesData array
-    // before the note-imported which has more content, can be updated when upsertNote.
-    // if the same note is already created from file, will not create note on processNoteLinks.
+    // 1- if newLinkedNote created on Process NoteLinks is pushed to newNotesData array before 
+    // the newProcessedNote imported which has real content, can be updated when upsertNote.
+    // 2- if the same note is already created from file, will not create note on processNoteLinks.
+    // noteTitleToIdCache will record the created notes's title and id.
+    //
+    // upsert into store, order may matters:
+    newLinkedNotes.forEach(simpleNote => upsertNote(simpleNote)); // upsert Simple Note first
+    upsertNote(newProcessedNote); // upsert processed note with content later, good override
+    // push to Array
     newNotesData.push(...newLinkedNotes);
-
-    // new note from file
-    const newNoteObj = {
-      id: noteTitleToIdCache[fileName.toLowerCase()] ?? uuidv4(),
-      title: fileName,
-      content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
-    };
-    // save to title-id cache when new note from file
-    noteTitleToIdCache[fileName.toLowerCase()] = newNoteObj.id;
+    newNotesData.push(newProcessedNote);
 
     // FSA fileHandle: get or create if not-exist, then upsert in store
     if (ifHandle) {
-      const fHandle = await getFileHandle(fileName);
+      const fHandle = await getOrNewFileHandle(newNoteTitle);
       // save fileContent to File System
       if (fHandle) {
         await writeFile(fHandle, fileContent);
       }
     }
-
-    newNotesData.push({
-      ...defaultNote,
-      ...newNoteObj
-    });
   }
 
-  // update to store
-  newNotesData.forEach(note => upsertNote(note));
-
-  // update new notes to db
+  // upsert new notes to db 
+  // Alert: could be a heavy task
+  const offlineMode = store.getState().offlineMode;
   const upsertData: NoteUpsert[] = [];
   if (!offlineMode) {
     upsertData.push(...newNotesData);
@@ -236,7 +251,88 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
   return newNotesData;
 };
 
-// Add the proper note id to the note links.
+/**
+ * Refresh Import File
+ * @param file
+ * @returns 
+ */
+export const refreshImport = async (file: File, title: string) => {
+  // build title-id cache from store
+  const noteTitleToIdCache: Record<string, string | undefined> = {};
+  const notesArr = Object.values(store.getState().notes);
+  const allNotes = notesArr.filter(n => !n.is_wiki);
+  for (const note of allNotes) {
+    noteTitleToIdCache[note.title.toLowerCase()] = note.id;
+  }
+
+  // if the file rename?
+  const fileName = file.name;
+  const checkMd = checkFileIsMd(fileName);
+  if (!fileName || !checkMd) {
+    return;
+  }
+
+  const fileContent = await file.text();
+
+  // process Markdown/txt to Descendant[]
+  const { result } = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(wikiLinkPlugin, { aliasDivider: '|' })
+    .use(pubLinkPlugin, { aliasDivider: '|' })
+    .use(remarkToSlate)
+    .processSync(fileContent);
+
+  // process content and create new notes to which NoteLinks in content linked
+  // newLinkedNote has and must has id and title only, w/ default content...
+  // new NoteLink may be added on modification even though 
+  // the notes are already existing in most case, 
+  const { content: slateContent, newLinkedNoteArr: newLinkedNotes } =
+    processNoteLinks(result as Descendant[], noteTitleToIdCache);
+
+  // new note from file
+  const noteId = noteTitleToIdCache[title.toLowerCase()];
+  if (!noteId) {
+    return;
+  }
+  
+  const lastModDate = new Date(file.lastModified).toISOString();
+  const newNoteObj = {
+    id: noteId,
+    title,
+    content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
+    created_at: lastModDate,
+    updated_at: lastModDate,
+  };
+  const reProcessedNote: Note = {...defaultNote, ...newNoteObj};
+
+  // upsert into store
+  const upsertNote = store.getState().upsertNote;
+  // can make sure that: the note existing in store will not be re-created.
+  newLinkedNotes.forEach(simpleNote => upsertNote(simpleNote));
+  upsertNote(reProcessedNote); // upsert processed note with content
+
+  // upsert new notes to db 
+  const offlineMode = store.getState().offlineMode;
+  const upsertData: NoteUpsert[] = [];
+  if (!offlineMode) {
+    upsertData.push(reProcessedNote);
+    // fix with actual user id
+    const userId = apiClient.auth.user()?.id; 
+    if (userId) {
+      upsertData.forEach(n => n.user_id = userId);
+      await apiClient
+        .from<Note>('notes')
+        .upsert(upsertData, { onConflict: 'user_id, title' });
+    }
+  }
+
+  return reProcessedNote;
+};
+
+/** 
+ *  Add the proper note id to the note links. 
+ */
 const processNoteLinks = (
   content: Descendant[],
   noteTitleToIdCache: Record<string, string | undefined> = {}
@@ -292,6 +388,7 @@ const getNoteId = (
     noteId = existingNoteId;
   } else {
     // Create new note from NoteLink, w/ id and title only
+    // newLinkedNote here:
     noteId = uuidv4(); 
     const newLinkedNoteObj = {
       id: noteId, 
@@ -302,7 +399,7 @@ const getNoteId = (
       ...newLinkedNoteObj,
     });
   }
-  // save to title-id cache when new note from NoteLink
+  // save to title-id cache when new note from NoteLink: newLinkedNote
   noteTitleToIdCache[noteTitle.toLowerCase()] = noteId;
 
   return noteId;
@@ -311,11 +408,11 @@ const getNoteId = (
 /* #endregion: import process */
 
 /**
- * file name without extension
+ * remove file name extension
  *
- * @param {string} fname, file name with extension.
+ * @param {string} fname, file name.
  */
-export const getFileName = (fname: string) => {
+export const rmFileNameExt = (fname: string) => {
   return fname.replace(/\.[^/.]+$/, '');
 }
 

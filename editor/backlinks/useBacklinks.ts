@@ -51,7 +51,7 @@ export default function useBacklinks(noteId: string) {
 // the backlinks generated and updated locally only
 // will not make public any private data involved even on wiki note
 
-// Searches the notes note-linked to the given noteId
+// Searches the notes linked to the given noteId
 export const computeLinkedBacklinks = (
   notes: Notes,
   noteId: string

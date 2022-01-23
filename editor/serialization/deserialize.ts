@@ -98,7 +98,7 @@ export default function deserialize(
       };
     // this case for noteLink name from: editor/serialize/wikilin/fromMarkdown
     case 'wikiLink':
-      // Note ids are added later
+      // Note ids are added later: useImport-processNoteLinks
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return {
@@ -111,12 +111,14 @@ export default function deserialize(
         children: [{ text: node.value ?? '' }],
       };
     case 'pubLink':
-      // ids are omitted and are added later
+      // id is title as placeholder and change LinkClick behavior to tackle this issue,
+      // get noteId first per title on click: PubLinkElement
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return {
         id: createNodeId(),
         type: ElementType.PubLink,
+        noteId: node.value ?? '', // !!same to title, useful in PubLinkElement to check id 
         noteTitle: node.value ?? '',
         ...(node.data?.alias && node.data.alias !== node.value
           ? { customText: node.data.alias }

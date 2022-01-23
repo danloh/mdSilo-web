@@ -6,9 +6,7 @@ import { queryParamToArray } from 'utils/helper';
 
 export default function useOnNoteLinkClick(currentNoteId: string) {
   const router = useRouter();
-  const {
-    query: { stack: stackQuery },
-  } = router;
+  const { query: { stack: stackQuery },} = router;
   const openNoteIds = useStore((state) => state.openNoteIds);
   const isPageStackingOn = useStore((state) => state.isPageStackingOn);
 
@@ -55,9 +53,7 @@ export default function useOnNoteLinkClick(currentNoteId: string) {
         (openNoteId) => openNoteId === currentNoteId
       );
       if (currentNoteIndex < 0) {
-        console.error(
-          `Error: current note ${currentNoteId} is not in open notes`
-        );
+        console.log(`Error: current ${currentNoteId} is not in open notes`);
         return;
       }
 

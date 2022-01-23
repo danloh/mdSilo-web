@@ -39,7 +39,7 @@ export default function SidebarExport(props: Props) {
         <Menu.Items className="absolute z-20 w-auto overflow-hidden bg-white rounded top-full shadow-popover dark:bg-gray-800 focus:outline-none">
           <DropdownItem onClick={onExportJson}>
             <IconFileDownload size={18} className="mr-1" />
-            <Tooltip content="Export Json"><span>Export</span></Tooltip>
+            <Tooltip content="Export JSON"><span>Export</span></Tooltip>
           </DropdownItem>
           {(hasFSA && !inDir) ? (
             <DropdownItem onClick={onOpenFolder}>
@@ -50,11 +50,11 @@ export default function SidebarExport(props: Props) {
           <>
             <DropdownItem onClick={onImportFile}>
               <IconFileText size={18} className="mr-1" />
-              <Tooltip content="Import .md | .txt"><span>File</span></Tooltip>
+              <Tooltip content="Import .md | .txt"><span>Text</span></Tooltip>
             </DropdownItem>
             <DropdownItem onClick={onImportJson}>
               <IconFileUpload size={18} className="mr-1" />
-              <Tooltip content="Import Json"><span>Json</span></Tooltip>
+              <Tooltip content="Import JSON"><span>JSON</span></Tooltip>
             </DropdownItem>
           </>) : null}
           <DropdownItem onClick={delDemoNotes}>

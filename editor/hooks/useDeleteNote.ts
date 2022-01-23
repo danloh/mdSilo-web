@@ -4,6 +4,7 @@ import deleteBacklinks from 'editor/backlinks/deleteBacklinks';
 import { deleteDbNote } from 'lib/api/curdNote';
 import { store, useStore } from 'lib/store';
 import { useAuthContext } from 'utils/useAuth';
+import { delFileHandle } from './useFSA';
 
 export default function useDeleteNote(noteId: string) {
   const { user } = useAuthContext();
@@ -35,9 +36,15 @@ export default function useDeleteNote(noteId: string) {
         router.push('/app');
       }
     }
+    
+    // get title for del FileHandle
+    const title = store.getState().notes[noteId].title;
     // delete locally and update backlinks
     store.getState().deleteNote(noteId);
     await deleteBacklinks(noteId);
+    // FSA: del FileHandle
+    // Alert: permanently del
+    await delFileHandle(title);
 
     // delete in db if not offlineMode
     if (!offlineMode && user) {

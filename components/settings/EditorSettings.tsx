@@ -46,7 +46,7 @@ export default function EditorSettings() {
       </div>
       <div className="py-2"></div>
       <div className="mb-4 border-t dark:border-gray-700">
-        <h1 className="text-lg font-medium">Auto-Export Json on Close/Reload</h1>
+        <h1 className="text-lg font-medium">Auto-Export JSON on Close/Reload</h1>
         <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
           Avoid Loss of Works
         </p>

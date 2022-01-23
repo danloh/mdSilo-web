@@ -136,7 +136,7 @@ export default function NoteHeader(props: Props) {
                         className="border-t dark:border-gray-700"
                       >
                         <IconTrash size={18} className="mr-1" />
-                        <span>Delete</span>
+                        <span>Delete Permanently</span>
                       </DropdownItem>
                       <DropdownItem onClick={onMoveToClick}>
                         <IconCornerDownRight size={18} className="mr-1" />

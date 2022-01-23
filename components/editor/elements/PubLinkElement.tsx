@@ -1,10 +1,15 @@
 import { ReactNode } from 'react';
 import { RenderElementProps } from 'slate-react';
 import classNames from 'classnames';
+import { store } from 'lib/store';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
+import { getOrCreateNoteId } from 'editor/plugins/withAutoMarkdown/handleInlineShortcuts';
+import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { PubLink } from 'editor/slate';
 import Tooltip from 'components/misc/Tooltip';
+import { loadDbWikiNotePerTitle } from 'lib/api/curdNote'
+import { ciStringEqual } from 'utils/helper';
 
 type PubLinkElementProps = {
   element: PubLink;
@@ -20,6 +25,37 @@ export default function PubLinkElement(props: PubLinkElementProps) {
   const currentNote = useCurrentContext();
   const { onClick: onNoteLinkClick, defaultStackingBehavior } =
     useOnNoteLinkClick(currentNote.id);
+  
+  // Load wiki note first to get noteId if no noteId in Element, 
+  const getWikiNoteId = async (title: string, id: string) => {
+    if (id.trim() && id.trim() !== title.trim()) {
+      return id;
+    } else if (title.trim()) {
+      // first lookup in store
+      const wikiNotes = Object.values(store.getState().notes).filter(n => n.is_wiki);
+      const existingWikiNote = wikiNotes.find((note) =>
+        ciStringEqual(note.title, title) && note.is_wiki 
+      );
+      if (existingWikiNote) {
+        return existingWikiNote.id;
+      }
+      
+      // then load from db
+      const wikiNoteRes = await loadDbWikiNotePerTitle(title);
+      const wikiNote = wikiNoteRes.data;
+      if (wikiNote) {
+        store.getState().upsertNote(wikiNote);
+        // update the real noteId to Element's noteId
+        const newId = wikiNote.id;
+        await updateBacklinks(title, title, newId);
+        return newId;
+      } else {
+        // finally, new wiki Note 
+        const noteId = getOrCreateNoteId(title, true);
+        return noteId;
+      }
+    }
+  }
 
   return (
     <Tooltip
@@ -29,9 +65,11 @@ export default function PubLinkElement(props: PubLinkElementProps) {
       <span
         role="button"
         className={linkClassName}
-        onClick={(e) => {
+        onClick={async (e) => {
           e.stopPropagation();
-          onNoteLinkClick(element.noteId, defaultStackingBehavior(e));
+          const wikiNoteId = await getWikiNoteId(element.noteTitle, element.noteId);
+          if (!wikiNoteId) return;
+          onNoteLinkClick(wikiNoteId, defaultStackingBehavior(e));
         }}
         contentEditable={false}
         {...attributes}

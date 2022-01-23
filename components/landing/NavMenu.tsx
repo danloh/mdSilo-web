@@ -18,7 +18,7 @@ export default function NavMenu(props: Props) {
   });
 
   const navMenuClassNames = classNames(
-    'absolute top-0 inset-x-0 p-2 transition transform origin-top-right', { hidden: !isOpen }
+    'z-20 absolute top-0 inset-x-0 p-2 transition transform origin-top-right', { hidden: !isOpen }
   );
 
   return (

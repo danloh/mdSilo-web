@@ -14,13 +14,14 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 import serialize from 'editor/serialization/serialize';
 import { getDefaultEditorValue } from 'editor/constants';
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile, getFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';
+import { 
+  writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile,
+} from 'editor/hooks/useFSA';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import NoteHeader from './NoteHeader';
-
 
 const SYNC_DEBOUNCE_MS = 1000;
 
@@ -48,7 +49,7 @@ function Note(props: Props) {
   const [noteExists, setNoteExists] = useState(initNoteExists)
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
   
-  // refresh load note if it isWiki or not-exist locally
+  // load note if it isWiki or not-exist locally
   const loadNote = async (noteId: string) => {
     const {data: note} = await loadDbNote(noteId);
     if (note) {
@@ -57,9 +58,10 @@ function Note(props: Props) {
       setIsWiki(note.is_wiki);
     }
   };
+
   useEffect(() => { 
     if ((isWiki || !noteExists) && !isLoaded ) {
-      loadNote(noteId)
+      loadNote(noteId);
     }
     return () => {
       setIsLoaded(true);
@@ -73,31 +75,33 @@ function Note(props: Props) {
     (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
   );
 
-  const setValue = useCallback(
+  // update locally
+  const setValueOnChange = useCallback(
     async (value: Descendant[]) => {
-      store.getState().updateNote({ id: noteId, content: value });
-      // write to local disk if hasFSA
+      updateNote({ id: noteId, content: value });
+      // write to local file system if hasFSA
       if (FileSystemAccess.support(window)) {
-        const handle = store.getState().handles[title];// || await getFileHandle(title);
-        const content = value.map((n) => serialize(n)).join('');
+        const handle = store.getState().handles[title]
+          || await getOrNewFileHandle(title);
         if (handle) {
+          const content = value.map((n) => serialize(n)).join('');
           await writeFile(handle, content);
           await writeJsonFile();
         }
       }
     },
-    [noteId, title]
+    [noteId, title, updateNote]
   );
 
-  const noteAttr: Attr = useStore(
+  const initNoteAttr: Attr = useStore(
     (state) => state.notes[noteId]?.attr ?? defaultAttr
   );
-  const setAttr = useCallback(
+  // update locally
+  const setAttrOnChange = useCallback(
     (k: string, v: string) => {
-      const noteAttr = store.getState().notes[noteId]?.attr ?? defaultAttr;
-      const newAttr = Object.assign({}, noteAttr, buildAttr(k,v)); //Object.assign(tar,...src)
+      const newAttr = Object.assign({}, initNoteAttr, buildAttr(k,v)); //Object.assign(tar,...src)
       store.getState().updateNote({ id: noteId, attr: newAttr })
-    }, [noteId]
+    }, [noteId, initNoteAttr]
   );
 
   // use state and useEffect to trigger and handle update
@@ -111,6 +115,7 @@ function Note(props: Props) {
     [syncState]
   );
 
+  // update locally, set the syncState
   const onTitleChange = useCallback(
     async (title: string) => {
       // update note title in storage as unique title
@@ -127,15 +132,15 @@ function Note(props: Props) {
         // save backlinked notes to db, may backlinks updated but note not
         await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
-        // FSA: on rename file
-        const newHandle = await getFileHandle(newTitle);
+        // FSA: on rename file: 1- new FileHandle 
+        const newHandle = await getOrNewFileHandle(newTitle);
         // swap value
         if (newHandle) {
           const content = value.map((n) => serialize(n)).join('');
           await writeFile(newHandle, content);
           await writeJsonFile();
         }
-        // delete the old and redundant
+        // FSA: on rename file: 2- delete the old redundant FileHandle
         await delFileHandle(initTitle);
       } else {
         toast.error(
@@ -289,8 +294,8 @@ function Note(props: Props) {
                     <Trait
                       key={k}
                       traitKey={k}
-                      initialVal={noteAttr[k] || ''}
-                      setAttr={setAttr}
+                      initialVal={initNoteAttr[k] || ''}
+                      setAttr={setAttrOnChange}
                       onChange={onAttrChange}
                     />
                   ))}
@@ -300,7 +305,7 @@ function Note(props: Props) {
                 className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12"
                 noteId={noteId}
                 value={value}
-                setValue={setValue}
+                setValue={setValueOnChange}
                 onChange={onValueChange}
                 highlightedPath={highlightedPath}
                 isWiki={isWiki}
