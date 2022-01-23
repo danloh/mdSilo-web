@@ -179,8 +179,6 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       .use(pubLinkPlugin, { aliasDivider: '|' })
       .use(remarkToSlate)
       .processSync(fileContent);
-    
-    console.log('res: ', result);
 
     // process content and create new notes to which NoteLinks in content linked
     // newLinkedNote has and must has id and title only, w/ default content...

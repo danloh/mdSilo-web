@@ -141,7 +141,11 @@ export const store = createVanilla<
       notes: {},  // all private notes and related wiki notes
       // Sets the notes
       setNotes: setter(set, 'notes'),
-      // update or insert the note
+      /**
+       * update or insert the note
+       * @param {Note} note the note to upsert
+       * @param {boolean} ifUpTree, optional, Defaut True,if upsertTree on upsert
+       */
       upsertNote: (note: Note, ifUpTree = true) => {
         set((state) => {
           if (state.notes[note.id]) {

@@ -160,8 +160,7 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
   const noteTitle = title.trim();
   const notes = store.getState().notes;
   const notesArr = Object.values(notes);
-  const myNotes = notesArr.filter(n => !n.is_wiki);
-  const matchingNote = myNotes.find((note) =>
+  const matchingNote = notesArr.find((note) =>
     ciStringEqual(note.title, noteTitle) && 
     note.is_wiki == is_wiki 
   );
@@ -186,22 +185,31 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
 
     const offlineMode = store.getState().offlineMode;
     if (!offlineMode || is_wiki) {
-      const authId = apiClient.auth.user()?.id;
-      if (!offlineMode && !authId && !is_wiki) {
+      if (!offlineMode && !is_wiki && !apiClient.auth.user()?.id) {
         return noteId;
       }
-      const userId = authId || defaultUserId;
-      const upsertData = {...newNote, user_id: is_wiki ? defaultUserId : userId };
+      const userId = is_wiki 
+        ? defaultUserId 
+        : apiClient.auth.user()?.id || defaultUserId;
+      const upsertData = {...newNote, user_id: userId };
       
-      // The note id may update on upsert old Note, 
+      // The note id may be updated on upsert old Note with new noteId, 
       // noteid (db/linking) consistence issue:
       // private notes: can assert new in this else branch, no such issue,
-      // wiki notes: the id maybe used in others' PubLink, must be consistent:
+      // wiki notes: the id maybe used in others' PubLink, thus it exists in db, 
+      // must be consistent:
       //   handle PubLink: searching triggered before autocomplete, minimal issue,
       //   handle CustomPubLink: trigger bug if input the title of a old note,
       // FIXME: stopgap - ignore dup on upsert, minimize the effect on linking, 
-      //                  but will confuse user: new linking is invalid.
-      upsertDbNote(upsertData, userId); // cannot await here for it will propagate awaits
+      //              but will confuse user: new linking is invalid.
+      // cannot await here for it will propagate awaits, 
+      // and then not work in proper order
+      upsertDbNote(upsertData, userId).then(res => {
+        const newNote = res.data;
+        if (newNote) {
+          noteId = newNote.id; // this not work actually
+        }
+      }); 
     }
   }
 

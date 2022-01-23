@@ -111,14 +111,14 @@ export default function deserialize(
         children: [{ text: node.value ?? '' }],
       };
     case 'pubLink':
-      // ids are omitted and change LinkClick behavior to tackle this issue,
+      // id is title as placeholder and change LinkClick behavior to tackle this issue,
       // get noteId first per title on click: PubLinkElement
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return {
         id: createNodeId(),
         type: ElementType.PubLink,
-        noteId: '', // just a placeholder 
+        noteId: node.value ?? '', // !!same to title, useful in PubLinkElement to check id 
         noteTitle: node.value ?? '',
         ...(node.data?.alias && node.data.alias !== node.value
           ? { customText: node.data.alias }

@@ -26,24 +26,7 @@ export default function NotePage() {
     return state.notes[noteId].title;
   });
 
-  // refresh 
-  // const refreshValue = async (title: string) => { 
-  //   const reNote = await refreshFile(title); 
-  //   if (reNote) {
-  //     console.log("refresh...", reNote)
-  //     //console.log("in store:", store.getState().notes[noteId]?.content)
-  //     //console.log("value here:", value)
-  //   }
-  // };
-
-  // useEffect(() => { 
-  //   if (pageTitle !== siteTitle) {
-  //     refreshValue(pageTitle);
-  //   }
-  // }, [pageTitle]);
-
   useRefresh(pageTitle !== siteTitle ? pageTitle : '');
-
   useBlockBacklinks();
 
   const [highlightedPath, setHighlightedPath] = useState<{
