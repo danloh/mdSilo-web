@@ -272,6 +272,8 @@ export const refreshImport = async (file: File, title: string) => {
     return;
   }
 
+  // toast.info("In sync with changes");
+
   const fileContent = await file.text();
 
   // process Markdown/txt to Descendant[]

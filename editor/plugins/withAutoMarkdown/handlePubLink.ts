@@ -1,6 +1,6 @@
 import { Editor, Point, Transforms } from 'slate';
 import { ElementType, PubLink } from 'editor/slate';
-import { getOrCreateNoteId } from 'editor/handleNoteId';
+import { getOrCreateWikiId } from 'editor/handleNoteId';
 import { createNodeId } from '../withNodeId';
 import { deleteMarkup } from './handleInlineShortcuts';
 
@@ -12,10 +12,10 @@ export default function handlePubLink(
 ): boolean {
   const [, startMark, noteTitle, endMark] = result;
 
-  // Get or generate note id
-  const noteId = getOrCreateNoteId(noteTitle, true);
+  // Get wiki note id or title
+  const noteId = getOrCreateWikiId(noteTitle);
 
-  if (!noteId) {
+  if (!noteId.trim()) {
     return false;
   }
 
@@ -29,7 +29,7 @@ export default function handlePubLink(
   const link: PubLink = {
     id: createNodeId(),
     type: ElementType.PubLink,
-    noteId,
+    noteId, // maybe same to noteTitle
     noteTitle,
     children: [],
   };

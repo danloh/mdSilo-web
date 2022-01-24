@@ -23,7 +23,6 @@ export async function upsertDbNote(note: NoteUpsert, userId: string) {
     )
     .single();
 
-  // Refreshes the list of notes in the sidebar
   const data = response.data;
   if (data) {
     await apiClient

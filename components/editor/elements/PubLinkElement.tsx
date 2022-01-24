@@ -9,7 +9,7 @@ import { PubLink } from 'editor/slate';
 import Tooltip from 'components/misc/Tooltip';
 import { loadDbWikiNotePerTitle } from 'lib/api/curdNote'
 import { ciStringEqual } from 'utils/helper';
-import { getOrCreateNoteId } from 'editor/handleNoteId';
+import { newWikiPerTitle } from 'editor/handleNoteId';
 
 type PubLinkElementProps = {
   element: PubLink;
@@ -31,7 +31,7 @@ export default function PubLinkElement(props: PubLinkElementProps) {
     if (id.trim() && id.trim() !== title.trim()) {
       return id;
     } else if (title.trim()) {
-      // first lookup in store
+      // first lookup in store locally
       const wikiNotes = Object.values(store.getState().notes).filter(n => n.is_wiki);
       const existingWikiNote = wikiNotes.find((note) =>
         ciStringEqual(note.title, title) && note.is_wiki 
@@ -43,6 +43,7 @@ export default function PubLinkElement(props: PubLinkElementProps) {
       // then load from db
       const wikiNoteRes = await loadDbWikiNotePerTitle(title);
       const wikiNote = wikiNoteRes.data;
+      // console.log("load note db", wikiNote);
       if (wikiNote) {
         store.getState().upsertNote(wikiNote);
         // update the real noteId to Element's noteId
@@ -51,8 +52,8 @@ export default function PubLinkElement(props: PubLinkElementProps) {
         return newId;
       } else {
         // finally, new wiki Note 
-        const noteId = getOrCreateNoteId(title, true);
-        return noteId;
+        const note = await newWikiPerTitle(title);
+        return note?.id;
       }
     }
   }

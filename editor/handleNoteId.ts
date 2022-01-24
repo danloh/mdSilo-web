@@ -8,14 +8,13 @@ import { getOrNewFileHandle } from 'editor/hooks/useFSA';
 
 // If the normalized note title exists, then returns the existing note id.
 // Otherwise, creates a new note id.
-export const getOrCreateNoteId = (title: string, is_wiki = false): string | null => {
+export const getOrCreateNoteId = (title: string): string => {
   let noteId;
   const noteTitle = title.trim();
   const notes = store.getState().notes;
   const notesArr = Object.values(notes);
   const matchingNote = notesArr.find((note) =>
-    ciStringEqual(note.title, noteTitle) && 
-    note.is_wiki == is_wiki 
+    ciStringEqual(note.title, noteTitle) && !note.is_wiki
   );
 
   if (matchingNote) {
@@ -27,44 +26,81 @@ export const getOrCreateNoteId = (title: string, is_wiki = false): string | null
       ...defaultNote,
       id: noteId, 
       title: noteTitle, 
-      is_wiki,
       is_daily, 
     };
     store.getState().upsertNote(newNote);
     // new FileHandle and set in store
-    if (!is_wiki) {
-      getOrNewFileHandle(newNote.title); // cannot await here, to avoid awaits propagation
-    }
-
+    getOrNewFileHandle(newNote.title); // cannot await here, to avoid awaits propagation
+    
     const offlineMode = store.getState().offlineMode;
-    if (!offlineMode || is_wiki) {
-      if (!offlineMode && !is_wiki && !apiClient.auth.user()?.id) {
+    if (!offlineMode) {
+      const authId = apiClient.auth.user()?.id;
+      if (!authId) {
         return noteId;
       }
-      const userId = is_wiki 
-        ? defaultUserId 
-        : apiClient.auth.user()?.id || defaultUserId;
-      const upsertData = {...newNote, user_id: userId };
+      const upsertData = {...newNote, user_id: authId };
       
       // The note id may be updated on upsert old Note with new noteId, 
       // noteid (db/linking) consistence issue:
       // private notes: can assert new in this else branch, no such issue,
-      // wiki notes: the id maybe used in others' PubLink, thus it exists in db, 
-      // must be consistent:
-      //   handle PubLink: searching triggered before autocomplete, minimal issue,
-      //   handle CustomPubLink: trigger bug if input the title of a old note,
-      // FIXME: stopgap - ignore dup on upsert, minimize the effect on linking, 
-      //              but will confuse user: new linking is invalid.
-      // cannot await here for it will propagate awaits, 
-      // and then not work in proper order
-      upsertDbNote(upsertData, userId).then(res => {
-        const newNote = res.data;
-        if (newNote) {
-          noteId = newNote.id; // this not work actually
+      upsertDbNote(upsertData, authId).then(res => {
+        const newDbNote = res.data;
+        if (newDbNote) {
+          store.getState().upsertNote(newDbNote);
         }
       }); 
     }
   }
 
   return noteId;
+};
+
+// for Wiki note only
+export const getOrCreateWikiId = (title: string) => {
+  const noteTitle = title.trim();
+  const notes = store.getState().notes;
+  const notesArr = Object.values(notes);
+  const matchingNote = notesArr.find((note) =>
+    ciStringEqual(note.title, noteTitle) && note.is_wiki
+  );
+
+  if (matchingNote) {
+    const noteId = matchingNote.id;
+    return noteId;
+  } else {
+    // The note id may be updated on upsert old Note with new noteId, 
+    // noteid (db/linking) consistence issue:
+    // wiki notes: the id maybe used in others' PubLink, thus it may exists in db, 
+    // must be consistent:
+    //   handle PubLink: searching triggered before autocomplete, minimal issue,
+    //   handle CustomPubLink: trigger bug if input the title of a old note,
+    // Just return noteTitle if not existing locally
+    // delay to get real id till onClick in PubLinkElement
+    return noteTitle;
+  }
+};
+
+/**
+ * better use if we can make sure that no note with this title in db
+ * @param {string} title
+ * @returns {Note}
+ */
+export const newWikiPerTitle = async (title: string) => {
+  const noteTitle = title.trim();
+  const noteId = uuidv4();
+  const newNote = {
+    ...defaultNote,
+    id: noteId, 
+    title: noteTitle, 
+    user_id: defaultUserId,
+    is_wiki: true,
+  };
+  
+  const res = await upsertDbNote(newNote, defaultUserId);
+  const newDbNote = res.data;
+  if (newDbNote) {
+    store.getState().upsertNote(newDbNote);
+  }
+
+  return newDbNote;
 };

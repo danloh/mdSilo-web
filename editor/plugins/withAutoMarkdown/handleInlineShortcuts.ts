@@ -35,9 +35,9 @@ const INLINE_SHORTCUTS: Array<{
   { match: /(?:^|\s)(`)([^`]+)(`)/, type: Mark.Code },
   { match: /(?:^|\s)(~~)([^~]+)(~~)/, type: Mark.Strikethrough },
   { match: /(?:^|\s)(\[)(.+)(\]\()(.+)(\))/, type: ElementType.ExternalLink }, // []()
-  { match: /(?:^|\s)(\[\[)(.+)(\]\])/, type: ElementType.NoteLink },
-  { match: /(?:^|\s)(\{\{)(.+)(\}\})/, type: ElementType.PubLink },
-  { match: /(?:^|\s)(\(\()(.+)(\)\))/, type: ElementType.BlockReference },
+  { match: /(?:^|\s)(\[\[)(.+)(\]\])/, type: ElementType.NoteLink }, // [[]]
+  { match: /(?:^|\s)(\{\{)(.+)(\}\})/, type: ElementType.PubLink },  // {{}}
+  { match: /(?:^|\s)(\(\()(.+)(\)\))/, type: ElementType.BlockReference }, // (())
   { match: /(?:^|\s)(#[^\s]+)(\s)/, type: ElementType.Tag },
   {
     match: /(?:^|\s)(\[)(.+)(\]\(\[\[)(.+)(\]\]\))/, // []([[]])
@@ -58,14 +58,21 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
   for (const shortcut of INLINE_SHORTCUTS) {
     const { match, type } = shortcut;
 
-    // do not handle notelink, blockref if isWiki
+    // Do not handle NoteLink, Block Reference if isWiki
+    if (
+      isWiki && 
+      ( type === ElementType.BlockReference ||  
+        type === ElementType.NoteLink || 
+        type === CustomInlineShortcuts.CustomNoteLink
+      )
+    ) {
+      continue;
+    }
+
+    // hide PubLink shortcut feature due to potential issue
     // if (
-    //   isWiki && 
-    //   ( type === ElementType.BlockReference || 
-    //     type === ElementType.NoteLink || 
-    //     type === CustomInlineShortcuts.CustomNoteLink || 
-    //     type === CustomInlineShortcuts.CustomPubLink
-    //   )
+    //   type === CustomInlineShortcuts.CustomPubLink || 
+    //   type === ElementType.PubLink 
     // ) {
     //   continue;
     // }
@@ -104,21 +111,21 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
         text.length
       );
     } else if (type === ElementType.NoteLink) {
-      handled = isWiki ? false : handleNoteLink(
+      handled = handleNoteLink(
         editor, 
         result, 
         endOfMatchPoint, 
         text.length
       );
     } else if (type === CustomInlineShortcuts.CustomNoteLink) {
-      handled = isWiki ? false : handleCustomNoteLink(
+      handled = handleCustomNoteLink(
         editor,
         result,
         endOfMatchPoint,
         text.length
       );
     } else if (type === ElementType.BlockReference) {
-      handled = isWiki ? false : handleBlockReference(
+      handled = handleBlockReference(
         editor,
         result,
         endOfMatchPoint,
@@ -128,7 +135,7 @@ const handleInlineShortcuts = (editor: Editor, text: string, isWiki: boolean): b
     } else if (type === ElementType.PubLink) {
       handled = handlePubLink(editor, result, endOfMatchPoint, text.length);
     } else if (type === CustomInlineShortcuts.CustomPubLink) {
-      handled = isWiki ? false : handleCustomPubLink(
+      handled = handleCustomPubLink(
         editor,
         result,
         endOfMatchPoint,
