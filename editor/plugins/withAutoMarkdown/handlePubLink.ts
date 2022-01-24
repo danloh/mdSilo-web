@@ -1,7 +1,8 @@
 import { Editor, Point, Transforms } from 'slate';
 import { ElementType, PubLink } from 'editor/slate';
+import { getOrCreateNoteId } from 'editor/handleNoteId';
 import { createNodeId } from '../withNodeId';
-import { deleteMarkup, getOrCreateNoteId } from './handleInlineShortcuts';
+import { deleteMarkup } from './handleInlineShortcuts';
 
 export default function handlePubLink(
   editor: Editor,

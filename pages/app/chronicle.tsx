@@ -8,7 +8,7 @@ import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import NoteSumList from 'components/note/NoteSumList';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { dateCompare, getStrDate } from 'utils/helper';
-import { getOrCreateNoteId } from 'editor/plugins/withAutoMarkdown/handleInlineShortcuts';
+import { getOrCreateNoteId } from 'editor/handleNoteId';
 
 export default function Chronicle() {
   const isSidebarOpen = useStore((state) => state.isSidebarOpen);

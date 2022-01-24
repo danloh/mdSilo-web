@@ -1,13 +1,14 @@
 import { Editor, Point, Transforms } from 'slate';
 import { ElementType, PubLink } from 'editor/slate';
+import { getOrCreateNoteId } from 'editor/handleNoteId';
 import { createNodeId } from '../withNodeId';
-import { deleteMarkup, getOrCreateNoteId } from './handleInlineShortcuts';
+import { deleteMarkup } from './handleInlineShortcuts';
 
 export default function handleCustomPubLink(
   editor: Editor,
   result: RegExpMatchArray,
   endOfMatchPoint: Point,
-  textToInsertLength: number
+  textToInsertLength: number,
 ): boolean {
   const [, startMark, linkText, middleMark, noteTitle, endMark] = result;
 

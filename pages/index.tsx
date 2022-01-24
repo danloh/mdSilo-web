@@ -69,8 +69,8 @@ export default function Home() {
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🪟 Different Views</h3>
-                <p className="pt-1">Stacking View</p>
                 <p className="pt-1">Chronicle View</p>
+                <p className="pt-1">Stacking View</p>
                 <p className="pt-1">Graph View</p>
                 <p className="pt-1">Task View</p>
               </div>
@@ -82,12 +82,9 @@ export default function Home() {
                 </p>
               </div>
               <div className={cardClass}>
-                <h3 className="text-xl font-semibold">🧬 Document Life</h3>
+                <h3 className="text-xl font-semibold">🔒 Private and Secure</h3>
                 <p className="pt-2">
-                  The data sits in a local folder, and even can sit in a single JSON file.
-                </p>
-                <p className="pt-2 text-xs text-gray-500">
-                  *a Desktop App is coming soon. 
+                  Write completely offline. The data sits in a local folder or a single JSON file, even the code is entirely in your control.
                 </p>
               </div>
               <div className={cardClass}>

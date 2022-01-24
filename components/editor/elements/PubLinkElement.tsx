@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { store } from 'lib/store';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
-import { getOrCreateNoteId } from 'editor/plugins/withAutoMarkdown/handleInlineShortcuts';
 import updateBacklinks from 'editor/backlinks/updateBacklinks';
 import { PubLink } from 'editor/slate';
 import Tooltip from 'components/misc/Tooltip';
 import { loadDbWikiNotePerTitle } from 'lib/api/curdNote'
 import { ciStringEqual } from 'utils/helper';
+import { getOrCreateNoteId } from 'editor/handleNoteId';
 
 type PubLinkElementProps = {
   element: PubLink;
