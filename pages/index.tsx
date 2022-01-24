@@ -5,6 +5,7 @@ import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 import Editor from 'components/editor/Editor';
 import { getIndexDemoEditorValue } from 'editor/constants';
+import { ProvideCurrent } from 'editor/hooks/useCurrent';
 
 export default function Home() {
   const cardClass = 'p-8 rounded-md shadow bg-neutral-100 text-gray-800';
@@ -34,12 +35,14 @@ export default function Home() {
                   </Link>
                 </div>
                 <div className="flex flex-1 w-full mx-auto">
-                  <Editor
-                    className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12 bg-gray-800"
-                    value={getIndexDemoEditorValue()}
-                    setValue={() => {/*do nothing*/}}
-                    onChange={() => {/*do nothing*/}}
-                  />
+                  <ProvideCurrent value={{ ty: 'note', id: '0000' }}>
+                    <Editor
+                      className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12 bg-gray-800"
+                      value={getIndexDemoEditorValue()}
+                      setValue={() => {/*do nothing*/}}
+                      onChange={() => {/*do nothing*/}}
+                    />
+                  </ProvideCurrent>
                 </div>
               </div>
             </div>
