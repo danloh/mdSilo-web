@@ -278,7 +278,9 @@ function Editor(props: Props) {
     [editor.selection, onChange, value, setValue]
   );
 
-  const readMode = useStore((state) => state.readMode) || forceReadMode;
+  const readMode = useStore(
+    (state) => isWiki ? state.wikiReadMode : state.readMode
+  ) || forceReadMode;
 
   // If highlightedPath is defined, highlight the path
   const darkMode = useStore((state) => state.darkMode);

@@ -144,7 +144,7 @@ export const store = createVanilla<
       /**
        * update or insert the note
        * @param {Note} note the note to upsert
-       * @param {boolean} ifUpTree, optional, Defaut True,if upsertTree on upsert
+       * @param ifUpTree, boolean, optional, Defaut True,if upsertTree on upsert
        */
       upsertNote: (note: Note, ifUpTree = true) => {
         set((state) => {
