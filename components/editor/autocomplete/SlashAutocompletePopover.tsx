@@ -1,7 +1,8 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import { Editor, Range, Transforms } from 'slate';
+import { Editor, Element, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import type { TablerIcon } from '@tabler/icons';
+import { ElementType } from 'editor/slate';
 import { insertTag } from 'editor/formatting';
 import { deleteText } from 'editor/transforms';
 //import useDebounce from 'editor/hooks/useDebounce';
@@ -67,7 +68,14 @@ export default function SlashAutocompletePopover() {
   const matchSlashRegex = useCallback(() => {
     const { selection } = editor;
 
-    if (!selection || !Range.isCollapsed(selection)) {
+    const inCode = Editor.above(editor, {
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        n.type === ElementType.CodeBlock,
+    });
+
+    if (!selection || !Range.isCollapsed(selection) || inCode) {
       return null;
     }
 
