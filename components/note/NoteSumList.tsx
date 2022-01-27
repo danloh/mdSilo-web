@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { IconPencil } from '@tabler/icons';
 import { Note } from 'types/model';
 import Tree from 'components/misc/Tree';
+import Tooltip from 'components/misc/Tooltip';
 import useSummary from 'editor/hooks/useSummary';
 import ReadOnlyEditor from 'components/editor/ReadOnlyEditor';
 
@@ -23,9 +24,11 @@ export default function NoteSumList(props: Props) {
         <div className="flex w-full mt-2 p-1 bg-gray-100 dark:bg-gray-800">
           <span className="py-1 text-xl text-gray-800 dark:text-gray-100">{anchor}</span>
           {isDate ? (
-            <button className="px-2" onClick={onClick ? () => onClick(anchor) : undefined}>
-              <IconPencil size={16} />
-            </button>
+            <Tooltip content={`Recap: ${anchor}`}>
+              <button className="px-2" onClick={onClick ? () => onClick(anchor) : undefined}>
+                <IconPencil size={16} />
+              </button>
+            </Tooltip>
           ) : null}
         </div>
       ),

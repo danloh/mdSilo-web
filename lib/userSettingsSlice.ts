@@ -34,6 +34,8 @@ export type UserSettings = {
   setIsCheckSpellOn: Setter<boolean>;
   readMode: boolean;
   setReadMode: Setter<boolean>;
+  wikiReadMode: boolean;
+  setWikiReadMode: Setter<boolean>;
   offlineMode: boolean;
   setOfflineMode: Setter<boolean>;
   exportOnClose: boolean;
@@ -57,6 +59,8 @@ const userSettingsSlice = (
   setIsCheckSpellOn: setter(set, 'isCheckSpellOn'),
   readMode: false,
   setReadMode: setter(set, 'readMode'),
+  wikiReadMode: true,
+  setWikiReadMode: setter(set, 'wikiReadMode'),
   offlineMode: true,
   setOfflineMode: setter(set, 'offlineMode'),
   exportOnClose: false,

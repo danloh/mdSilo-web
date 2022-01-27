@@ -17,12 +17,12 @@ import NoteDelModal from 'components/note/NoteDelModal';
 import { NoteExport, NoteExportAll } from 'components/note/NoteExport';
 
 type Props = {
-  isWiki?: boolean;
-  isPub?: boolean;
+  isWiki: boolean;
+  isPub: boolean;
 };
 
 export default function NoteHeader(props: Props) {
-  const { isWiki = false, isPub = false } = props;
+  const { isWiki, isPub } = props;
   const currentNote = useCurrentContext();
   const router = useRouter();
   const {
@@ -75,6 +75,9 @@ export default function NoteHeader(props: Props) {
 
   const readMode = useStore((state) => state.readMode);
   const setReadMode = useStore((state) => state.setReadMode);
+  const wikiReadMode = useStore((state) => state.wikiReadMode);
+  const setWikiReadMode = useStore((state) => state.setWikiReadMode);
+
 
   const [isMoveToModalOpen, setIsMoveToModalOpen] = useState(false);
   const onMoveToClick = useCallback(() => setIsMoveToModalOpen(true), []);
@@ -92,10 +95,10 @@ export default function NoteHeader(props: Props) {
       <div className="flex items-center">
         <span className="text-sm text-gray-300 dark:text-gray-500">Read/Write</span>
         <Toggle
-          id="readmode"
+          id={isWiki ? 'wikiReadMode' : 'readMode'}
           className="mx-2"
-          isChecked={readMode}
-          setIsChecked={setReadMode}
+          isChecked={isWiki ? wikiReadMode : readMode}
+          setIsChecked={isWiki ? setWikiReadMode : setReadMode}
         />
         <span className="text-sm text-gray-300 dark:text-gray-500">Read</span>
       </div>

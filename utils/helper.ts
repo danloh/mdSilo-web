@@ -2,8 +2,21 @@
 
 // date
 //
-// string: mm-dd-yyyy
-export const regDateStr = /^(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])-([0-9]{4})$/;
+// string: yyyy-mm-dd
+export const regDateStr = /^([0-9]{4})-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/;
+
+export function getStrDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+// convert yyyy-mm-dd to date
+export function strToDate(str: string) {
+  if (!regDateStr.test(str)) return new Date();
+  const ymd = str.split("-");
+  const date = new Date(Number(ymd[0]), Number(ymd[1]) - 1, Number(ymd[2]));
+  return date;
+}
 
 export function dateCompare(d1: string, d2: string) {
   return new Date(d1).getTime() - new Date(d2).getTime();
@@ -11,19 +24,6 @@ export function dateCompare(d1: string, d2: string) {
 
 export function realDateCompare(d1: Date, d2: Date) {
   return d1.getTime() - d2.getTime();
-}
-
-export function getStrDate(dateStr: string) {
-  const date = new Date(dateStr);
-  return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
-}
-
-// convert mm-dd-yyyy to date
-export function strToDate(str: string) {
-  if (!regDateStr.test(str)) return new Date();
-  const mdy = str.split("-");
-  const date = new Date(Number(mdy[2]), Number(mdy[0]) - 1, Number(mdy[1]));
-  return date;
 }
 
 // device

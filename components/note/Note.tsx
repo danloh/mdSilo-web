@@ -207,8 +207,7 @@ function Note(props: Props) {
       noteUpdate.attr = note.attr;
     }
 
-    // Note: a potential issue
-    // do not need authed user to update wiki note currently
+    // Do not need authed user to update wiki note currently
     const userId = isWiki ? '' : user?.id || '';
     if (!userId && !isWiki) {
       return;

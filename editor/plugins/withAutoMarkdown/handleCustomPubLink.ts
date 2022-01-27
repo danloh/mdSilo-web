@@ -1,20 +1,21 @@
 import { Editor, Point, Transforms } from 'slate';
 import { ElementType, PubLink } from 'editor/slate';
+import { getOrCreateWikiId } from 'editor/handleNoteId';
 import { createNodeId } from '../withNodeId';
-import { deleteMarkup, getOrCreateNoteId } from './handleInlineShortcuts';
+import { deleteMarkup } from './handleInlineShortcuts';
 
 export default function handleCustomPubLink(
   editor: Editor,
   result: RegExpMatchArray,
   endOfMatchPoint: Point,
-  textToInsertLength: number
+  textToInsertLength: number,
 ): boolean {
   const [, startMark, linkText, middleMark, noteTitle, endMark] = result;
 
-  // Get or generate note id
-  const noteId = getOrCreateNoteId(noteTitle, true);
+  // Get wiki note id or title
+  const noteId = getOrCreateWikiId(noteTitle);
 
-  if (!noteId) {
+  if (!noteId.trim()) {
     return false;
   }
 
@@ -28,7 +29,7 @@ export default function handleCustomPubLink(
   const link: PubLink = {
     id: createNodeId(),
     type: ElementType.PubLink,
-    noteId,
+    noteId, // maybe same to noteTitle
     noteTitle,
     customText: linkText,
     children: [],
