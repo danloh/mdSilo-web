@@ -21,7 +21,10 @@ type PubLinkElementProps = {
 export default function PubLinkElement(props: PubLinkElementProps) {
   const { element, children, attributes, className } = props;
 
-  const linkClassName = classNames("link shadow px-1 py-0.5 bg-gray-100 dark:bg-gray-800", className);
+  const linkClassName = classNames(
+    "link shadow-md p-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800", 
+    className
+  );
   const currentNote = useCurrentContext();
   const { onClick: onNoteLinkClick, defaultStackingBehavior } =
     useOnNoteLinkClick(currentNote.id);

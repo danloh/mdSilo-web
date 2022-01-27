@@ -30,8 +30,8 @@ export default function BlockRefElement(props: BlockRefElementProps) {
     useOnNoteLinkClick(currentNote.id);
 
   const blockRefClassName = classNames(
-    'p-2 border-b border-l-2 border-gray-200 select-none cursor-alias hover:bg-gray-100 active:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-800',
-    { 'bg-gray-200 dark:bg-gray-800': selected && focused },
+    'p-2 border-b border-l-2 border-gray-200 select-none cursor-alias hover:bg-gray-200 active:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 dark:active:bg-gray-800',
+    { 'bg-gray-100 dark:bg-gray-500': selected && focused },
     className
   );
 
