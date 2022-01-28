@@ -52,7 +52,7 @@ export default function CheckListItemElement(props: Props) {
           type="checkbox"
           checked={checked}
           onChange={onInputChange}
-          className="bg-transparent border-2 border-primary-500 text-primary-400 hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600 active:bg-primary-200 active:text-primary-700 focus:ring-0"
+          className="bg-transparent border-2 text-primary-400 hover:cursor-pointer hover:bg-primary-100 hover:text-primary-600 active:bg-primary-200 active:text-primary-700 focus:ring-0"
         />
       </div>
       <span
