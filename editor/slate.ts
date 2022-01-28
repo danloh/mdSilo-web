@@ -20,6 +20,7 @@ export enum ElementType {
   BlockReference = 'block-reference',
   Tag = 'tag',
   CodeBlock = 'code-block',
+  CodeLine = 'code-line',
   ThematicBreak = 'thematic-break',
   Image = 'image',
   Table = 'table',
@@ -126,6 +127,13 @@ export type Tag = {
 export type CodeBlock = {
   id: string;
   type: ElementType.CodeBlock;
+  lang?: string;
+  children: Descendant[];
+};
+
+export type CodeLine = {
+  id: string;
+  type: ElementType.CodeLine;
   children: Descendant[];
 };
 
@@ -179,6 +187,7 @@ export type ReferenceableBlockElement =
   | CheckListItem
   | Blockquote
   | CodeBlock
+  | CodeLine 
   | ThematicBreak
   | Image
   | BlockReference;
