@@ -10,6 +10,7 @@ const withAutoMarkdown = (editor: Editor, isWiki: boolean) => {
   editor.insertText = (text) => {
     const handled = handleAutoMarkdown(editor, text, isWiki);
     if (!handled) {
+      // text = text.replace(/\r\n?/g, '\n');
       insertText(text);
     }
   };
@@ -17,6 +18,14 @@ const withAutoMarkdown = (editor: Editor, isWiki: boolean) => {
   editor.insertData = (data) => {
     const text = data.getData('text/plain');
     const handled = handleAutoMarkdown(editor, text, isWiki);
+
+    // in code block
+    if (handled === undefined) {
+      const txt = text.replace(/\r\n?/g, '\n');
+      insertText(txt);
+      return;
+    }
+    
     if (!handled) {
       insertData(data);
     }
@@ -35,7 +44,7 @@ const handleAutoMarkdown = (editor: Editor, text: string, isWiki: boolean) => {
   });
 
   if (inCodeBlock) {
-    return;
+    return undefined;
   }
 
   // Handle shortcuts at the beginning of a line
