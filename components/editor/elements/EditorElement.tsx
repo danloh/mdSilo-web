@@ -10,6 +10,7 @@ import PubLinkElement from './PubLinkElement';
 import CheckListItemElement from './CheckListItemElement';
 import TagElement from './TagElement';
 import { TableElement, TableRowElement, TableCellElement } from './TableElement';
+import { CodeBlockElement } from './CodeBlockElement';
 
 export type EditorElementProps = {
   className?: string;
@@ -74,13 +75,24 @@ export default function EditorElement(props: EditorElementProps) {
       );
     case ElementType.CodeBlock:
       return (
-        <code
-          className={`block p-2 bg-gray-100 border border-gray-200 rounded dark:bg-gray-800 dark:border-gray-700 ${className}`}
-          {...attributes}
+        <CodeBlockElement
+          className={className}
+          element={element}
+          attributes={attributes}
         >
           {children}
-        </code>
+        </CodeBlockElement>
       );
+    // case ElementType.CodeBlock:
+    //   return (
+    //     <code
+    //       className={`block p-2 bg-gray-100 border border-gray-200 rounded dark:bg-gray-800 dark:border-gray-700 ${className}`} 
+    //       spellCheck="false"
+    //       {...attributes}
+    //     >
+    //       {children}
+    //     </code>
+    //   );
     case ElementType.ThematicBreak:
       return (
         <ThematicBreakElement className={className} attributes={attributes}>
