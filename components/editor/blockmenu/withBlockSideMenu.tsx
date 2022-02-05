@@ -21,6 +21,7 @@ export default function withBlockSideMenu(
         <EditorElement {...props} />
         <BlockMenuDropdown
           element={element}
+          isWiki={isWiki}
           /**
            * We're using opacity 0.001 here to support iOS Safari.
            * If we use anything else to hide this element, it would
