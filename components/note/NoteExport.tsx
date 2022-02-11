@@ -1,12 +1,14 @@
 import { useCallback } from 'react';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
+import { v4 as uuidv4 } from 'uuid';
 import { IconFileExport, IconFileDownload } from '@tabler/icons';
 import { Note } from 'types/model';
-import { store, NotesData } from 'lib/store';
+import { store, NotesData, Notes, NoteTreeItem, TitleTreeItem } from 'lib/store';
 import serialize from 'editor/serialization/serialize';
 import { purgeUnLinkedWikiNotes } from 'editor/backlinks/useBacklinks';
 import { DropdownItem } from 'components/misc/Dropdown';
+import { ciStringEqual } from 'utils/helper';
 
 type Props = {
   note: Note;
@@ -79,15 +81,50 @@ export const getNoteAsBlob = (note: Note) => {
   return blob;
 };
 
-export const buildNotesJson = () => {
+export const buildNotesJson = (withTitleTree = false) => {
   purgeUnLinkedWikiNotes();
   const notesObj = store.getState().notes;
   const noteTree = store.getState().noteTree;
   const wikiTree = store.getState().wikiTree;
-  const notesData: NotesData = {notesObj, noteTree, wikiTree};
+  const titleTree = withTitleTree ? buildTitleTree(noteTree, notesObj) : [];
+  const notesData: NotesData = {notesObj, noteTree, wikiTree, titleTree};
   const notesJson = JSON.stringify(notesData);
   return notesJson;
 }
+
+/**
+ * map noteTree to titleTree
+ * @param noteTree 
+ * @param notes 
+ * @returns titleTree
+ */
+const buildTitleTree = (noteTree: NoteTreeItem[], notes: Notes): TitleTreeItem[] => {
+  const titleTree = noteTree.map((item) => {
+    const title = notes[item.id].title;
+    const children: TitleTreeItem[] = buildTitleTree(item.children, notes);
+    const titleItem: TitleTreeItem = {title, children};
+    return titleItem;
+  });
+  return titleTree;
+};
+
+/**
+ * map titleTree to noteTree
+ * @param titleTree 
+ * @param notes 
+ * @returns noteTree
+ */
+export const buildNoteTree = (titleTree: TitleTreeItem[], notes: Notes): NoteTreeItem[] => {
+  const noteTree = titleTree.map((item) => {
+    const note = Object.values(notes).find((n) => ciStringEqual(n.title, item.title));
+    const id = note?.id || uuidv4();
+    const children: NoteTreeItem[] = buildNoteTree(item.children, notes);
+    const treeItem: NoteTreeItem = {id, children, collapsed: false};
+    return treeItem;
+  });
+  return noteTree;
+};
+
 
 const nowToRadix36Str = () => {
   const now = Math.floor(Date.now() / 100); // 0.1s

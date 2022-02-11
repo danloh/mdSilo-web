@@ -41,20 +41,26 @@ export type Notes = Record<Note['id'], Note>;
 export type FileHandles = Record<string, any>; // FileSystemFileHandle
 
 export type NoteTreeItem = {
-  id: Note['id'];
+  id: Note['id'];  
   children: NoteTreeItem[];
   collapsed: boolean;
 };
 
 export type WikiTreeItem = {
-  id: Note['id']; // wiki note
+  id: Note['id'];         // wiki note
   children: Note['id'][]; // private notes
+};
+
+export type TitleTreeItem = {
+  title: Note['title'];
+  children: TitleTreeItem[];
 };
 
 export type NotesData = {
   notesObj: Notes;
   noteTree: NoteTreeItem[];
   wikiTree: WikiTreeItem[];
+  titleTree?: TitleTreeItem[];
 }
 
 export enum SidebarTab {

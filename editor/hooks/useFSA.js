@@ -3,7 +3,7 @@
 import { toast } from 'react-toastify';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
-import { exportNotesJson, buildNotesJson } from 'components/note/NoteExport';
+import { exportNotesJson, buildNotesJson, buildNoteTree } from 'components/note/NoteExport';
 import { processImport, checkFileIsMd, rmFileNameExt } from './useImport';
 
 /**
@@ -41,6 +41,7 @@ export async function openDirDialog() {
         closeButton: true,
         draggable: false,
       });
+      let jsonTxt; // to get json content that stored all notes and tree
       // key: filename or dir name 
       // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
       for await (const [key, value] of dirHandle.entries()) {
@@ -58,6 +59,11 @@ export async function openDirDialog() {
           fileList.push(fileData);
           store.getState().upsertHandle(title, value);
         }
+        // get json file that stored all the notes and trees
+        if (key === 'mdSilo_all.json') {
+          const jsonFile = await value.getFile();
+          jsonTxt = await jsonFile.text();
+        }
       }
       // console.log("handles", store.getState().handles)
       // for performance:
@@ -68,6 +74,14 @@ export async function openDirDialog() {
       await processImport(fileList, false);
       // close the toast
       toast.dismiss(openToast);
+      // restore the file hierarchy
+      if (jsonTxt) {
+        // restore the noteTree
+        const notesData = JSON.parse(jsonTxt);
+        const storedTitleTree = notesData.titleTree;
+        const newNoteTree = buildNoteTree(storedTitleTree, store.getState().notes)
+        store.getState().setNoteTree(newNoteTree);
+      }
     }
   } catch (error) {
     // `showDirectoryPicker` will throw an error when the user cancels
@@ -205,7 +219,7 @@ export async function writeJsonFile(json = '') {
 
   try {
     const jsonHandle = await getOrNewFileHandle('mdSilo_all.json', true);
-    const notesJson = json || buildNotesJson();
+    const notesJson = json || buildNotesJson(true);
     if (jsonHandle) {
       await writeFile(jsonHandle, notesJson);
     }
