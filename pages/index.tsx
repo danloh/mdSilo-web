@@ -56,7 +56,8 @@ export default function Home() {
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
                 <p className="pt-1">Import and Export (Markdown, JSON)</p>
-                <p className="pt-1">Local File Access<sup className="text-xs">*Chrome/Edge...</sup></p>
+                <p className="pt-1">Local File System Access</p>
+                <sup className="text-xs">*Chrome/Edge...</sup>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">
