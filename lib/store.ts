@@ -89,8 +89,6 @@ export type Store = {
   wikiTree: WikiTreeItem[];
   setWikiTree: Setter<WikiTreeItem[]>;
   updateWikiTree: (wikiId: string, noteId: string | null) => void;
-  isUpgradeModalOpen: boolean;
-  setIsUpgradeModalOpen: Setter<boolean>;
   blockIdToBacklinksMap: Record<string, Backlink[] | undefined>;
   setBlockIdToBacklinksMap: Setter<Record<string, Backlink[] | undefined>>;
   sidebarTab: SidebarTab;
@@ -280,9 +278,6 @@ export const store = createVanilla<
           insertWikiTree(state.wikiTree, wikiId, noteId);
         });
       },
-      // Whether or not the upgrade modal is open
-      isUpgradeModalOpen: false,
-      setIsUpgradeModalOpen: setter(set, 'isUpgradeModalOpen'),
       sidebarTab: SidebarTab.Silo,
       setSidebarTab: setter(set, 'sidebarTab'),
       sidebarSearchQuery: '',

@@ -45,28 +45,25 @@ function Note(props: Props) {
   const isDaily = store.getState().notes[noteId]?.is_daily ?? false;
   const initIsWiki = store.getState().notes[noteId]?.is_wiki ?? false;
   const [isWiki, setIsWiki] = useState(initIsWiki);
-  const initNoteExists = useMemo(() => !!store.getState().notes[noteId], [noteId]);
-  const [noteExists, setNoteExists] = useState(initNoteExists)
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
   
-  // load note if it isWiki or not-exist locally
+  // load note if it isWiki
   const loadNote = async (noteId: string) => {
     const {data: note} = await loadDbNote(noteId);
     if (note) {
       store.getState().upsertNote(note);
-      setNoteExists(true)
       setIsWiki(note.is_wiki);
     }
   };
 
   useEffect(() => { 
-    if ((isWiki || !noteExists) && !isLoaded ) {
+    if (isWiki && !isLoaded) {
       loadNote(noteId);
     }
     return () => {
       setIsLoaded(true);
     }
-  }, [noteId, isWiki, noteExists, isLoaded]);
+  }, [noteId, isWiki, isLoaded]);
 
   // get title and content value
   const title = store.getState().notes[noteId]?.title ?? '';
@@ -104,7 +101,7 @@ function Note(props: Props) {
     }, [noteId, initNoteAttr]
   );
 
-  // use state and useEffect to trigger and handle update
+  // use state and useEffect to trigger and handle update to db
   const [syncState, setSyncState] = useState({
     isTitleSynced: true,
     isContentSynced: true,
@@ -123,25 +120,28 @@ function Note(props: Props) {
       const isTitleUnique = () => {
         const notesArr = Object.values(store.getState().notes);
         return notesArr.findIndex(
-          // no need to be unique for wiki note under current user?
+          // no need to be unique for wiki note title
           (n) => n.id !== noteId && !n.is_wiki && ciStringEqual(n.title, newTitle)
         ) === -1;
       };
       if (isWiki || isTitleUnique()) {
         updateNote({ id: noteId, title: newTitle });
-        // save backlinked notes to db, may backlinks updated but note not
-        await updateBacklinks(newTitle, noteId);
         setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
-        // FSA: on rename file: 1- new FileHandle 
-        const newHandle = await getOrNewFileHandle(newTitle);
-        // swap value
-        if (newHandle) {
-          const content = value.map((n) => serialize(n)).join('');
-          await writeFile(newHandle, content);
-          await writeJsonFile();
+        await updateBacklinks(newTitle, noteId); 
+        // handle FSA for private note only
+        if (!isWiki) {
+          // #FSA: on rename file: 
+          // 1- new FileHandle 
+          const newHandle = await getOrNewFileHandle(newTitle);
+          // 2- swap value
+          if (newHandle) {
+            const content = value.map((n) => serialize(n)).join('');
+            await writeFile(newHandle, content);
+            await writeJsonFile();
+          }
+          // 3- delete the old redundant FileHandle
+          await delFileHandle(initTitle);
         }
-        // FSA: on rename file: 2- delete the old redundant FileHandle
-        await delFileHandle(initTitle);
       } else {
         toast.error(
           `There's already a note called ${newTitle}. Please use a different title.`
@@ -184,17 +184,12 @@ function Note(props: Props) {
     setSyncState({ isTitleSynced: true, isContentSynced: true, isAttrSynced: true });
   }, []);
 
-  // Save the note to db
-  const offlineMode = useStore((state) => state.offlineMode);
+  // Save the note to db, wiki note only
   useEffect(() => {
-    if ((offlineMode && !isWiki) || (!offlineMode && !user)) {
-      return;
-    }
+    if (!isWiki) { return; }
 
     const note = store.getState().notes[noteId];
-    if (!note) {
-      return;
-    }
+    if (!note) { return; }
 
     const noteUpdate: NoteUpdate = { id: noteId, is_wiki: isWiki };
     if (!syncState.isContentSynced) {
@@ -207,11 +202,8 @@ function Note(props: Props) {
       noteUpdate.attr = note.attr;
     }
 
-    // Do not need authed user to update wiki note currently
-    const userId = isWiki ? '' : user?.id || '';
-    if (!userId && !isWiki) {
-      return;
-    }
+    // Do not need authed usr to update wiki note currently
+    const userId = user?.id || '';
 
     if (noteUpdate.title || noteUpdate.content || noteUpdate.attr) {
       const handler = setTimeout(
@@ -220,13 +212,11 @@ function Note(props: Props) {
       );
       return () => clearTimeout(handler);
     }
-  }, [noteId, offlineMode, isWiki, user, syncState, handleNoteUpdate]);
+  }, [user, noteId, isWiki, syncState, handleNoteUpdate]);
 
-  // Prompt the user with a dialog box about unsaved changes if they navigate away
+  // Prompt the usr with a dialog box about unsaved changes if they navigate away
   useEffect(() => {
-    if ((offlineMode && !isWiki) || (!offlineMode && !user)) {
-      return;
-    }
+    if (!isWiki) { return; }
 
     const warningText =
       `Any changes may be saved locally only: ${noteId}`;
@@ -250,16 +240,18 @@ function Note(props: Props) {
       window.removeEventListener('beforeunload', handleWindowClose);
       router.events.off('routeChangeStart', handleBrowseAway);
     };
-  }, [user, router, offlineMode, isSynced, isWiki, noteId]);
+  }, [router, isSynced, isWiki, noteId]);
 
+  const offlineMode = useStore((state) => state.offlineMode);
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-gray-900 dark:text-gray-200';
   const errorContainerClassName = `${noteContainerClassName} items-center justify-center h-full p-4`;
   const noteClassName = `${noteContainerClassName} ${offlineMode ? 'border-t-4 border-red-600' : ''}`;
 
   const currentNoteValue = useMemo(() => ({ ty: 'note', id: noteId }), [noteId]);
+  const isNoteExists = useMemo(() => !!store.getState().notes[noteId], [noteId]);
 
-  if (!noteExists) {
+  if (!isNoteExists) {
     return (
       <div className={errorContainerClassName}>
         <p>it does not look like this note exists! {noteId}</p>

@@ -4,17 +4,15 @@ import { ReactEditor, useSlate } from 'slate-react';
 import type { TablerIcon } from '@tabler/icons';
 import { IconUnlink, IconLink, IconFilePlus } from '@tabler/icons';
 import { v4 as uuidv4 } from 'uuid';
-import { upsertDbNote } from 'lib/api/curdNote';
 import {
   insertExternalLink,
   insertNoteLink,
   removeLink,
 } from 'editor/formatting';
 import { isUrl, ciStringEqual } from 'utils/helper';
-import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getOrNewFileHandle } from 'editor/hooks/useFSA';
-import { store, useStore } from 'lib/store';
+import { store } from 'lib/store';
 import { defaultNote } from 'types/model';
 import EditorPopover from './EditorPopover';
 import type { AddLinkPopoverState } from './Editor';
@@ -41,7 +39,6 @@ type Props = {
 // trigger: ctr+k or Link btn from hovering toolbar
 export default function AddLinkPopover(props: Props) {
   const { addLinkPopoverState, setAddLinkPopoverState } = props;
-  const { user } = useAuthContext();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [linkText, setLinkText] = useState<string>('');
   const editor = useSlate();
@@ -112,13 +109,9 @@ export default function AddLinkPopover(props: Props) {
     });
   }, [editor, addLinkPopoverState, setAddLinkPopoverState]);
 
-  const offlineMode = useStore((state) => state.offlineMode);
-
   const onOptionClick = useCallback(
     async (option?: Option) => {
-      if (!option || (!offlineMode && !user)) {
-        return;
-      }
+      if (!option) { return; }
 
       // Restore selection and hide popover
       hidePopover();
@@ -136,19 +129,11 @@ export default function AddLinkPopover(props: Props) {
         const noteId = uuidv4();
         insertNoteLink(editor, noteId, linkTxt);
         Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
-        // update to store or db
-        const res = offlineMode || !user 
-          ? {
-              data: { ...defaultNote, id: noteId, title: linkTxt },
-              error: null,
-            }
-          : await upsertDbNote({ id: noteId, user_id: user.id, title: linkTxt }, user.id);
-        const note = res.data;
-        if (note) { 
-          store.getState().upsertNote(note); 
-          // new FileHandle and set in store
-          await getOrNewFileHandle(note.title);
-        }
+        // update to store
+        const note = { ...defaultNote, id: noteId, title: linkTxt };
+        store.getState().upsertNote(note); 
+        // new FileHandle and set in store
+        await getOrNewFileHandle(note.title);
       } else if (option.type === OptionType.REMOVE_LINK) {
         // Remove the link
         removeLink(editor);
@@ -156,7 +141,7 @@ export default function AddLinkPopover(props: Props) {
         throw new Error(`Option type ${option.type} is not supported`);
       }
     },
-    [editor, user, offlineMode, hidePopover, linkTxt]
+    [editor, hidePopover, linkTxt]
   );
 
   const onKeyDown = useCallback(

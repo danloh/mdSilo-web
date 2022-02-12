@@ -75,6 +75,12 @@ export async function loadDbNote(noteId: string) {
   return response;
 }
 
+/**
+ * load wiki note from db per keyword
+ * @param kw 
+ * @param n limit
+ * @returns Response
+ */
 export async function loadDbWikiNotes(kw: string, n = 42) {
   const len = kw.trim().length;
   if (len <= 0) return;
@@ -90,6 +96,11 @@ export async function loadDbWikiNotes(kw: string, n = 42) {
   return response;
 }
 
+/**
+ * load wiki note from db per title
+ * @param noteTitle 
+ * @returns Response
+ */
 export async function loadDbWikiNotePerTitle(noteTitle: string) {
   const response = await apiClient
     .from<Note>('notes')
@@ -101,6 +112,13 @@ export async function loadDbWikiNotePerTitle(noteTitle: string) {
   return response;
 }
 
+
+/* useless, to be del  */
+/**
+ * load note from db per title
+ * @param noteTitle 
+ * @returns Response
+ */
 export async function loadDbNotePerTitle(noteTitle: string) {
   const response = await apiClient
     .from<Note>('notes')
@@ -111,7 +129,7 @@ export async function loadDbNotePerTitle(noteTitle: string) {
   return response;
 }
 
-// delete
+// delete note from db
 // 
 export async function deleteDbNote(id: string, userId: string) {
   const response = await apiClient
@@ -125,3 +143,5 @@ export async function deleteDbNote(id: string, userId: string) {
 
   return response;
 }
+
+/* end useless, to be del  */

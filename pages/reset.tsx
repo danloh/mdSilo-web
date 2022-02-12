@@ -39,7 +39,7 @@ export default function Reset() {
       <Head>
         <title>Reset password | mdSilo</title>
       </Head>
-      <div className="min-h-screen">
+      <div className="min-h-screen splash-bg">
         <div className="container p-8 md:p-24">
           <div className="flex items-center justify-center mb-6">
             <LogoWithText />

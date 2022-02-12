@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@headlessui/react';
 import { 
   IconLogin, IconLogout, IconChevronsDown, IconX, 
-  IconSettings, IconWriting, IconCreditCard, IconPizza 
+  IconSettings, IconWriting, IconPizza 
 } from '@tabler/icons';
 import { useAuthContext } from 'utils/useAuth';
 import { useStore } from 'lib/store';
@@ -13,11 +13,10 @@ import Logo from 'components/Logo';
 
 type Props = {
   setIsSettingsOpen: Dispatch<SetStateAction<boolean>>;
-  setBillingOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SidebarHeader(props: Props) {
-  const { setIsSettingsOpen, setBillingOpen } = props;
+  const { setIsSettingsOpen } = props;
   const { user, signOut } = useAuthContext();
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
   const linkItemClass = "border-t dark:border-gray-700 hover:bg-gray-100 hover:dark:bg-gray-700";
@@ -70,17 +69,6 @@ export default function SidebarHeader(props: Props) {
             <IconPizza size={18} className="mr-1" />
             <span>Sponsor</span>
           </DropdownItem>
-          {/* <DropdownItem
-            onClick={() => {
-              if (isMobile()) {
-                setIsSidebarOpen(false);
-              }
-              setBillingOpen(true);
-            }}
-          >
-            <IconCreditCard size={18} className="mr-1" />
-            <span>Billing</span>
-          </DropdownItem> */}
           {!user ? (
             <DropdownItem className={linkItemClass} as='link' href='/signin'>
               <IconLogin size={18} className="mr-1" />

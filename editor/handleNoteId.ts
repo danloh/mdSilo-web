@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { store } from 'lib/store';
-import apiClient from 'lib/apiClient';
 import { upsertDbNote } from 'lib/api/curdNote';
 import { defaultUserId, defaultNote } from 'types/model';
 import { ciStringEqual, regDateStr } from 'utils/helper';
@@ -30,26 +29,7 @@ export const getOrCreateNoteId = (title: string): string => {
     };
     store.getState().upsertNote(newNote);
     // new FileHandle and set in store
-    getOrNewFileHandle(newNote.title); // cannot await here, to avoid awaits propagation
-    
-    const offlineMode = store.getState().offlineMode;
-    if (!offlineMode) {
-      const authId = apiClient.auth.user()?.id;
-      if (!authId) {
-        return noteId;
-      }
-      const upsertData = {...newNote, user_id: authId };
-      
-      // The note id may be updated on upsert old Note with new noteId, 
-      // noteid (db/linking) consistence issue:
-      // private notes: can assert new in this else branch, no such issue,
-      upsertDbNote(upsertData, authId).then(res => {
-        const newDbNote = res.data;
-        if (newDbNote) {
-          store.getState().upsertNote(newDbNote);
-        }
-      }); 
-    }
+    getOrNewFileHandle(newNote.title); // cannot await here, to avoid awaits propagation    
   }
 
   return noteId;
@@ -82,8 +62,8 @@ export const getOrCreateWikiId = (title: string) => {
 
 /**
  * better use if we can make sure that no note with this title in db
- * @param {string} title
- * @returns {Note}
+ * @param title
+ * @returns Note
  */
 export const newWikiPerTitle = async (title: string) => {
   const noteTitle = title.trim();

@@ -19,7 +19,7 @@ export default function OfflineBanner() {
 
   return isOffline ? (
     <div className="flex items-center justify-center w-full py-1 font-semibold text-center text-red-900 bg-red-300">
-      <IconWifiOff size={18} className="flex-shrink-0 mr-1 text-red-900" /> Offline and any changes will be saved locally only.
+      <IconWifiOff size={18} className="flex-shrink-0 mr-1 text-red-900" />
     </div>
   ) : null;
 }
