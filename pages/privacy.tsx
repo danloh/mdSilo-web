@@ -23,6 +23,7 @@ export default function Privacy() {
         <p>
           mdSilo (“<b>us</b>”, “<b>we</b>”, or “<b>our</b>”) operates{' '}
           <a
+            className="link"
             href="https://mdsilo.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -35,6 +36,7 @@ export default function Privacy() {
         <p>
           Our Privacy Policy governs your visit to{' '}
           <a
+            className="link"
             href="https://mdsilo.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -65,6 +67,7 @@ export default function Privacy() {
           <b>SERVICE </b>
           means the{' '}
           <a
+            className="link"
             href="https://mdsilo.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -390,6 +393,7 @@ export default function Privacy() {
           Area (EEA), you have certain data protection rights, covered by GDPR.
           – See more at{' '}
           <a
+            className="link"
             href="https://eur-lex.europa.eu/eli/reg/2016/679/oj"
             target="_blank"
             rel="noopener noreferrer"
@@ -474,6 +478,7 @@ export default function Privacy() {
           whom it is being shared, and to comply with this policy. – See more
           at:{' '}
           <a
+            className="link"
             href="https://consumercal.org/about-cfc/cfc-education-foundation/california-online-privacy-protection-act-caloppa-3/"
             target="_blank"
             rel="noopener noreferrer"
@@ -609,6 +614,7 @@ export default function Privacy() {
           Your data protection rights, described above, are covered by the CCPA,
           short for the California Consumer Privacy Act. To find out more, visit{' '}
           <a
+            className="link"
             href="http://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB375"
             target="_blank"
             rel="noopener noreferrer"
@@ -663,6 +669,7 @@ export default function Privacy() {
           how the protection of the data is ensured, please visit GitHub Privacy
           Policy page:{' '}
           <a
+            className="link"
             href="https://help.github.com/en/articles/github-privacy-statement"
             target="_blank"
             rel="noopener noreferrer"
@@ -695,6 +702,7 @@ export default function Privacy() {
         <p>
           Their Privacy Policy can be viewed at:{' '}
           <a
+            className="link"
             href="https://stripe.com/us/privacy"
             target="_blank"
             rel="noopener noreferrer"

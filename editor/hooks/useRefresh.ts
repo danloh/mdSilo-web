@@ -38,7 +38,7 @@ export async function refreshFile(title: string) {
     );
     const lastModDate = new Date(fileData.lastModified).toISOString();
     if (!existingNote || existingNote.updated_at >= lastModDate) {
-      console.log('Show lastModified: ', existingNote?.updated_at, lastModDate);
+      // console.log('Show lastModified: ', existingNote?.updated_at, lastModDate);
       return;
     }
     

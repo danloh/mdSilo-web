@@ -23,6 +23,7 @@ export default function Terms() {
           These Terms of Service (“<b>Terms</b>”, “<b>Terms of Service</b>”)
           govern your use of our web pages located at{' '}
           <a
+            className="link"
             href="https://mdsilo.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -37,6 +38,7 @@ export default function Terms() {
           how we collect, safeguard and disclose information that results from
           your use of our web pages. Please read it here:{' '}
           <a
+            className="link"
             href="https://mdsilo.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
@@ -465,6 +467,7 @@ export default function Terms() {
           Sentry is open-source error tracking solution provided by Functional
           Software Inc. More information is available here:{' '}
           <a
+            className="link"
             href="https://sentry.io/privacy/"
             target="_blank"
             rel="noopener noreferrer"
