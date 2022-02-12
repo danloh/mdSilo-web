@@ -3,6 +3,8 @@ import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { IconChevronsUp, IconSearch, TablerIcon } from '@tabler/icons';
 import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
+import { checkFSA, writeJsonFile } from 'editor/hooks/useFSA';
+import { FileSystemAccess } from 'editor/checks';
 import updateDbUser from 'lib/api/updateUser';
 import { store, useStore } from 'lib/store';
 import { ciStringCompare } from 'utils/helper';
@@ -96,6 +98,13 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         moveNoteTreeItem(noteId, option.id);
       } else {
         throw new Error(`Option type ${option.type} is not supported`);
+      }
+      // FSA: write change on file hierarchy to local File system 
+      if (FileSystemAccess.support(window)) {
+        const [inDir, ] = checkFSA();
+        if (inDir) {
+          await writeJsonFile();
+        }
       }
       // update to db
       if (!offlineMode && user) {
