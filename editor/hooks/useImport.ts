@@ -12,7 +12,7 @@ import { store, useStore, Notes, NoteTreeItem, WikiTreeItem, NotesData } from 'l
 import type { NoteUpsert } from 'lib/api/curdNote';
 import apiClient from 'lib/apiClient';
 import { getDefaultEditorValue } from 'editor/constants';
-import { ciStringEqual } from 'utils/helper';
+import { ciStringEqual, regDateStr } from 'utils/helper';
 import { ElementType, NoteLink } from 'editor/slate';
 import { Note, defaultNote, User } from 'types/model';
 import { getOrNewFileHandle, writeFile } from './useFSA';
@@ -199,6 +199,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       content: slateContent.length > 0 ? slateContent : getDefaultEditorValue(),
       created_at: lastModDate,
       updated_at: lastModDate,
+      is_daily: regDateStr.test(newNoteTitle),
     };
     const newProcessedNote = {...defaultNote, ...newNoteObj};
 
@@ -349,6 +350,13 @@ const processNoteLinks = (
   return { content: newContent, newLinkedNoteArr };
 };
 
+/**
+ * set noteId for NoteLink element
+ * @param node 
+ * @param noteTitleToIdCache 
+ * @param newLinkedNoteArr 
+ * @returns Descendant node
+ */
 const setNoteLinkIds = (
   node: Descendant,
   noteTitleToIdCache: Record<string, string | undefined>,
@@ -372,6 +380,13 @@ const setNoteLinkIds = (
   }
 };
 
+/**
+ * get or new noteID that NoteLink element links to
+ * @param node 
+ * @param noteTitleToIdCache 
+ * @param newLinkedNoteArr 
+ * @returns noteId 
+ */
 const getNoteId = (
   node: NoteLink,
   noteTitleToIdCache: Record<string, string | undefined>,
@@ -395,6 +410,7 @@ const getNoteId = (
     const newLinkedNoteObj = {
       id: noteId, 
       title: noteTitle,
+      is_daily: regDateStr.test(noteTitle),
     };
     newLinkedNoteArr.push({ 
       ...defaultNote,

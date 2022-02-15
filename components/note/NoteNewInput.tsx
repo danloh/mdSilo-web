@@ -6,7 +6,7 @@ import type { TablerIcon } from '@tabler/icons';
 import { IconFilePlus, IconSearch } from '@tabler/icons';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getOrNewFileHandle } from 'editor/hooks/useFSA';
-import { ciStringEqual } from 'utils/helper';
+import { ciStringEqual, regDateStr } from 'utils/helper';
 import { store } from 'lib/store';
 import { defaultNote } from 'types/model';
 
@@ -71,7 +71,12 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
 
       if (option.type === OptionType.NEW_NOTE) {
         const noteId = uuidv4();
-        const note = { ...defaultNote, id: noteId, title: inputTxt };
+        const note = { 
+          ...defaultNote, 
+          id: noteId, 
+          title: inputTxt,
+          is_daily: regDateStr.test(inputTxt),
+        };
         store.getState().upsertNote(note);
         // new FileHandle for the new create note and set in store
         await getOrNewFileHandle(note.title);
