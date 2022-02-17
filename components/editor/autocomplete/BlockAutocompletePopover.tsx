@@ -5,11 +5,9 @@ import type { TablerIcon } from '@tabler/icons';
 import useBlockSearch from 'editor/hooks/useBlockSearch';
 import { insertBlockReference } from 'editor/formatting';
 import { deleteText } from 'editor/transforms';
-import { useAuthContext } from 'utils/useAuth';
 import { createNodeId } from 'editor/plugins/withNodeId';
 import { isReferenceableBlockElement } from 'editor/checks';
 import { store } from 'lib/store';
-import { updateDbNote } from 'lib/api/curdNote';
 import useDebounce from 'editor/hooks/useDebounce';
 import EditorPopover from '../EditorPopover';
 
@@ -34,7 +32,6 @@ type Option = {
 };
 
 export default function BlockAutocompletePopover() {
-  const { user } = useAuthContext();
   const editor = useSlate();
 
   const [isVisible, setIsVisible] = useState(false);
@@ -110,13 +107,9 @@ export default function BlockAutocompletePopover() {
     setIsVisible(true);
   }, [editor.children, getRegexResult, hidePopover]);
 
-  const offlineMode = store.getState().offlineMode;
-
   const onOptionClick = useCallback(
     async (option?: Option) => {
-      if (!option || (!offlineMode && !user)) {
-        return;
-      }
+      if (!option) { return; }
 
       // Delete markdown text
       const { result: regexResult, onOwnLine } = getRegexResult();
@@ -162,11 +155,6 @@ export default function BlockAutocompletePopover() {
             id: option.noteId,
             content: noteEditor.children,
           });
-          // Update note in database
-          if (!offlineMode && user) {
-            const noteUpdate = { id: option.noteId, content: noteEditor.children };
-            await updateDbNote(noteUpdate, user.id);
-          }
         } else {
           blockId = option.blockId;
         }
@@ -178,7 +166,7 @@ export default function BlockAutocompletePopover() {
 
       hidePopover();
     },
-    [editor, user, offlineMode, hidePopover, getRegexResult]
+    [editor, hidePopover, getRegexResult]
   );
 
   const onKeyDown = useCallback(

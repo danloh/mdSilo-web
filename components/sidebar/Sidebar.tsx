@@ -15,7 +15,6 @@ import SidebarHeader from './SidebarHeader';
 type Props = {
   setIsFindOrCreateModalOpen: Dispatch<SetStateAction<boolean>>;
   setIsSettingsOpen: Dispatch<SetStateAction<boolean>>;
-  setBillingOpen: Dispatch<SetStateAction<boolean>>;
   className?: string;
 };
 
@@ -23,7 +22,6 @@ function Sidebar(props: Props) {
   const { 
     setIsFindOrCreateModalOpen, 
     setIsSettingsOpen, 
-    setBillingOpen,
     className='' 
   } = props;
 
@@ -101,10 +99,7 @@ function Sidebar(props: Props) {
             <div
               className={`flex flex-col flex-none h-full border-r bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 ${className}`}
             >
-              <SidebarHeader 
-                setIsSettingsOpen={setIsSettingsOpen} 
-                setBillingOpen={setBillingOpen}
-              />
+              <SidebarHeader setIsSettingsOpen={setIsSettingsOpen} />
               <ChronButton onClick={hideSidebarOnMobile} />
               <GraphButton onClick={hideSidebarOnMobile} />
               <TaskButton onClick={hideSidebarOnMobile} />

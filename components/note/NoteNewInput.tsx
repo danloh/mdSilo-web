@@ -4,13 +4,10 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import type { TablerIcon } from '@tabler/icons';
 import { IconFilePlus, IconSearch } from '@tabler/icons';
-import { toast } from 'react-toastify';
-import { upsertDbNote } from 'lib/api/curdNote';
-import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getOrNewFileHandle } from 'editor/hooks/useFSA';
-import { ciStringEqual } from 'utils/helper';
-import { store, useStore } from 'lib/store';
+import { ciStringEqual, regDateStr } from 'utils/helper';
+import { store } from 'lib/store';
 import { defaultNote } from 'types/model';
 
 enum OptionType {
@@ -32,7 +29,6 @@ type Props = {
 
 function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
   const { onOptionClick: onOptionClickCallback, className = '' } = props;
-  const { user } = useAuthContext();
   const router = useRouter();
 
   const [inputText, setInputText] = useState('');
@@ -69,25 +65,18 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
     return result;
   }, [searchResults, inputTxt]);
 
-  const offlineMode = useStore((state) => state.offlineMode);
-
   const onOptionClick = useCallback(
     async (option: Option) => {
       onOptionClickCallback?.();
 
       if (option.type === OptionType.NEW_NOTE) {
         const noteId = uuidv4();
-        const res = offlineMode || !user 
-          ? {
-              data: { ...defaultNote, id: noteId, title: inputTxt },
-              error: null,
-            }
-          : await upsertDbNote({ user_id: user.id, id: noteId, title: inputTxt }, user.id);
-        const note = res.data;
-        if (!note) {
-          toast.error(`An error occurred when creating the note: ${inputTxt}.`);
-          return;
-        }
+        const note = { 
+          ...defaultNote, 
+          id: noteId, 
+          title: inputTxt,
+          is_daily: regDateStr.test(inputTxt),
+        };
         store.getState().upsertNote(note);
         // new FileHandle for the new create note and set in store
         await getOrNewFileHandle(note.title);
@@ -99,13 +88,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         throw new Error(`Type ${option.type} is not supported`);
       }
     },
-    [
-      user,
-      router,
-      offlineMode,
-      inputTxt,
-      onOptionClickCallback,
-    ]
+    [router, inputTxt, onOptionClickCallback]
   );
 
   const onKeyDown = useCallback(

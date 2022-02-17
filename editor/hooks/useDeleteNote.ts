@@ -1,23 +1,14 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import deleteBacklinks from 'editor/backlinks/deleteBacklinks';
-import { deleteDbNote } from 'lib/api/curdNote';
 import { store, useStore } from 'lib/store';
-import { useAuthContext } from 'utils/useAuth';
 import { delFileHandle } from './useFSA';
 
 export default function useDeleteNote(noteId: string) {
-  const { user } = useAuthContext();
   const router = useRouter();
   const openNoteIds = useStore((state) => state.openNoteIds);
-  const offlineMode = useStore((state) => state.offlineMode);
 
   const onDeleteClick = useCallback(async () => {
-    if (!offlineMode && !user) {
-      router.push('/app');
-      return;
-    }
-
     const deletedNoteIndex = openNoteIds.findIndex(
       (openNoteId) => openNoteId === noteId
     );
@@ -45,12 +36,7 @@ export default function useDeleteNote(noteId: string) {
     // FSA: del FileHandle
     // Alert: permanently del
     await delFileHandle(title);
-
-    // delete in db if not offlineMode
-    if (!offlineMode && user) {
-      await deleteDbNote(noteId, user.id);
-    }
-  }, [router, noteId, openNoteIds, user, offlineMode]);
+  }, [router, noteId, openNoteIds]);
 
   return onDeleteClick;
 }
