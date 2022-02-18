@@ -5,10 +5,8 @@ import type { TablerIcon } from '@tabler/icons';
 import { store } from 'lib/store';
 import type { Note } from 'types/model';
 import { defaultNote } from 'types/model';
-import updateDbUser from 'lib/api/updateUser';
 import { insertPubLink } from 'editor/formatting';
 import { deleteText } from 'editor/transforms';
-import { useAuthContext } from 'utils/useAuth';
 import { loadDbWikiNotes } from 'lib/api/curdNote';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import useDebounce from 'editor/hooks/useDebounce';
@@ -31,7 +29,6 @@ type Option = {
 };
 
 export default function PubAutocompletePopover() {
-  const { user } = useAuthContext();
   const editor = useSlate();
 
   const [isVisible, setIsVisible] = useState(false);
@@ -121,8 +118,6 @@ export default function PubAutocompletePopover() {
     setIsVisible(true);
   }, [editor.children, getRegexResult, hidePopover]);
 
-  const offlineMode = store.getState().offlineMode;
-
   const onOptionClick = useCallback(
     async (option?: Option) => {
       if (!option || !regexResult || !editor.selection) {
@@ -157,17 +152,13 @@ export default function PubAutocompletePopover() {
           }
         }
         store.getState().upsertNote(selectedNote);
-        // update wikiTree to db 
-        if (!offlineMode && user) { 
-          updateDbUser(user.id, 1); 
-        }
       } else {
         throw new Error(`Option type ${option.type} is not supported`);
       }
 
       hidePopover();
     },
-    [editor, hidePopover, regexResult, tempNotes, user, offlineMode]
+    [editor, hidePopover, regexResult, tempNotes]
   );
 
   const onKeyDown = useCallback(

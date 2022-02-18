@@ -19,11 +19,12 @@ import {
 } from '@dnd-kit/sortable';
 import { toast } from 'react-toastify';
 import { NoteTreeItem, useStore } from 'lib/store';
+import { checkFSA, writeJsonFile } from 'editor/hooks/useFSA';
+import { FileSystemAccess } from 'editor/checks';
 import Portal from 'components/misc/Portal';
-import updateDbUser from 'lib/api/updateUser';
-import { useAuthContext } from 'utils/useAuth';
 import SidebarNoteLink from './SidebarNoteLink';
 import DraggableSidebarNoteLink from './DraggableSidebarNoteLink';
+
 
 export type FlattenedNoteTreeItem = {
   id: string;
@@ -39,7 +40,6 @@ type Props = {
 function SidebarNotesTree(props: Props) {
   const { data, className } = props;
 
-  const { user } = useAuthContext();
   const router = useRouter();
   const currentNoteId = useMemo(() => {
     const id = router.query.id;
@@ -100,8 +100,6 @@ function SidebarNotesTree(props: Props) {
     setActiveId(active.id);
   }, []);
 
-  const offlineMode = useStore((state) => state.offlineMode);
-
   const handleDragEnd = useCallback(
     async (event: DragEndEvent) => {
       const { active, over } = event;
@@ -109,9 +107,12 @@ function SidebarNotesTree(props: Props) {
       if (over) {
         // move locally
         moveNoteTreeItem(active.id, over.id);
-        // update move to db
-        if (!offlineMode && user) {
-          await updateDbUser(user.id, 0);
+        // FSA: write change on file hierarchy to local File system 
+        if (FileSystemAccess.support(window)) {
+          const [inDir, ] = checkFSA();
+          if (inDir) {
+            await writeJsonFile();
+          }
         }
       } else {
         toast.error('An unexpected error occured.');
@@ -119,7 +120,7 @@ function SidebarNotesTree(props: Props) {
 
       resetState();
     },
-    [resetState, moveNoteTreeItem, user, offlineMode]
+    [resetState, moveNoteTreeItem]
   );
 
   const Row = useCallback(
