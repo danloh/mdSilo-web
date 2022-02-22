@@ -12,7 +12,6 @@ const generateNotes = () => {
       user_id: '1',
       md_content: '',
       cover: '',
-      attr: {},
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       is_pub: false,
