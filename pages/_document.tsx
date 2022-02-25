@@ -24,7 +24,7 @@ class MsDocument extends Document {
           <meta name="twitter:description" content={DESCRIPTION} />
           <meta name="twitter:image" content="https://mdsilo.com/android-chrome-512x512.png" />
           <link rel="manifest" href="/manifest.json" />
-          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+          <link rel="icon" type="image/x-icon" href="/favicon.svg" />
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

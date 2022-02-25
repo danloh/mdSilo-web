@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import logo from 'public/logo.webp';
+import logo from 'public/favicon.svg';
 
 type Props = {
   width: number;
