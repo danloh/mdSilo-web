@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@headlessui/react';
 import { 
-  IconLogin, IconLogout, IconChevronsDown, IconX, 
+  IconLogin, IconLogout, IconChevronsDown, IconChevronLeft, 
   IconSettings, IconWriting, IconPizza 
 } from '@tabler/icons';
 import { useAuthContext } from 'utils/useAuth';
@@ -38,7 +38,7 @@ export default function SidebarHeader(props: Props) {
                 setIsSidebarOpen(false);
               }}
             >
-              <IconX className="text-gray-500 dark:text-gray-400" />
+              <IconChevronLeft className="text-gray-500 dark:text-gray-400" />
             </span>
           </Tooltip>
         </Menu.Button>

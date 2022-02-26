@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useStore } from 'lib/store';
+import { useStore, store } from 'lib/store';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import NoteSumList from 'components/note/NoteSumList';
@@ -30,7 +30,7 @@ export default function Chronicle() {
     const noteId = getOrCreateNoteId(date);
     // redirect to journals when the note not be prepared
     if (noteId) {
-      const note = notes[noteId];
+      const note = store.getState().notes[noteId]; // need to get note
       if (note) {
         router.push(`/app/md/${note.id}`);
       } else {
