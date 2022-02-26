@@ -18,8 +18,8 @@ type Props = {
 export default function SidebarExport(props: Props) {
   const { numOfNotes } = props;
   
-  useStore((state) => state.dirHandle);
-  const [inDir, dirName, hasFSA] = checkFSA();
+  const dirHandle = useStore((state) => state.dirHandle);
+  const [inDir, dirName, hasFSA] = checkFSA(dirHandle);
   const onOpenFolder = openDirDialog;
 
   const onExportJson = useCallback(exportNotesJson, []);

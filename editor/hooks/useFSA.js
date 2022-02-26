@@ -232,12 +232,12 @@ export async function writeJsonFile(json = '') {
  * check if FileSystemDirectoryHandle
  * @return {[boolean, FileSystemDirectoryHandleName, boolean]} [isDir, dirName, isSupport]
  */
-export function checkFSA() {
+export function checkFSA(dirH = null) {
   if (!FileSystemAccess.support(window)) {
     return [false, null, false];
   }
 
-  const dirHandle = store.getState().dirHandle;
+  const dirHandle = dirH || store.getState().dirHandle;
   if (dirHandle) {
     return [true, dirHandle.name, true];
   } else {
