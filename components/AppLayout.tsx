@@ -200,7 +200,10 @@ export default function AppLayout(props: Props) {
             {children}
           </div>
           {isSettingsOpen ? (
-            <SettingsModal setIsOpen={setIsSettingsOpen} />
+            <SettingsModal 
+              isOpen={isSettingsOpen}
+              handleClose={() => setIsSettingsOpen(false)} 
+            />
           ) : null}
           {isFindOrCreateModalOpen ? (
             <FindOrCreateModal setIsOpen={setIsFindOrCreateModalOpen} />

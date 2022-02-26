@@ -6,6 +6,7 @@ import Editor from 'components/editor/Editor';
 import Title from 'components/editor/Title';
 import Backlinks from 'components/editor/backlinks/Backlinks';
 import { store, useStore } from 'lib/store';
+import { Note } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
@@ -39,14 +40,14 @@ function Note(props: Props) {
 
   // get some property of note
   const storeNotes = useStore((state) => state.notes);
-  const note = storeNotes[noteId];
+  const note: Note | undefined = storeNotes[noteId];
   const isPub = note?.is_pub ?? false;
   const isDaily = note?.is_daily ?? false;
   const initIsWiki = note?.is_wiki ?? false;
   // get title and content value
   const title = note?.title ?? 'demo note';
   const [initTitle, ] = useState(title); // an initial title copy
-  const value = note.content ?? getDefaultEditorValue();
+  const value = note?.content ?? getDefaultEditorValue();
 
   const [isWiki, setIsWiki] = useState(initIsWiki);
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
