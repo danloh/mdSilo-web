@@ -1,11 +1,9 @@
 import type { ForwardedRef } from 'react';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { IconChevronsUp, IconSearch, TablerIcon } from '@tabler/icons';
-import { useAuthContext } from 'utils/useAuth';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { checkFSA, writeJsonFile } from 'editor/hooks/useFSA';
 import { FileSystemAccess } from 'editor/checks';
-import updateDbUser from 'lib/api/updateUser';
 import { store, useStore } from 'lib/store';
 import { ciStringCompare } from 'utils/helper';
 
@@ -33,7 +31,6 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
     onOptionClick: onOptionClickCallback,
     className = '',
   } = props;
-  const { user } = useAuthContext();
 
   const [inputText, setInputText] = useState('');
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0);
@@ -81,14 +78,8 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
     return result;
   }, [searchResults, noteId, inputTxt, noteTree]);
 
-  const offlineMode = useStore((state) => state.offlineMode);
-
   const onOptionClick = useCallback(
     async (option: Option) => {
-      if (!offlineMode && !user) {
-        return;
-      }
-
       onOptionClickCallback?.();
 
       // move tree locally
@@ -106,12 +97,8 @@ function MoveToInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           await writeJsonFile();
         }
       }
-      // update to db
-      if (!offlineMode && user) {
-        await updateDbUser(user.id, 0);
-      }
     },
-    [user, offlineMode, onOptionClickCallback, noteId, moveNoteTreeItem]
+    [onOptionClickCallback, noteId, moveNoteTreeItem]
   );
 
   const onKeyDown = useCallback(

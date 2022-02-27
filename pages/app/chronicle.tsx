@@ -30,7 +30,7 @@ export default function Chronicle() {
     const noteId = getOrCreateNoteId(date);
     // redirect to journals when the note not be prepared
     if (noteId) {
-      const note = store.getState().notes[noteId];
+      const note = store.getState().notes[noteId]; // need to get note
       if (note) {
         router.push(`/app/md/${note.id}`);
       } else {

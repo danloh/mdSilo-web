@@ -15,7 +15,6 @@ CREATE TABLE public.notes (
   user_id uuid NULL,
   md_content text NULL,
   cover text NULL, -- todo
-  attr jsonb NULL DEFAULT ('{ "Type": "", "Author": "", "Publisher": "", "Publish": "", "UID": "", "Link": "" }'::text)::jsonb,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   is_pub BOOLEAN NOT NULL DEFAULT FALSE, 

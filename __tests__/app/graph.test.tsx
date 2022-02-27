@@ -66,7 +66,6 @@ describe('Graph', () => {
         user_id: '1',
         md_content: 'note',
         cover: 'cover image',
-        attr: {},
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         is_pub: false,

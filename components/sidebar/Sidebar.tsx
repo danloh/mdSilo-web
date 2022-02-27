@@ -159,7 +159,7 @@ const ChronButton = (props: ButtonProps) => {
       onClick={onClick}
     >
       <Tooltip
-        content="Chronicle my life (Ctrl+Shift+C)"
+        content="Chronicle View (Ctrl+Shift+C)"
         placement="right"
         touch={false}
       >
@@ -168,7 +168,7 @@ const ChronButton = (props: ButtonProps) => {
             <a className="flex items-center px-6 py-1">
               <IconBookmarks size={20} className={btnIconClass} />
               <span className="overflow-x-hidden select-none overflow-ellipsis whitespace-nowrap">
-                Chronicle
+                Chronicle View
               </span>
             </a>
           </Link>

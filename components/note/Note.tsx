@@ -4,10 +4,9 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import Editor from 'components/editor/Editor';
 import Title from 'components/editor/Title';
-import Trait, { TraitKeys } from 'components/editor/Trait';
 import Backlinks from 'components/editor/backlinks/Backlinks';
 import { store, useStore } from 'lib/store';
-import { Attr, defaultAttr, buildAttr } from 'types/model';
+import { Note } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
@@ -38,23 +37,33 @@ function Note(props: Props) {
   const { noteId, highlightedPath, className } = props;
   const router = useRouter();
   const { user } = useAuthContext();
-  const updateNote = useStore((state) => state.updateNote);
 
   // get some property of note
-  const isPub = store.getState().notes[noteId]?.is_pub ?? false;
-  const isDaily = store.getState().notes[noteId]?.is_daily ?? false;
-  const initIsWiki = store.getState().notes[noteId]?.is_wiki ?? false;
+  const storeNotes = useStore((state) => state.notes);
+  const note: Note | undefined = storeNotes[noteId];
+  const isPub = note?.is_pub ?? false;
+  const isDaily = note?.is_daily ?? false;
+  const initIsWiki = note?.is_wiki ?? false;
+  // get title and content value
+  const title = note?.title ?? 'demo note';
+  const [initTitle, ] = useState(title); // an initial title copy
+  const value = note?.content ?? getDefaultEditorValue();
+
   const [isWiki, setIsWiki] = useState(initIsWiki);
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
   
+  // note action
+  const updateNote = useStore((state) => state.updateNote);
+  const upsertNote = useStore((state) => state.upsertNote);
   // load note if it isWiki
-  const loadNote = async (noteId: string) => {
+  const loadNote = useCallback(
+    async (noteId: string) => {
     const {data: note} = await loadDbNote(noteId);
     if (note) {
-      store.getState().upsertNote(note);
+      upsertNote(note);
       setIsWiki(note.is_wiki);
     }
-  };
+  }, [upsertNote]);
 
   useEffect(() => { 
     if (isWiki && !isLoaded) {
@@ -63,14 +72,7 @@ function Note(props: Props) {
     return () => {
       setIsLoaded(true);
     }
-  }, [noteId, isWiki, isLoaded]);
-
-  // get title and content value
-  const title = store.getState().notes[noteId]?.title ?? '';
-  const [initTitle, ] = useState(title); // an initial title copy
-  const value = useStore(
-    (state) => state.notes[noteId]?.content ?? getDefaultEditorValue()
-  );
+  }, [noteId, isWiki, isLoaded, loadNote]);
 
   // update locally
   const setValueOnChange = useCallback(
@@ -89,26 +91,14 @@ function Note(props: Props) {
     },
     [noteId, title, updateNote]
   );
-
-  const initNoteAttr: Attr = useStore(
-    (state) => state.notes[noteId]?.attr ?? defaultAttr
-  );
-  // update locally
-  const setAttrOnChange = useCallback(
-    (k: string, v: string) => {
-      const newAttr = Object.assign({}, initNoteAttr, buildAttr(k,v)); //Object.assign(tar,...src)
-      store.getState().updateNote({ id: noteId, attr: newAttr })
-    }, [noteId, initNoteAttr]
-  );
-
+  
   // use state and useEffect to trigger and handle update to db
   const [syncState, setSyncState] = useState({
     isTitleSynced: true,
     isContentSynced: true,
-    isAttrSynced: true,
   });
   const isSynced = useMemo(
-    () => syncState.isTitleSynced && syncState.isContentSynced && syncState.isAttrSynced,
+    () => syncState.isTitleSynced && syncState.isContentSynced,
     [syncState]
   );
 
@@ -118,7 +108,7 @@ function Note(props: Props) {
       // update note title in storage as unique title
       const newTitle = title.trim() || getUntitledTitle(noteId);
       const isTitleUnique = () => {
-        const notesArr = Object.values(store.getState().notes);
+        const notesArr = Object.values(storeNotes);
         return notesArr.findIndex(
           // no need to be unique for wiki note title
           (n) => n.id !== noteId && !n.is_wiki && ciStringEqual(n.title, newTitle)
@@ -148,12 +138,8 @@ function Note(props: Props) {
         );
       }
     },
-    [noteId, updateNote, isWiki, initTitle, value]
+    [noteId, isWiki, storeNotes, updateNote, initTitle, value]
   );
-
-  const onAttrChange = useCallback(() => {
-    setSyncState((syncState) => ({ ...syncState, isAttrSynced: false }));
-  }, []);
 
   const onValueChange = useCallback(() => {
     setSyncState((syncState) => ({ ...syncState, isContentSynced: false }));
@@ -181,15 +167,12 @@ function Note(props: Props) {
       }
     }
     
-    setSyncState({ isTitleSynced: true, isContentSynced: true, isAttrSynced: true });
+    setSyncState({ isTitleSynced: true, isContentSynced: true });
   }, []);
 
   // Save the note to db, wiki note only
   useEffect(() => {
-    if (!isWiki) { return; }
-
-    const note = store.getState().notes[noteId];
-    if (!note) { return; }
+    if (!isWiki || !note) { return; }
 
     const noteUpdate: NoteUpdate = { id: noteId, is_wiki: isWiki };
     if (!syncState.isContentSynced) {
@@ -198,21 +181,18 @@ function Note(props: Props) {
     if (!syncState.isTitleSynced) {
       noteUpdate.title = note.title;
     }
-    if (!syncState.isAttrSynced) {
-      noteUpdate.attr = note.attr;
-    }
 
     // Do not need authed usr to update wiki note currently
     const userId = user?.id || '';
 
-    if (noteUpdate.title || noteUpdate.content || noteUpdate.attr) {
+    if (noteUpdate.title || noteUpdate.content) {
       const handler = setTimeout(
         () => handleNoteUpdate(noteUpdate, userId),
         SYNC_DEBOUNCE_MS
       );
       return () => clearTimeout(handler);
     }
-  }, [user, noteId, isWiki, syncState, handleNoteUpdate]);
+  }, [user, noteId, isWiki, syncState, handleNoteUpdate, note]);
 
   // Prompt the usr with a dialog box about unsaved changes if they navigate away
   useEffect(() => {
@@ -246,10 +226,10 @@ function Note(props: Props) {
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-gray-900 dark:text-gray-200';
   const errorContainerClassName = `${noteContainerClassName} items-center justify-center h-full p-4`;
-  const noteClassName = `${noteContainerClassName} ${offlineMode ? 'border-t-4 border-red-600' : ''}`;
+  const noteClassName = `${noteContainerClassName} ${offlineMode ? 'border-t-2 border-red-600' : ''}`;
 
   const currentNoteValue = useMemo(() => ({ ty: 'note', id: noteId }), [noteId]);
-  const isNoteExists = useMemo(() => !!store.getState().notes[noteId], [noteId]);
+  const isNoteExists = useMemo(() => !!storeNotes[noteId], [noteId, storeNotes]);
 
   if (!isNoteExists) {
     return (
@@ -279,19 +259,6 @@ function Note(props: Props) {
                 isDaily={isDaily}
                 isPub={isPub}
               />
-              {isWiki ? (
-                <div className="mt-2 border-b">
-                  {TraitKeys.map((k) => (
-                    <Trait
-                      key={k}
-                      traitKey={k}
-                      initialVal={initNoteAttr[k] || ''}
-                      setAttr={setAttrOnChange}
-                      onChange={onAttrChange}
-                    />
-                  ))}
-                </div>
-              ) : null}
               <Editor
                 className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12"
                 noteId={noteId}
