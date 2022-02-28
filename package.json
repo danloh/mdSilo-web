@@ -24,7 +24,7 @@
     "@popperjs/core": "^2.11.2",
     "@react-spring/web": "^9.4.3",
     "@sentry/nextjs": "^6.18.0",
-    "@supabase/supabase-js": "^1.30.6",
+    "@supabase/supabase-js": "^1.30.7",
     "@tabler/icons": "^1.54.0",
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.2",
