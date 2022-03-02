@@ -139,7 +139,6 @@ export function useImportMds() {
  * 1- process Linking in content, create needed note; 
  * 2- FSA: save txt to File System;
  * 3- Store: set Descendant[] to store system of App 
- * 4- Upsert to db in some cases
  */
 export const processImport = async (fileList: FileList | File[], ifHandle = true) => {
   const upsertNote = store.getState().upsertNote;

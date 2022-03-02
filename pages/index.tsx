@@ -63,10 +63,11 @@ export default function Home() {
                 <h3 className="text-xl font-semibold">
                   🔗 Connect Everything
                 </h3>
+                <p className="pt-1">{`#HashTag and ( External Link )`}</p>
                 <p className="pt-1">(( Block Reference ))</p>
                 <p className="pt-1">[[ Bidirection BackLink ]]</p>
                 <p className="pt-1">{`{{ PubLink to liaison points }}`}</p>
-                <p className="pt-1">{`#HashTag and ( External Link )`}</p>
+                <sup className="text-xs">*Experimental</sup>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🪟 Different Views</h3>
@@ -93,6 +94,7 @@ export default function Home() {
                 <p className="pt-1">
                   PubLink opens a window for each private digital garden, links to liaison points between knowledge.
                 </p>
+                <sup className="text-xs">*Experimental</sup>
               </div>
             </div>
           </div>
