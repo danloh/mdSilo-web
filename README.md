@@ -32,10 +32,7 @@ Here we go: [Live demo](https://mdsilo.com)
 
 ## Credits
 
-mdSilo is and will be inspired by many note-taking tools.
-
-**Thanks to Richard for [his work on Notabase](https://github.com/churichard/notabase)**.
-The project is forked from Notabase and has something changed.
+mdSilo is inspired by [notabase](https://github.com/churichard/notabase) and many other note-taking tools.
 
 
 ## Self-Hosting Web App
