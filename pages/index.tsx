@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { IconArrowRight, IconMarkdown } from '@tabler/icons';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -18,13 +17,18 @@ export default function Home() {
             <div className="container">
               <div className="px-8 py-16 grid gap-6 md:grid-cols-2">
                 <div className="container text-xl px-6 text-center">
-                  <Link href="/app">
-                    <a className="inline-flex items-center px-8 mt-6 btn hover:shadow-lg group">
-                      <IconMarkdown size={32} className="mx-1 group-hover:animate-bounce-x" />
-                      {'  Start Writing '}
-                      <IconArrowRight size={32} className="ml-1 group-hover:animate-bounce-x" />
-                    </a>
-                  </Link>
+                  <div className="flex-1 mx-auto">
+                    <Link href="/app">
+                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                        Writing on Web
+                      </a>
+                    </Link>
+                    <Link href="https://github.com/danloh/mdSilo-app/releases">
+                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                        Get Desktop App
+                      </a>
+                    </Link>
+                  </div>
                   <p className="max-w-3xl pt-6 mx-auto md:text-2xl">
                     mdSilo is a plain-text knowledge silo and a networked-writing app.
                   </p>
@@ -56,17 +60,17 @@ export default function Home() {
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
                 <p className="pt-1">Import and Export (Markdown, JSON)</p>
-                <p className="pt-1">Local File System Access</p>
-                <sup className="text-xs">*Chrome/Edge...</sup>
+                <p className="pt-1">Web App and Cross-platform Desktop App</p>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">
                   🔗 Connect Everything
                 </h3>
+                <p className="pt-1">{`#HashTag and ( External Link )`}</p>
                 <p className="pt-1">(( Block Reference ))</p>
                 <p className="pt-1">[[ Bidirection BackLink ]]</p>
                 <p className="pt-1">{`{{ PubLink to liaison points }}`}</p>
-                <p className="pt-1">{`#HashTag and ( External Link )`}</p>
+                <sup className="text-xs">*Experimental</sup>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🪟 Different Views</h3>
@@ -85,7 +89,7 @@ export default function Home() {
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🔒 Private and Secure</h3>
                 <p className="pt-2">
-                  Write completely offline. The data sits in a local folder or a single JSON file, even the code is entirely in your control.
+                  Write completely offline using the tiny but powerful and cross-platform Desktop App. Even the code is entirely in your control.
                 </p>
               </div>
               <div className={cardClass}>
@@ -93,6 +97,7 @@ export default function Home() {
                 <p className="pt-1">
                   PubLink opens a window for each private digital garden, links to liaison points between knowledge.
                 </p>
+                <sup className="text-xs">*Experimental</sup>
               </div>
             </div>
           </div>
