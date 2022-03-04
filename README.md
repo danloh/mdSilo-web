@@ -3,7 +3,7 @@
 
 A mind silo for storing ideas, thought, knowledge with a powerful writing tool.
 
-[Desktop App is Here](https://github.com/danloh/mdSilo-app)
+[Desktop App is Here](https://github.com/danloh/mdSilo-app/releases)
 
 [Demo](https://mdsilo.com/app)  
 [Gitter](https://gitter.im/mdSilo)  
