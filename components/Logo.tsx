@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function Logo(props: Props) {
-  const { width, height, className = 'rounded' } = props;
+  const { width, height, className = 'rounded img-effect' } = props;
   return (
     <Image
       src={logo}

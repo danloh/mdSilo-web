@@ -1,9 +1,9 @@
 
 # mdSilo
 
-A mind silo for storing ideas, thought, knowledge with a powerful writing tool,
-which runs entirely in the browser and has Local File System Access ability. 
-No installation is required, No registering is required. The data is stored on your computer.
+A mind silo for storing ideas, thought, knowledge with a powerful writing tool.
+
+[Desktop App is Here](https://github.com/danloh/mdSilo-app)
 
 [Demo](https://mdsilo.com/app)  
 [Gitter](https://gitter.im/mdSilo)  
@@ -21,10 +21,8 @@ No installation is required, No registering is required. The data is stored on y
 - Block Reference  
 - PubLink  
 - HashTag  
-- Progressive Web App (PWA)  
 - Full-text search 
-- Local File System Access 
-- Import or Export at any time(Markdown files or single JSON)
+- Available for Web, Windows, macOS, Linux.
 
 
 ## Live Demo
@@ -40,9 +38,9 @@ mdSilo is and will be inspired by many note-taking tools.
 The project is forked from Notabase and has something changed.
 
 
-## Self-Hosting
+## Self-Hosting Web App
 
-You can self-host mdSilo, though it is currently not focused on self-hosting. 
+You can self-host mdSilo web app, though it is currently not focused on self-hosting. 
 
 - The easy way is to deploy it on [Vercel](https://vercel.com), here is the [Vercel docs](https://vercel.com/docs); 
 - The environment variables needed for deployment can be found [here](https://github.com/danloh/mdSilo-web/blob/main/.env.local.example); 
