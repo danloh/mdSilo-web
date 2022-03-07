@@ -46,7 +46,7 @@ function Note(props: Props) {
   const initIsWiki = note?.is_wiki ?? false;
   // get title and content value
   const title = note?.title ?? 'demo note';
-  const [initTitle, ] = useState(title); // an initial title copy
+  const [initTitle, setInitTitle] = useState(title); // an initial title copy
   const value = note?.content ?? getDefaultEditorValue();
 
   const [isWiki, setIsWiki] = useState(initIsWiki);
@@ -131,6 +131,8 @@ function Note(props: Props) {
           }
           // 3- delete the old redundant FileHandle
           await delFileHandle(initTitle);
+          // 4- reset initTitle
+          setInitTitle(newTitle);
         }
       } else {
         toast.error(

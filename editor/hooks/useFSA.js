@@ -125,7 +125,7 @@ export async function writeFile(fileHandle, content) {
  *
  * @param {string} name name(name.ext or title)
  * @param {boolean} withExt default False, optional, True if name with extension
- * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
+ * @return {Promise<FileSystemFileHandle | undefined>} fileHandle File handle to write to.
  */
 export async function getOrNewFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {

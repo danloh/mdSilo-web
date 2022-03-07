@@ -123,7 +123,7 @@ export default function AddLinkPopover(props: Props) {
       } else if (option.type === OptionType.URL) {
         // Insert a link to a url
         insertExternalLink(editor, linkTxt);
-        Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the note link
+        Transforms.move(editor, { distance: 1, unit: 'offset' }); // Focus after the link
       } else if (option.type === OptionType.NEW_NOTE) {
         // Add a new note and insert a link to it with the note title as the link text
         const noteId = uuidv4();
