@@ -26,18 +26,21 @@ export default function SidebarExport(props: Props) {
   const onImportJson = useImportJson();
   const onImportFile = useImportMds();
 
-  const barClass = `px-2 text-sm overflow-hidden overflow-ellipsis whitespace-nowrap ${inDir ? 'bg-blue-500 text-gray-200 rounded' : ''}`; 
+  const barClass = 'px-2 text-sm bg-blue-500 text-white rounded overflow-hidden'; 
 
   return (
     <div className="relative">
       <Menu>
-        <Menu.Button className="px-2 text-gray-800 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+        <Menu.Button className="px-2 hover:bg-blue-500">
           <span className={barClass}>
             {inDir ? dirName : 'md'}: {numOfNotes}
           </span>
         </Menu.Button>
         <Menu.Items className="absolute z-20 w-auto overflow-hidden bg-white rounded top-full shadow-popover dark:bg-gray-800 focus:outline-none">
-          <DropdownItem onClick={onExportJson}>
+          <DropdownItem 
+            onClick={onExportJson}
+            className="border-b-2 border-gray-200 dark:border-gray-600"
+          >
             <IconFileDownload size={18} className="mr-1" />
             <Tooltip content="Export JSON"><span>Export</span></Tooltip>
           </DropdownItem>
@@ -57,7 +60,10 @@ export default function SidebarExport(props: Props) {
               <Tooltip content="Import JSON"><span>JSON</span></Tooltip>
             </DropdownItem>
           </>) : null}
-          <DropdownItem onClick={delDemoNotes}>
+          <DropdownItem 
+            onClick={delDemoNotes}
+            className="border-t-2 border-gray-200 dark:border-gray-600"
+          >
             <IconClearAll size={18} className="mr-1" />
             <span>DeDemo</span>
           </DropdownItem>

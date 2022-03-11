@@ -3,7 +3,7 @@
 import { toast } from 'react-toastify';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
-import { exportNotesJson, buildNotesJson, buildNoteTree } from 'components/note/NoteExport';
+import { exportNotesJson, buildNotesJson } from 'components/note/NoteExport';
 import { processImport, checkFileIsMd, rmFileNameExt } from './useImport';
 
 /**
@@ -34,19 +34,47 @@ export async function openDirDialog() {
     // store dirHandle, import files in dir and store FileHandes
     if (dirHandle) {
       store.getState().setDirHandle(dirHandle);
-      const fileList = []; // File[]
       // Show a toast
       const openToast = toast.info('Opening files, Please wait...', {
         autoClose: false,
         closeButton: true,
         draggable: false,
       });
-      let jsonTxt; // to get json content that stored all notes and tree
+      
+      // 1- first, try to get JSON that stored all notes and tree
+      let hasJSON = false;
+      try {
+        const jsonHandle = await dirHandle.getFileHandle(
+          'mdSilo_all.json', {create: false}
+        );
+        if (jsonHandle) {
+          const jsonFile = await jsonHandle.getFile();
+          const jsonTxt = await jsonFile.text();
+          if (jsonTxt) {
+            // restore all the data and the note tree(file hierarchy)
+            const notesData = JSON.parse(jsonTxt);
+            const storedNotes = notesData.notesObj;
+            // console.log("store notes", storedNotes)
+            const storedNoteTree = notesData.noteTree;
+            // console.log("store note tree", storedNoteTree)
+            if (storedNotes && storedNoteTree) {
+              store.getState().setNotes(storedNotes);
+              store.getState().setNoteTree(storedNoteTree);
+              // TODO: handle the potential err on sidebar noteTree 
+              // as notes not consistent with noteTree
+              hasJSON = true;
+            }
+          }
+        }
+      } catch (error) {
+        console.log("no mdSilo_all.json", error);
+      }
+
+      const fileList = []; // File[]
       // key: filename or dir name 
       // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
       for await (const [key, value] of dirHandle.entries()) {
         //console.log(key, value)
-        // may TODO: recursively get the files in sub dirs
         if (value.kind !== 'file') {
           continue;
         }
@@ -55,14 +83,13 @@ export async function openDirDialog() {
           // remove filename's extension, unique title as key to store Handle
           // Issue Alert: same title but diff ext, only one file can be imported
           const title = rmFileNameExt(key);
-          const fileData = await value.getFile();
-          fileList.push(fileData);
+          // need to upsert FileHandle
           store.getState().upsertHandle(title, value);
-        }
-        // get json file that stored all the notes and trees
-        if (key === 'mdSilo_all.json') {
-          const jsonFile = await value.getFile();
-          jsonTxt = await jsonFile.text();
+          // 2- if json not existing, then import md files 
+          if (!hasJSON) {
+            const fileData = await value.getFile();
+            fileList.push(fileData);
+          }
         }
       }
       // console.log("handles", store.getState().handles)
@@ -74,14 +101,6 @@ export async function openDirDialog() {
       await processImport(fileList, false);
       // close the toast
       toast.dismiss(openToast);
-      // restore the file hierarchy
-      if (jsonTxt) {
-        // restore the noteTree
-        const notesData = JSON.parse(jsonTxt);
-        const storedTitleTree = notesData.titleTree;
-        const newNoteTree = buildNoteTree(storedTitleTree, store.getState().notes)
-        store.getState().setNoteTree(newNoteTree);
-      }
     }
   } catch (error) {
     // `showDirectoryPicker` will throw an error when the user cancels
@@ -125,7 +144,7 @@ export async function writeFile(fileHandle, content) {
  *
  * @param {string} name name(name.ext or title)
  * @param {boolean} withExt default False, optional, True if name with extension
- * @return {FileSystemFileHandle | undefined} fileHandle File handle to write to.
+ * @return {Promise<FileSystemFileHandle | undefined>} fileHandle File handle to write to.
  */
 export async function getOrNewFileHandle(name, withExt=false) {
   if (!FileSystemAccess.support(window)) {

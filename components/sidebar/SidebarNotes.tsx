@@ -26,7 +26,6 @@ function SidebarNotes(props: SidebarNotesProps) {
     () => sortNoteTree(noteTree, notes, noteSort),
     [noteTree, notes, noteSort]
   );
-
   const noteList = Object.values(notes);
   const myNotes = noteList.filter(n => !n.is_wiki && !n.is_daily);
   const numOfNotes = useMemo(() => myNotes.length, [myNotes]);
