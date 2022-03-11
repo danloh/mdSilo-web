@@ -48,19 +48,22 @@ export async function openDirDialog() {
           'mdSilo_all.json', {create: false}
         );
         if (jsonHandle) {
-          const jsonFile = await value.getFile();
+          const jsonFile = await jsonHandle.getFile();
           const jsonTxt = await jsonFile.text();
           if (jsonTxt) {
             // restore all the data and the note tree(file hierarchy)
             const notesData = JSON.parse(jsonTxt);
-            const storedNotes = notesData.notes;
+            const storedNotes = notesData.notesObj;
+            // console.log("store notes", storedNotes)
             const storedNoteTree = notesData.noteTree;
-            store.getState().setNotes(storedNotes);
-            store.getState().setNoteTree(storedNoteTree);
-            // TODO: handle the potential err on sidebar noteTree 
-            // as notes not consistent with noteTree
-            // TODO: clean up titleTree related 
-            hasJSON = true;
+            // console.log("store note tree", storedNoteTree)
+            if (storedNotes && storedNoteTree) {
+              store.getState().setNotes(storedNotes);
+              store.getState().setNoteTree(storedNoteTree);
+              // TODO: handle the potential err on sidebar noteTree 
+              // as notes not consistent with noteTree
+              hasJSON = true;
+            }
           }
         }
       } catch (error) {
