@@ -19,12 +19,12 @@ export default function Home() {
                 <div className="container text-xl px-6 text-center">
                   <div className="flex-1 mx-auto">
                     <Link href="/app">
-                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                      <a className="inline-flex mt-4 mr-2 text-xl btn">
                         Writing on Web
                       </a>
                     </Link>
                     <Link href="https://github.com/danloh/mdSilo-app/releases">
-                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                      <a className="inline-flex mt-4 ml-2 text-xl btn">
                         Get Desktop App
                       </a>
                     </Link>
