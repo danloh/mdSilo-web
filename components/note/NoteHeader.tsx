@@ -86,7 +86,7 @@ export default function NoteHeader(props: Props) {
   const iconClassName = 'text-gray-600 dark:text-gray-300';
 
   return (
-    <div className={`flex items-center justify-between w-full px-4 text-right ${isWiki ? 'border-b-2 border-blue-400 py-2 mb-2' : 'py-1'}`}>
+    <div className={`flex items-center justify-between w-full px-2 text-right ${isWiki ? 'bg-blue-100 dark:bg-blue-900': 'bg-gray-100 dark:bg-gray-800'} py-1 mb-2`}>
       <div className="flex items-center">
         <span className="text-sm text-gray-300 dark:text-gray-500">Write</span>
         <Toggle

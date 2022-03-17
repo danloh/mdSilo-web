@@ -38,7 +38,7 @@ const OpenButton = () => {
 
   return (
     <SidebarItem isHighlighted={isSidebarOpen}>
-      <Tooltip content="Toggle Sidebar (Alt+X)" placement="right" touch={true}>
+      <Tooltip content="Toggle Sidebar (Alt+X)" placement="right" touch={'hold'}>
         <button
           aria-label="Toggle Sidebar"
           className={btnClass}
@@ -67,7 +67,7 @@ const GraphButton = (props: ButtonProps) => {
       <Tooltip
         content="Visualization of networked writings (Ctrl+Shift+G)"
         placement="right"
-        touch={true}
+        touch={'hold'}
       >
         <span>
           <Link href="/app/graph">
@@ -93,7 +93,7 @@ const ChronButton = (props: ButtonProps) => {
       <Tooltip
         content="Chronicle View (Ctrl+Shift+C)"
         placement="right"
-        touch={true}
+        touch={'hold'}
       >
         <span>
           <Link href="/app/chronicle">
@@ -119,7 +119,7 @@ const TaskButton = (props: ButtonProps) => {
       <Tooltip
         content="Track Personal Tasks (Ctrl+Shift+T)"
         placement="right"
-        touch={true}
+        touch={'hold'}
       >
         <span>
           <Link href="/app/tasks">
