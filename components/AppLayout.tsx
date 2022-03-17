@@ -14,7 +14,6 @@ import {
 import useHotkeys from 'editor/hooks/useHotkeys';
 import demo from 'public/demo.json';
 import { isMobile } from 'utils/helper';
-import SideMenu from './sidebar/SideMenu';
 import Sidebar from './sidebar/Sidebar';
 import FindOrCreateModal from './note/NoteNewModal';
 import { exportNotesJson } from './note/NoteExport';
@@ -191,7 +190,6 @@ export default function AppLayout(props: Props) {
       </Head>
       <div id="app-container" className={appContainerClassName}>
         <div className="flex w-full h-full dark:bg-gray-900">
-          <SideMenu />
           <Sidebar
             setIsFindOrCreateModalOpen={setIsFindOrCreateModalOpen}
             setIsSettingsOpen={setIsSettingsOpen}

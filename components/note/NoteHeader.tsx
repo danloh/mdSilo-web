@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
 import { store, useStore } from 'lib/store';
 import { queryParamToArray } from 'utils/helper';
+import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
 import Toggle from 'components/misc/Toggle';
@@ -28,6 +29,9 @@ export default function NoteHeader(props: Props) {
     query: { stack: stackQuery },
   } = router;
 
+  const isSidebarButtonVisible = useStore(
+    (state) => !state.isSidebarOpen && state.openNoteIds?.[0] === currentNote.id
+  );
   const isCloseButtonVisible = useStore(
     (state) => state.openNoteIds?.[0] !== currentNote.id
   );
@@ -86,9 +90,14 @@ export default function NoteHeader(props: Props) {
   const iconClassName = 'text-gray-600 dark:text-gray-300';
 
   return (
+<<<<<<< HEAD
     <div className={`flex items-center justify-between w-full px-2 text-right ${isWiki ? 'bg-blue-100 dark:bg-blue-900': 'bg-gray-100 dark:bg-gray-800'} py-1 mb-2`}>
+=======
+    <div className={`flex items-center justify-between w-full px-4 text-right ${isWiki ? 'border-b-2 border-blue-400 py-2 mb-2' : 'py-1'}`}>
+      <div>{isSidebarButtonVisible ? <OpenSidebarButton /> : null}</div>
+>>>>>>> parent of 9f9d7bd (style: sidemenu)
       <div className="flex items-center">
-        <span className="text-sm text-gray-300 dark:text-gray-500">Write</span>
+        <span className="text-sm text-gray-300 dark:text-gray-500">Read/Write</span>
         <Toggle
           id={isWiki ? 'wikiReadMode' : 'readMode'}
           className="mx-2"
