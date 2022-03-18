@@ -7,6 +7,7 @@ import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import NoteSumList from 'components/note/NoteSumList';
 import FindOrCreateInput from 'components/note/NoteNewInput';
+import HeatMap from 'components/HeatMap';
 import { dateCompare, getStrDate } from 'utils/helper';
 import { getOrCreateNoteId } from 'editor/handleNoteId';
 
@@ -62,6 +63,7 @@ export default function Chronicle() {
               Today : {today}
             </button>
           </div>
+          <HeatMap />
           <div className="overlfow-y-auto">
             {dates.map((d) => (
               <NoteSumList
