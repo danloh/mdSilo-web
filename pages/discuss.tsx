@@ -8,11 +8,8 @@ export default function Sponsors() {
       <Head><title>Discuss | mdSilo</title></Head>
       <div className="container px-6 py-16 bg-splash">
         <h1 className="text-5xl font-semibold text-center">Thanks for Your Feedback</h1>
-        <p className="text-xl text-center mt-4">
+        <p className="text-xl text-center mt-4 mb-8">
           Please go to our <a href="https://discord.gg/EXYSEHRTFt" className="link" target="_blank" rel="noopener noreferrer">Discord</a> and follow us on <a href="https://twitter.com/mdsiloapp" className="link" target="_blank" rel="noopener noreferrer">Twitter</a>. We are waiting there for you.
-        </p>
-        <p className="text-xl text-center my-4">
-          Also can post here.
         </p>
         <Discuss 
           repo="mdSilo/mdSilo"

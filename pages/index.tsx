@@ -19,12 +19,12 @@ export default function Home() {
                 <div className="container text-xl px-6 text-center">
                   <div className="flex-1 mx-auto">
                     <Link href="/app">
-                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                      <a className="inline-flex mt-4 mr-2 text-xl btn">
                         Writing on Web
                       </a>
                     </Link>
                     <Link href="https://github.com/danloh/mdSilo-app/releases">
-                      <a className="inline-flex mt-4 mx-2 text-2xl btn">
+                      <a className="inline-flex mt-4 ml-2 text-xl btn">
                         Get Desktop App
                       </a>
                     </Link>
@@ -99,6 +99,21 @@ export default function Home() {
                 </p>
                 <sup className="text-xs">*Experimental</sup>
               </div>
+            </div>
+          </div>
+        </div>
+        <div className="py-8 md:py-16">
+          <div className="container px-6">
+            <div className="max-w-3xl pt-6 mx-auto space-y-8 text-center md:pt-8">
+              <p className="text-2xl italic leading-normal">
+                &ldquo; WYSIWYG markdown editor is such a rarity. &rdquo;
+              </p>
+              <p className="text-2xl italic leading-normal">
+                &ldquo; I love the simplicity. &rdquo;
+              </p>
+              <p className="text-2xl italic leading-normal">
+                &ldquo; Very neat product. &rdquo;
+              </p>
             </div>
           </div>
         </div>
