@@ -102,6 +102,21 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="py-8 md:py-16">
+          <div className="container px-6">
+            <div className="max-w-3xl pt-6 mx-auto space-y-8 text-center md:pt-8">
+              <p className="text-2xl italic leading-normal">
+                &ldquo; WYSIWYG markdown editor is such a rarity. &rdquo;
+              </p>
+              <p className="text-2xl italic leading-normal">
+                &ldquo; I love the simplicity. &rdquo;
+              </p>
+              <p className="text-2xl italic leading-normal">
+                &ldquo; Very neat product. &rdquo;
+              </p>
+            </div>
+          </div>
+        </div>
         <Footer className={''} />
       </div>
     </MainView>
