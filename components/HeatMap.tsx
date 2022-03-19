@@ -1,13 +1,22 @@
 import { useRouter } from 'next/router';
 import { store } from 'lib/store';
+import { getOrCreateNoteId } from 'editor/handleNoteId';
 
 export default function HeatMap() {
   const router = useRouter();
   const onDayClick = (weekIdx: number, dayIdx: number) => {
-    const note = naviToDailyNote(weekIdx, dayIdx);
-    if (note) { router.push(`/app/md/${note.id}`); }
+    const date = getDate(weekIdx, dayIdx);
+    const noteId = getOrCreateNoteId(date);
+    // redirect to journals when the note not be prepared
+    if (noteId) {
+      router.push(`/app/md/${noteId}`);
+    } else {
+      router.push(`/app/journals`);
+    }
   };
-  const hmLabelClass = "text-xs fill-green-500 cursor-pointer";
+
+  const hmLabelClass = "text-xs fill-gray-500";
+
   return (
     <div className="overflow-auto p-2 m-2">
       <svg width="828" height="128" className="hm-svg">
@@ -132,22 +141,4 @@ function getMonthLabel(idx: number) {
   const monIdx = nowMonth + idx + 1;
   const realIdx = monIdx >= 12 ? monIdx - 12 : monIdx;
   return months[realIdx];
-}
-
-const ymdNums = (date: string) => {
-  const nums =  date.split('-').map(n => Number(n));
-  return nums;
-};
-
-function naviToDailyNote(weekIdx: number, dayIdx: number) {
-  const date = getDate(weekIdx, dayIdx);
-  const notes = Object.values(store.getState().notes).filter(n => n.is_daily);
-  const dateNums = ymdNums(date);
-  for (const note of notes) {
-    const titleNums = ymdNums(note.title);
-    const check = dateNums.join('') === titleNums.join('');
-    if (check) {
-     return note;
-    }
-  }
 }

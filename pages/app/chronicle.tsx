@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useStore, store } from 'lib/store';
+import { useStore } from 'lib/store';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import NoteSumList from 'components/note/NoteSumList';
@@ -31,12 +31,9 @@ export default function Chronicle() {
     const noteId = getOrCreateNoteId(date);
     // redirect to journals when the note not be prepared
     if (noteId) {
-      const note = store.getState().notes[noteId]; // need to get note
-      if (note) {
-        router.push(`/app/md/${note.id}`);
-      } else {
-        router.push(`/app/journals`);
-      }
+      router.push(`/app/md/${noteId}`);
+    } else {
+      router.push(`/app/journals`);
     }
   };
 
@@ -55,11 +52,11 @@ export default function Chronicle() {
               className="w-full bg-white rounded shadow-popover dark:bg-gray-800"
             />
           </div>
-          <div className="my-1 p-1 rounded text-center">
+          <div className="my-1 p-1 flex flex-row items-center">
             <Link href="/app/journals">
               <a className="link w-full text-2xl">Journals</a>
             </Link>
-            <button className="link w-full mt-2" onClick={() => onRecapDay(today)}>
+            <button className="link w-full" onClick={() => onRecapDay(today)}>
               Today : {today}
             </button>
           </div>
