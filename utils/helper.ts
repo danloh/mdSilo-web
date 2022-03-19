@@ -52,6 +52,7 @@ const ymdNums = (date: string) => {
   return nums;
 };
 export function dailyTitleEqual(str1: string, str2: string) {
+  if (!regDateStr.test(str1) || !regDateStr.test(str2)) return false;
   return ymdNums(str1).join('') === ymdNums(str2).join('');
 }
 

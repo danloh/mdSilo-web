@@ -141,6 +141,7 @@ function getDayStyle(weekIdx: number, dayIdx: number) {
 }
 
 function getMonthLabel(idx: number) {
+  if (idx > 11) return;
   const months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
