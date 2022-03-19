@@ -60,7 +60,7 @@ export default function Chronicle() {
               Today : {today}
             </button>
           </div>
-          <HeatMap />
+          <HeatMap onClick={onRecapDay} />
           <div className="overlfow-y-auto">
             {dates.map((d) => (
               <NoteSumList

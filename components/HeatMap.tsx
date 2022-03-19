@@ -1,18 +1,17 @@
 import { useRouter } from 'next/router';
 import { store } from 'lib/store';
-import { getOrCreateNoteId } from 'editor/handleNoteId';
+import { getStrDate } from 'utils/helper';
 
-export default function HeatMap() {
+type HeatMapProps = {
+  onClick: (date: string) => void;
+  className?: string;
+};
+
+export default function HeatMap({ onClick }: HeatMapProps) {
   const router = useRouter();
   const onDayClick = (weekIdx: number, dayIdx: number) => {
     const date = getDate(weekIdx, dayIdx);
-    const noteId = getOrCreateNoteId(date);
-    // redirect to journals when the note not be prepared
-    if (noteId) {
-      router.push(`/app/md/${noteId}`);
-    } else {
-      router.push(`/app/journals`);
-    }
+    onClick(date.local);
   };
 
   const hmLabelClass = "text-xs fill-gray-500";
@@ -77,8 +76,17 @@ function getDate(weekIdx: number, dayIdx: number) {
   const weekDay = date.getDay();
   const gapDay = (52 - weekIdx) * 7 - (dayIdx - weekDay);
   date.setDate(day - gapDay);
-  return date.toISOString().split('T')[0];
+  return {
+    local: getStrDate(date.toString()),
+    iso: date.toISOString().split('T')[0],
+  }
 }
+
+const getLocalDate = (dateStr: string) => {
+  return new Date(dateStr).toLocaleString(undefined, {
+    dateStyle: 'medium',
+  });
+};
 
 function calcMonStart() {
   const date = new Date();
@@ -98,10 +106,10 @@ function getData(weekIdx: number, dayIdx: number): ActivityData {
   let createNum = 0;
   let updateNum = 0;
   for (const note of notes) {
-    if (note.created_at.startsWith(date)) {
+    if (note.created_at.startsWith(date.iso)) {
       createNum += 1;
     }
-    if (note.updated_at.startsWith(date)) {
+    if (note.updated_at.startsWith(date.iso)) {
       updateNum += 1;
     }
   }
@@ -115,7 +123,7 @@ function getData(weekIdx: number, dayIdx: number): ActivityData {
 function getDataToolTips(weekIdx: number, dayIdx: number) {
   const data = getData(weekIdx, dayIdx);
   const date = getDate(weekIdx, dayIdx);
-  return `${date}:\nActivity: ${data.activityNum}\nCreated: ${data.createNum}\nUpdated: ${data.updateNum}`;
+  return `${getLocalDate(date.iso)}:\nActivity: ${data.activityNum}\nCreated: ${data.createNum}\nUpdated: ${data.updateNum}`;
 }
 
 function getDayStyle(weekIdx: number, dayIdx: number) {
