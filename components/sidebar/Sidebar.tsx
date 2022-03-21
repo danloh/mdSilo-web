@@ -130,7 +130,7 @@ const GraphButton = (props: ButtonProps) => {
       onClick={onClick}
     >
       <Tooltip
-        content="Visualization of networked notes (Ctrl+Shift+G)"
+        content="Visualization of networked writing (Ctrl+Shift+G)"
         placement="right"
         touch={false}
       >

@@ -117,6 +117,13 @@ function getDataToolTips(weekIdx: number, dayIdx: number) {
 }
 
 function getDayStyle(weekIdx: number, dayIdx: number) {
+  const date = getDate(weekIdx, dayIdx);
+  const today = getStrDate(new Date().toString());
+  const d1 = (new Date(date)).getTime();
+  const d2 = (new Date(today)).getTime();
+  if (d1 - d2 > 0) {
+    return `fill-transparent`;
+  }
   const data = getData(weekIdx, dayIdx);
   const an = data.activityNum;
   const anStyle = an === 0 
