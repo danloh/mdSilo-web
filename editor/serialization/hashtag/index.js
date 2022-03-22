@@ -3,9 +3,9 @@
 import { syntax } from './syntax'
 import { fromMarkdown } from './fromMarkdown'
 
-let warningIssued;
+let warningIssued
 
-function wikiLinkPlugin (opts = {}) {
+function tagPlugin (opts = {}) {
   const data = this.data();
 
   function add (field, value) {
@@ -28,5 +28,5 @@ function wikiLinkPlugin (opts = {}) {
   add('fromMarkdownExtensions', fromMarkdown(opts));
 }
 
-wikiLinkPlugin.wikiLinkPlugin = wikiLinkPlugin;
-export default wikiLinkPlugin;
+tagPlugin.tagPlugin = tagPlugin;
+export default tagPlugin;
