@@ -48,9 +48,17 @@ export default function Footer(props: Props) {
           </div>
           <div className="flex flex-col mt-8 space-y-2 lg:mt-0">
             <p className="font-medium">Community</p>
-            <Link href="/discuss">
+            {/* <Link href="/discuss">
               <a className="text-gray-300 hover:text-primary-500">Discuss</a>
-            </Link>
+            </Link> */}
+            <a
+              href="https://discord.gg/EXYSEHRTFt"
+              className="text-gray-300 hover:text-primary-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Discord
+            </a>
             <a
               href="https://twitter.com/mdsiloapp"
               className="text-gray-300 hover:text-primary-500"

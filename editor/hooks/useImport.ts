@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import remarkToSlate from 'editor/serialization/remarkToSlate';
 import wikiLinkPlugin from 'editor/serialization/wikilink/index';
 import pubLinkPlugin from 'editor/serialization/publink/index';
+import tagPlugin from 'editor/serialization/hashtag/index';
 import { store, useStore, Notes, NoteTreeItem, WikiTreeItem, NotesData } from 'lib/store';
 import type { NoteUpsert } from 'lib/api/curdNote';
 import { getDefaultEditorValue } from 'editor/constants';
@@ -160,6 +161,7 @@ export const processImport = async (fileList: FileList | File[], ifHandle = true
       .use(remarkGfm)
       .use(wikiLinkPlugin, { aliasDivider: '|' })
       .use(pubLinkPlugin, { aliasDivider: '|' })
+      .use(tagPlugin)
       .use(remarkToSlate)
       .processSync(fileContent);
 
@@ -250,6 +252,7 @@ export const refreshImport = async (file: File, title: string) => {
     .use(remarkGfm)
     .use(wikiLinkPlugin, { aliasDivider: '|' })
     .use(pubLinkPlugin, { aliasDivider: '|' })
+    .use(tagPlugin)
     .use(remarkToSlate)
     .processSync(fileContent);
 

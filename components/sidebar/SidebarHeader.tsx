@@ -59,7 +59,7 @@ export default function SidebarHeader(props: Props) {
           </DropdownItem>
           <DropdownItem className={linkItemClass} as='link' href='/app'>
             <IconWriting size={18} className="mr-1" />
-            <span>New Workspace</span>
+            <span>New Tab</span>
           </DropdownItem>
           <DropdownItem
             className="border-t dark:border-gray-700 hover:bg-green-400"
