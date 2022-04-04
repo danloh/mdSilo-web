@@ -1648,10 +1648,10 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
-"@tabler/icons@^1.56.0":
-  version "1.56.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.56.0.tgz#f40be9518eefcd00df16e5acb249583392451ca2"
-  integrity sha512-SkkFghWu649AZY3K77SZCx/Gs5plu+OfmcWzZ4vw3DJH2eV4tD9XMUVHXsK1+u2NOskzDVqZjCDrMtsAkdW7KA==
+"@tabler/icons@^1.62.0":
+  version "1.62.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.62.0.tgz#88ab4b4644e8f945421915584a266150f2a5b76f"
+  integrity sha512-ZL5gWQPVM1mhT/rwctaMuelX2emN02HLCWXjZ1M6UxqIezB2G7Af/jnQplK6CODwlGjA5y0LmByJcYIv6OCC2g==
 
 "@tailwindcss/forms@^0.5.0":
   version "0.5.0"
