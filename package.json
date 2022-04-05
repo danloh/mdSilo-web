@@ -23,7 +23,7 @@
     "@headlessui/react": "^1.5.0",
     "@popperjs/core": "^2.11.4",
     "@react-spring/web": "^9.4.4",
-    "@sentry/nextjs": "^6.18.2",
+    "@sentry/nextjs": "^6.19.4",
     "@supabase/supabase-js": "^1.31.1",
     "@tabler/icons": "^1.56.0",
     "@tailwindcss/forms": "^0.5.0",
