@@ -50,3 +50,4 @@ public/workbox-*.js.map
 cypress/screenshots/
 cypress/videos/
 devlog.md
+tsconfig.tsbuildinfo
