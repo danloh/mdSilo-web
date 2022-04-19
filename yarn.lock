@@ -7356,10 +7356,10 @@ slate-react@^0.77.0:
     scroll-into-view-if-needed "^2.2.20"
     tiny-invariant "1.0.6"
 
-slate@^0.77.0:
-  version "0.77.0"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.77.0.tgz#a83425cb1499ebd3d4a85a7bbbeaf9faefb29769"
-  integrity sha512-1yg8h4wX3WjTecvTTqfg1+a1cM1wXzmQ4MCWwd+KSJBJCtAvjgRDDQq2ThhWhx2uviznQemRzdls/BI0c/KvYQ==
+slate@^0.77.2:
+  version "0.77.2"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.77.2.tgz#ba66ac32d96f5e6f6793a53727930248ec2279fc"
+  integrity sha512-raG/eyYyRDThz+r/opUD+wxWxwXQi4fH0ViZh41x8qBu8uOPMTBYl10RA7KsF8IK48DS207uPrvWGGBsnMCLwg==
   dependencies:
     immer "^9.0.6"
     is-plain-object "^5.0.0"
