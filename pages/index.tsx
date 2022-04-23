@@ -7,7 +7,20 @@ import MainView from 'components/landing/MainView';
 export default function Home() {
   const cardClass = 'p-8 rounded-md shadow bg-neutral-100 text-gray-800';
   const defaultValue = `# Welcome  
-  A Knowledge Silo equipped with WYSIWYG Editor and Markdown support. Available for Web, Windows, macOS, Linux.`;
+  A Knowledge Silo equipped with WYSIWYG Editor and Markdown support.  
+
+  [Open Source](https://mdsilo.com/sponsors/) and Free.   
+
+  Available for [Web, Windows, macOS, Linux](https://github.com/danloh/mdSilo-app/releases).
+
+  | Features | mdSilo | Note | Pricing |
+  |----|----|----|---:|
+  | WYSIWYG | Yes | Live Preview: Markdown, Code, Image... | Free |
+  | Writing | Yes | Slash Commands, Hotkeys  | Free | 
+  | Formatting | Yes | Side Menu, Hovering Toolbar | Free |
+  | Linking | Yes | BackLink, External Link...  | Free | 
+  | View | Yes | Graph view, Chronicle view...  | Free | `;
+
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col min-h-screen splash-bg">
@@ -30,7 +43,11 @@ export default function Home() {
                 </div>
                 <div className="flex flex-1 p-6 mx-auto">
                   <div className="flex-1 px-8 py-6 bg-gray-900">
-                    <MsEditor dark={true} defaultValue={defaultValue} />
+                    <MsEditor 
+                      dark={true} 
+                      defaultValue={defaultValue} 
+                      onOpenLink={(href) => { window.open(href, "_blank");}}
+                    />
                   </div>
                 </div>
               </div>

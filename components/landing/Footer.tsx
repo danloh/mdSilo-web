@@ -37,7 +37,7 @@ export default function Footer(props: Props) {
           </div>
         </div>
         <div className="flex flex-wrap flex-1 space-x-16 lg:justify-end">
-          <div className="flex flex-col mt-8 space-y-2 lg:mt-0">
+          {/* <div className="flex flex-col mt-8 space-y-2 lg:mt-0">
             <p className="font-medium">Product</p>
             <Link href="/sponsors">
               <a className="text-gray-300 hover:text-primary-500">Source Code</a>
@@ -45,7 +45,7 @@ export default function Footer(props: Props) {
             <Link href="/app/demo">
               <a className="text-gray-300 hover:text-primary-500">Help Center</a>
             </Link>
-          </div>
+          </div> */}
           <div className="flex flex-col mt-8 space-y-2 lg:mt-0">
             <p className="font-medium">Community</p>
             {/* <Link href="/discuss">
