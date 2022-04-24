@@ -23,7 +23,7 @@
     @apply cursor-pointer text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300;
   }
   .splash-bg {
-    background: linear-gradient(55deg, #414b61 0 45%, #2d3343 45% 100%);
+    background: linear-gradient(65deg, #414b61 0 45%, #2d3343 45% 100%);
   }
   .img-effect {
     --m:

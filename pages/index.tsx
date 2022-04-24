@@ -9,9 +9,7 @@ export default function Home() {
   const defaultValue = `# Welcome  
   A Knowledge Silo equipped with WYSIWYG Editor and Markdown support.  
 
-  [Open Source](https://mdsilo.com/sponsors/) and Free.   
-
-  Available for [Web, Windows, macOS, Linux](https://github.com/danloh/mdSilo-app/releases).
+  [Open Source](https://mdsilo.com/sponsors/) and Free. Available for [Web, Windows, macOS, Linux](https://github.com/danloh/mdSilo-app/releases).
 
   | Features | mdSilo | Note | Pricing |
   |----|----|----|---:|
@@ -29,10 +27,10 @@ export default function Home() {
             <Navbar />
             <div className="container">
               <div className="px-8 py-16">
-                <div className="container text-xl px-6 text-center">
+                <div className="container text-xl px-2 text-center">
                   <div className="flex-1 mx-auto">
                     <Link href="https://github.com/danloh/mdSilo-app/releases">
-                      <a className="inline-flex mt-4 ml-2 text-xl btn">
+                      <a className="inline-flex mt-4 text-xl btn">
                         Get Desktop App
                       </a>
                     </Link>
@@ -41,8 +39,8 @@ export default function Home() {
                     mdSilo is a plain-text knowledge silo and a networked-writing app.
                   </p>
                 </div>
-                <div className="flex flex-1 p-6 mx-auto">
-                  <div className="flex-1 px-8 py-6 bg-gray-900">
+                <div className="flex flex-1 py-6 mx-auto max-w-2xl">
+                  <div className="flex-1 px-8 bg-gray-900 overflow-auto">
                     <MsEditor 
                       dark={true} 
                       defaultValue={defaultValue} 
@@ -61,23 +59,19 @@ export default function Home() {
                 <h3 className="text-xl font-semibold">📝 Enjoy Writing</h3>
                 <p className="pt-1">Real-time WYSIWYG writing</p>
                 <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
-                <p className="pt-1">Import and Export (Markdown, JSON)</p>
-                <p className="pt-1">Web App and Cross-platform Desktop App</p>
+                <p className="pt-1">Cross-platform Desktop App</p>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">
                   🔗 Connect Everything
                 </h3>
-                <p className="pt-1">{`#HashTag and ( External Link )`}</p>
-                <p className="pt-1">(( Block Reference ))</p>
-                <p className="pt-1">[[ Bidirection BackLink ]]</p>
-                <p className="pt-1">{`{{ PubLink to liaison points }}`}</p>
-                <sup className="text-xs">*Experimental</sup>
+                <p className="pt-1">
+                  Thinking, Writing in the networked way just like the human brain. Connected everything in context. 
+                </p>
               </div>
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🪟 Different Views</h3>
                 <p className="pt-1">Chronicle View</p>
-                <p className="pt-1">Stacking View</p>
                 <p className="pt-1">Graph View</p>
                 <p className="pt-1">Task View</p>
               </div>
@@ -97,7 +91,7 @@ export default function Home() {
               <div className={cardClass}>
                 <h3 className="text-xl font-semibold">🤝🏼 Liaison to Knowledge</h3>
                 <p className="pt-1">
-                  PubLink opens a window for each private digital garden, links to liaison points between knowledge.
+                  Opens a window for each private digital garden, links to liaison points between knowledge.
                 </p>
                 <sup className="text-xs">*Experimental</sup>
               </div>
