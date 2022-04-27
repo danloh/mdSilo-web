@@ -13,9 +13,8 @@ export default function Home() {
 
   | Features | mdSilo | Note | Pricing |
   |----|----|----|---:|
-  | WYSIWYG | Yes | Live Preview: Markdown, Code, Image... | Free |
-  | Writing | Yes | Slash Commands, Hotkeys  | Free | 
-  | Formatting | Yes | Side Menu, Hovering Toolbar | Free |
+  | WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
+  | Writing | Yes | Slash Commands, Toolbar, Hotkeys  | Free | 
   | Linking | Yes | BackLink, External Link...  | Free | 
   | View | Yes | Graph view, Chronicle view...  | Free | `;
 
