@@ -1,22 +1,18 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import type { Path, Descendant } from 'slate';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import Editor from 'components/editor/Editor';
-import Title from 'components/editor/Title';
-import Backlinks from 'components/editor/backlinks/Backlinks';
-import { store, useStore } from 'lib/store';
+import MsEditor, { JSONContent } from "mdsmirror";
+
 import { Note } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
-import serialize from 'editor/serialization/serialize';
-import { getDefaultEditorValue } from 'editor/constants';
+
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
 import { 
   writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile,
 } from 'editor/hooks/useFSA';
-import updateBacklinks from 'editor/backlinks/updateBacklinks';
+
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
 import ErrorBoundary from '../misc/ErrorBoundary';
@@ -29,15 +25,15 @@ const UNIQUE_VIOLATION_ERROR_CODE = '23505';
 
 type Props = {
   noteId: string;
-  highlightedPath?: Path;
+  highlightedPath?: unknown;
   className?: string;
 };
 
 function Note(props: Props) {
-  const { noteId, highlightedPath, className } = props;
+  const { noteId, className } = props;
   const router = useRouter();
   const { user } = useAuthContext();
-
+  const darkMode = useStore((state) => state.darkMode);
   // get some property of note
   const storeNotes = useStore((state) => state.notes);
   const note: Note | undefined = storeNotes[noteId];
@@ -51,7 +47,7 @@ function Note(props: Props) {
 
   const [isWiki, setIsWiki] = useState(initIsWiki);
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
-  
+  const mdContent: string = value.map((n) => serialize(n)).join('');
   // note action
   const updateNote = useStore((state) => state.updateNote);
   const upsertNote = useStore((state) => state.upsertNote);
@@ -73,24 +69,6 @@ function Note(props: Props) {
       setIsLoaded(true);
     }
   }, [noteId, isWiki, isLoaded, loadNote]);
-
-  // update locally
-  const setValueOnChange = useCallback(
-    async (value: Descendant[]) => {
-      updateNote({ id: noteId, content: value });
-      // write to local file system if hasFSA
-      if (FileSystemAccess.support(window)) {
-        const handle = store.getState().handles[title]
-          || await getOrNewFileHandle(title);
-        if (handle) {
-          const content = value.map((n) => serialize(n)).join('');
-          await writeFile(handle, content);
-          await writeJsonFile();
-        }
-      }
-    },
-    [noteId, title, updateNote]
-  );
   
   // use state and useEffect to trigger and handle update to db
   const [syncState, setSyncState] = useState({
@@ -141,6 +119,14 @@ function Note(props: Props) {
       }
     },
     [noteId, isWiki, storeNotes, updateNote, initTitle, value]
+  );
+
+  const onContentChange = useCallback(
+    async (text: string, json: JSONContent) => {
+      //updateNote({ id: noteId, content: value });
+      console.log("on content change", text.length, json);
+    },
+    [note?.is_daily, noteId, title, updateNote]
   );
 
   const onValueChange = useCallback(() => {
@@ -254,26 +240,13 @@ function Note(props: Props) {
           <NoteHeader isWiki={isWiki} isPub={isPub} />
           <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
             <div className="flex flex-col flex-1 w-full mx-auto md:w-128 lg:w-160 xl:w-192">
-              <Title
-                className="px-8 pb-1 md:px-12"
-                initialTitle={title}
-                onChange={onTitleChange}
-                isDaily={isDaily}
-                isPub={isPub}
-              />
-              <Editor
-                className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12"
-                noteId={noteId}
-                value={value}
-                setValue={setValueOnChange}
-                onChange={onValueChange}
-                highlightedPath={highlightedPath}
-                isWiki={isWiki}
-                isDaily={isDaily}
-                isPub={isPub}
-              />
-              <div className="pt-2 border-t-2 border-gray-200 dark:border-gray-600">
-                <Backlinks className="mx-4 mb-8 md:mx-8 md:mb-12" isCollapse={isWiki} />
+              <div className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12">
+                <MsEditor 
+                  value={mdContent}
+                  dark={darkMode}
+                  onChange={onContentChange}
+                  onSearchSelectText={(txt) => console.log("search text", txt)}
+                />
               </div>
             </div>
           </div>

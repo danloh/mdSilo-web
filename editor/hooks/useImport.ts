@@ -1,19 +1,15 @@
 import { useCallback } from 'react';
-import { Descendant, Element } from 'slate';
+
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import remarkToSlate from 'editor/serialization/remarkToSlate';
-import wikiLinkPlugin from 'editor/serialization/wikilink/index';
-import pubLinkPlugin from 'editor/serialization/publink/index';
-import tagPlugin from 'editor/serialization/hashtag/index';
-import { store, useStore, Notes, NoteTreeItem, WikiTreeItem, NotesData } from 'lib/store';
+
 import type { NoteUpsert } from 'lib/api/curdNote';
-import { getDefaultEditorValue } from 'editor/constants';
+
 import { ciStringEqual, regDateStr } from 'utils/helper';
-import { ElementType, NoteLink } from 'editor/slate';
+
 import { Note, defaultNote } from 'types/model';
 import { getOrNewFileHandle, writeFile } from './useFSA';
 

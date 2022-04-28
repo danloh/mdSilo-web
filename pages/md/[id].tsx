@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Path } from 'slate';
 import Note from 'components/note/Note';
-import { useStore } from 'lib/store';
+
 import usePrevious from 'editor/hooks/usePrevious';
 import { queryParamToArray } from 'utils/helper';
-import useBlockBacklinks from 'editor/backlinks/useBlockBacklinks';
+
 
 export default function NotePage() {
   const router = useRouter();
@@ -25,12 +24,6 @@ export default function NotePage() {
     return state.notes[noteId].title;
   });
 
-  useBlockBacklinks();
-
-  const [highlightedPath, setHighlightedPath] = useState<{
-    index: number;
-    path: Path;
-  } | null>(null);
 
   // Initialize open notes and highlighted path
   useEffect(() => {
@@ -41,9 +34,8 @@ export default function NotePage() {
     const newOpenNoteIds = [noteId, ...queryParamToArray(stackQuery)];
     setOpenNoteIds(newOpenNoteIds);
 
-    // We use router.asPath specifically so we handle any route change (even if asPath is the same)
-    const newHighlightedPath = getHighlightedPath(router.asPath);
-    setHighlightedPath(newHighlightedPath);
+    
+    
   }, [setOpenNoteIds, router, noteId, stackQuery]);
 
   useEffect(() => {
@@ -56,8 +48,7 @@ export default function NotePage() {
       prevOpenNoteIds &&
       prevOpenNoteIds.length > 0 &&
       openNoteIds[openNoteIds.length - 1] !==
-        prevOpenNoteIds[prevOpenNoteIds.length - 1] &&
-      !highlightedPath
+        prevOpenNoteIds[prevOpenNoteIds.length - 1] 
     ) {
       document
         .getElementById(openNoteIds[openNoteIds.length - 1])
@@ -66,7 +57,7 @@ export default function NotePage() {
           inline: 'center',
         });
     }
-  }, [openNoteIds, prevOpenNoteIds, highlightedPath]);
+  }, [openNoteIds, prevOpenNoteIds]);
 
   if (!noteId || typeof noteId !== 'string') {
     return (
@@ -98,11 +89,6 @@ export default function NotePage() {
                 key={noteId}
                 noteId={noteId}
                 className="sticky left-0"
-                highlightedPath={
-                  highlightedPath?.index === index
-                    ? highlightedPath.path
-                    : undefined
-                }
               />
             ))
           : null}

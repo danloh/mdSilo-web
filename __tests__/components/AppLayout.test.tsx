@@ -1,6 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
 import AppLayout from 'components/AppLayout';
-import { store } from 'lib/store';
 import { AuthContext } from 'utils/useAuth';
 import notes from '__fixtures__/notes';
 

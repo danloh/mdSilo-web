@@ -4,15 +4,12 @@ import { IconDots, IconX, IconTrash, IconCornerDownRight } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { useRouter } from 'next/router';
 import { useCurrentContext } from 'editor/hooks/useCurrent';
-import { store, useStore } from 'lib/store';
 import { queryParamToArray } from 'utils/helper';
-import OpenSidebarButton from 'components/sidebar/OpenSidebarButton';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
 import Toggle from 'components/misc/Toggle';
 import { DropdownItem } from 'components/misc/Dropdown';
 import NoteMetadata from 'components/note/NoteMetadata';
-import MoveToModal from 'components/note/NoteMoveModal';
 import NoteDelModal from 'components/note/NoteDelModal';
 import { NoteExport, NoteExportAll } from 'components/note/NoteExport';
 
@@ -29,12 +26,7 @@ export default function NoteHeader(props: Props) {
     query: { stack: stackQuery },
   } = router;
 
-  const isSidebarButtonVisible = useStore(
-    (state) => !state.isSidebarOpen && state.openNoteIds?.[0] === currentNote.id
-  );
-  const isCloseButtonVisible = useStore(
-    (state) => state.openNoteIds?.[0] !== currentNote.id
-  );
+  
   const note = useStore((state) => state.notes[currentNote.id]);
 
   const onClosePane = useCallback(() => {

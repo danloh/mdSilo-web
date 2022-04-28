@@ -5,18 +5,15 @@ import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 
 export default function Home() {
-  const cardClass = 'p-8 rounded-md shadow bg-neutral-100 text-gray-800';
   const defaultValue = `# Welcome  
-  A Knowledge Silo equipped with WYSIWYG Editor and Markdown support.  
+  Lightweight note-taking tool with WYSIWYG Editor and Markdown support.  
 
-  [Open Source](https://mdsilo.com/sponsors/) and Free. Available for [Web, Windows, macOS, Linux](https://github.com/danloh/mdSilo-app/releases).
+  [Open Source](https://mdsilo.com/sponsors/) and Free.
 
   | Features | mdSilo | Note | Pricing |
   |----|----|----|---:|
   | WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
-  | Writing | Yes | Slash Commands, Toolbar, Hotkeys  | Free | 
-  | Linking | Yes | BackLink, External Link...  | Free | 
-  | View | Yes | Graph view, Chronicle view...  | Free | `;
+  | Writing | Yes | Slash Commands, Toolbar, Hotkeys  | Free | `;
 
   return (
     <MainView showNavbar={false} showFooter={false}>
@@ -48,67 +45,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="py-6 md:py-12 bg-neutral-300">
-          <div className="container px-6">
-            <div className="grid gap-6 pt-6 md:grid-cols-3">
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">📝 Enjoy Writing</h3>
-                <p className="pt-1">Real-time WYSIWYG writing</p>
-                <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
-                <p className="pt-1">Cross-platform Desktop App</p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">
-                  🔗 Connect Everything
-                </h3>
-                <p className="pt-1">
-                  Thinking, Writing in the networked way just like the human brain. Connected everything in context. 
-                </p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">🪟 Different Views</h3>
-                <p className="pt-1">Chronicle View</p>
-                <p className="pt-1">Graph View</p>
-                <p className="pt-1">Task View</p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">💡 Knowledge Silo</h3>
-                <p className="pt-1">
-                  Store the ideas, thoughts, knowledge in the networked way and 
-                  view them from different perspectives.
-                </p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">🔒 Private and Secure</h3>
-                <p className="pt-2">
-                  Write completely offline using the tiny but powerful and cross-platform Desktop App. Even the code is entirely in your control.
-                </p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">🤝🏼 Liaison to Knowledge</h3>
-                <p className="pt-1">
-                  Opens a window for each private digital garden, links to liaison points between knowledge.
-                </p>
-                <sup className="text-xs">*Experimental</sup>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="py-8 md:py-16">
-          <div className="container px-6">
-            <div className="max-w-3xl pt-6 mx-auto space-y-8 text-center md:pt-8">
-              <p className="text-2xl italic leading-normal">
-                &ldquo; WYSIWYG markdown editor is such a rarity. &rdquo;
-              </p>
-              <p className="text-2xl italic leading-normal">
-                &ldquo; I love the simplicity. &rdquo;
-              </p>
-              <p className="text-2xl italic leading-normal">
-                &ldquo; Very neat product. &rdquo;
-              </p>
             </div>
           </div>
         </div>
