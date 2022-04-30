@@ -24,13 +24,9 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
       </Head>
       <ServiceWorker>
         <ProvideAuth>
-          {router.pathname.startsWith('/app') ? (
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          ) : (
+          <AppLayout>
             <Component {...pageProps} />
-          )}
+          </AppLayout>
         </ProvideAuth>
       </ServiceWorker>
       <ToastContainer

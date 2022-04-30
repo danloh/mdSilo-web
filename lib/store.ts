@@ -89,8 +89,6 @@ export type Store = {
   wikiTree: WikiTreeItem[];
   setWikiTree: Setter<WikiTreeItem[]>;
   updateWikiTree: (wikiId: string, noteId: string | null) => void;
-  blockIdToBacklinksMap: Record<string, Backlink[] | undefined>;
-  setBlockIdToBacklinksMap: Setter<Record<string, Backlink[] | undefined>>;
   sidebarTab: SidebarTab;
   setSidebarTab: Setter<SidebarTab>;
   sidebarSearchQuery: string;
@@ -158,6 +156,7 @@ export const store = createVanilla<
           } else {
             // if existing per title
             const existingNote = Object.values(state.notes).find((n) =>
+              n.title && note.title &&
               ciStringEqual(n.title, note.title)
             );
             if (existingNote) {
@@ -267,9 +266,7 @@ export const store = createVanilla<
           insertTreeItem(state.noteTree, item, target);
         });
       },
-      // Cache of block id to backlinks
-      blockIdToBacklinksMap: {},
-      setBlockIdToBacklinksMap: setter(set, 'blockIdToBacklinksMap'),
+
       // wiki tree
       wikiTree: [],
       setWikiTree: setter(set, 'wikiTree'),

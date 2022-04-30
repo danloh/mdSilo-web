@@ -1,63 +1,17 @@
-import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Note from 'components/note/Note';
 
-import usePrevious from 'editor/hooks/usePrevious';
-import { queryParamToArray } from 'utils/helper';
-
 
 export default function NotePage() {
   const router = useRouter();
-  const { query: { id: noteId, stack: stackQuery }, } = router;
+  const { query: { id: noteId } } = router;
 
-  const openNoteIds = useStore((state) => state.openNoteIds);
-  const setOpenNoteIds = useStore((state) => state.setOpenNoteIds);
-  const prevOpenNoteIds = usePrevious(openNoteIds);
+  
 
   const siteTitle = 'mdSilo';
-  const pageTitle = useStore((state) => {
-    if (!noteId || typeof noteId !== 'string' || !state.notes[noteId]?.title) {
-      return siteTitle;
-    }
-    return state.notes[noteId].title;
-  });
 
-
-  // Initialize open notes and highlighted path
-  useEffect(() => {
-    if (!noteId || typeof noteId !== 'string') {
-      return;
-    }
-
-    const newOpenNoteIds = [noteId, ...queryParamToArray(stackQuery)];
-    setOpenNoteIds(newOpenNoteIds);
-
-    
-    
-  }, [setOpenNoteIds, router, noteId, stackQuery]);
-
-  useEffect(() => {
-    // Scroll the last open note into view if:
-    // 1. The last open note id has changed
-    // 2. prevOpenNoteIds has length > 0 (ensures that this is not the first render)
-    // 3. highlightedPath is not set (if it is, scrolling will be handled by the editor component)
-    if (
-      openNoteIds.length > 0 &&
-      prevOpenNoteIds &&
-      prevOpenNoteIds.length > 0 &&
-      openNoteIds[openNoteIds.length - 1] !==
-        prevOpenNoteIds[prevOpenNoteIds.length - 1] 
-    ) {
-      document
-        .getElementById(openNoteIds[openNoteIds.length - 1])
-        ?.scrollIntoView({
-          behavior: 'smooth',
-          inline: 'center',
-        });
-    }
-  }, [openNoteIds, prevOpenNoteIds]);
 
   if (!noteId || typeof noteId !== 'string') {
     return (
@@ -80,48 +34,15 @@ export default function NotePage() {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
+        <title>{siteTitle}</title>
       </Head>
       <div className="flex flex-1 overflow-x-auto divide-x divide-gray-200 dark:divide-gray-700">
-        {openNoteIds.length > 0
-          ? openNoteIds.map((noteId, index) => (
-              <Note
-                key={noteId}
-                noteId={noteId}
-                className="sticky left-0"
-              />
-            ))
-          : null}
+        <Note
+          key={noteId}
+          noteId={noteId}
+          className="sticky left-0"
+        />
       </div>
     </>
   );
 }
-
-/**
- * Takes in a url with a hash parameter formatted like #1-2,3 (where 1 signifies the open note index,
- * and 2,3 signifies the path to be highlighted). Parses the url and
- * returns the open note index and the path to be highlighted as an object.
- */
-const getHighlightedPath = (
-  url: string
-): { index: number; path: Path } | null => {
-  const urlArr = url.split('#');
-  if (urlArr.length <= 1) {
-    return null;
-  }
-
-  const hash = urlArr[urlArr.length - 1];
-  const [strIndex, ...strPath] = hash.split(/[-,]+/);
-
-  const index = Number.parseInt(strIndex);
-  const path = strPath.map((pathSegment) => Number.parseInt(pathSegment));
-  if (
-    Number.isNaN(index) ||
-    path.length <= 0 ||
-    path.some((segment) => Number.isNaN(segment))
-  ) {
-    return null;
-  }
-
-  return { index, path };
-};
