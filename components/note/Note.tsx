@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -10,7 +11,7 @@ import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
 
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
 import { 
-  writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile,
+  writeFile, getOrNewFileHandle, delFileHandle, 
 } from 'editor/hooks/useFSA';
 
 import { FileSystemAccess } from 'editor/checks';

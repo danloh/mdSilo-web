@@ -1,5 +1,4 @@
 import { Note } from 'types/model';
-import { getSerializedNote } from './NoteExport';
 
 type Props = {
   note: Note;
@@ -7,7 +6,7 @@ type Props = {
 
 export default function NoteMetadata(props: Props) {
   const { note } = props;
-  const serNoteCtn = getSerializedNote(note);
+  const serNoteCtn = note.content;
   const wordCount = countWords(serNoteCtn);
   const ctnLen = serNoteCtn.length;
   return (

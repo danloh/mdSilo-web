@@ -1,4 +1,4 @@
-import MsEditor, { parser, serializer } from "mdsmirror";
+import MsEditor from "mdsmirror";
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 
@@ -139,15 +139,8 @@ You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Disc
 
 We would appreciate any support from you! ❤️`;
 
-  // const docAst = parser.parse(defaultValue);
-  // console.log("slice: ", serializer.serialize(docAst.content.content))
-  // const jsonDoc = docAst.toJSON();
-  // console.log("json: ", jsonDoc);
-  // const textDoc = serializer.serialize(docAst);
-  // console.log("text: ", textDoc); 
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onChange = (text: string, json: any) => {console.log("text: ", text, "JSON: ", json)};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onChange = (text: string, json: unknown) => {/* console.log("text: ", text, "JSON: ", json) */};
 
   return (
     <MainView showNavbar={false} showFooter={false}>

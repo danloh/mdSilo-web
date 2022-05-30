@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 
 import { toast } from 'react-toastify';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
-import { exportNotesJson, buildNotesJson } from 'components/note/NoteExport';
-import { processImport, checkFileIsMd, rmFileNameExt } from './useImport';
 
 /**
  * open local folder to import files
@@ -16,9 +15,6 @@ export async function openDirDialog() {
     return;
   }
 
-  // export works and clean store notes
-  const exportOnClose = store.getState().exportOnClose;
-  if (exportOnClose) { await exportNotesJson(); }
   // cleaning noteTree first, thus will not trigger noteSort in sidebar
   store.getState().setNoteTree([]);
   store.getState().setNotes({});
@@ -40,35 +36,6 @@ export async function openDirDialog() {
         closeButton: true,
         draggable: false,
       });
-      
-      // 1- first, try to get JSON that stored all notes and tree
-      let hasJSON = false;
-      try {
-        const jsonHandle = await dirHandle.getFileHandle(
-          'mdSilo_all.json', {create: false}
-        );
-        if (jsonHandle) {
-          const jsonFile = await jsonHandle.getFile();
-          const jsonTxt = await jsonFile.text();
-          if (jsonTxt) {
-            // restore all the data and the note tree(file hierarchy)
-            const notesData = JSON.parse(jsonTxt);
-            const storedNotes = notesData.notesObj;
-            // console.log("store notes", storedNotes)
-            const storedNoteTree = notesData.noteTree;
-            // console.log("store note tree", storedNoteTree)
-            if (storedNotes && storedNoteTree) {
-              store.getState().setNotes(storedNotes);
-              store.getState().setNoteTree(storedNoteTree);
-              // TODO: handle the potential err on sidebar noteTree 
-              // as notes not consistent with noteTree
-              hasJSON = true;
-            }
-          }
-        }
-      } catch (error) {
-        console.log("no mdSilo_all.json", error);
-      }
 
       const fileList = []; // File[]
       // key: filename or dir name 
@@ -78,27 +45,12 @@ export async function openDirDialog() {
         if (value.kind !== 'file') {
           continue;
         }
-        // upsert Handle in store
-        if (checkFileIsMd(key)) {
-          // remove filename's extension, unique title as key to store Handle
-          // Issue Alert: same title but diff ext, only one file can be imported
-          const title = rmFileNameExt(key);
-          // need to upsert FileHandle
-          store.getState().upsertHandle(title, value);
-          // 2- if json not existing, then import md files 
-          if (!hasJSON) {
-            const fileData = await value.getFile();
-            fileList.push(fileData);
-          }
-        }
+        // TODO: upsert Handle in store
+       
       }
-      // console.log("handles", store.getState().handles)
-      // for performance:
-      // can delay the processImport on Open Folder? 
-      // just get file list first
-      // and process when open specific file 
-      // stopgap: show process on process
-      await processImport(fileList, false);
+      
+      // TODO process file
+
       // close the toast
       toast.dismiss(openToast);
     }
@@ -238,7 +190,7 @@ export async function writeJsonFile(json = '') {
 
   try {
     const jsonHandle = await getOrNewFileHandle('mdSilo_all.json', true);
-    const notesJson = json || buildNotesJson(true);
+    const notesJson = json;
     if (jsonHandle) {
       await writeFile(jsonHandle, notesJson);
     }
@@ -288,4 +240,19 @@ export async function verifyPermission(fileHandle, ifWrite) {
   }
   // The user did not grant permission, return false.
   return false;
+}
+
+
+/**
+ * remove file name extension
+ *
+ * @param {string} fname, file name.
+ */
+ export const rmFileNameExt = (fname) => {
+  return fname.replace(/\.[^/.]+$/, '');
+}
+
+export const checkFileIsMd = (fname) => {
+  const check = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
+  return check;
 }

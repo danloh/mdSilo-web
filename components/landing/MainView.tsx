@@ -12,7 +12,7 @@ type Props = {
 export default function MainView(props: Props) {
   const {
     children,
-    showNavbar = false,
+    showNavbar = true,
     showFooter = false,
     className = '',
   } = props;
