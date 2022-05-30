@@ -3,7 +3,7 @@ import MainView from 'components/landing/MainView';
 
 export default function Privacy() {
   return (
-    <MainView>
+    <MainView showFooter={true}>
       <Head>
         <title>Privacy Policy | mdSilo</title>
       </Head>

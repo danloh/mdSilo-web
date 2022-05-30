@@ -12,13 +12,13 @@ type Props = {
 export default function MainView(props: Props) {
   const {
     children,
-    showNavbar = true,
-    showFooter = true,
+    showNavbar = false,
+    showFooter = false,
     className = '',
   } = props;
 
   return (
-    <div className={`min-h-screen font-display dark bg-gray-700 text-gray-100 ${className}`}>
+    <div className={`min-h-full font-display dark bg-black text-gray-100 ${className}`}>
       {showNavbar ? <Navbar /> : null}
       {children}
       {showFooter ? <Footer /> : null}

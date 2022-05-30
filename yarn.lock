@@ -976,11 +976,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@benrbray/prosemirror-math@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@benrbray/prosemirror-math/-/prosemirror-math-0.2.2.tgz#5b2aeb7c8c5a41d2e39317fe1fbd7040fd347cc9"
-  integrity sha512-n+V8MNKaQ9HtA1IASzoBFwthFY55kpu2I+0aF103AbqUw5eM8YlxHeltnLqjnYRVY4/a6A9t9YlBMBQOli5jgw==
-
 "@cypress/request@^2.88.10":
   version "2.88.10"
   resolved "https://registry.yarnpkg.com/@cypress/request/-/request-2.88.10.tgz#b66d76b07f860d3a4b8d7a0604d020c662752cce"
@@ -1736,10 +1731,10 @@
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.64.0.tgz#dc22f2ef82f0b3ebd74393f0c2972f7b8ec491d5"
   integrity sha512-QOx5fWBFVQjLt7fIG0i9wWs2MH9e+W9JVj5M+LgPiLMrm6KjJ33BOCSgArERPMFal2klHa80kK7Pt0YbZX+jbw==
 
-"@tabler/icons@^1.66.0":
-  version "1.66.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.66.0.tgz#411630b5c8997e42d7f4fe920054bb7750975b50"
-  integrity sha512-lSm1uDymlWdBbGN3TuqvzQbV3kIwcTJo0QTJJbSb5py+ivxSI/Fat/t+pA7/JqLm9rUU+CXuVj3PONSUTanxpg==
+"@tabler/icons@^1.68.0":
+  version "1.68.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.68.0.tgz#047bd88966cc24ef957b3c429a13bb82cca95561"
+  integrity sha512-UseBEEhv7r+Drl3iZih7rkwqkfJJZscjd5ZvK1WdIIulQsBa+qE8WBDGdAO0RtjkCclEK88z9kC0s5wiVPIvkw==
 
 "@tailwindcss/forms@^0.5.0":
   version "0.5.0"
@@ -5575,10 +5570,10 @@ jszip@^3.9.1:
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
 
-katex@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/katex/-/katex-0.15.3.tgz#08781a7ed26800b20380d959d1ffcd62bca0ec14"
-  integrity sha512-Al6V7RJsmjklT9QItyHWGaQCt+NYTle1bZwB1e9MR/tLoIT1MXaHy9UpfGSB7eaqDgjjqqRxQOaQGrALCrEyBQ==
+katex@^0.15.6:
+  version "0.15.6"
+  resolved "https://registry.yarnpkg.com/katex/-/katex-0.15.6.tgz#c4e2f6ced2ac4de1ef6f737fe7c67d3026baa0e5"
+  integrity sha512-UpzJy4yrnqnhXvRPhjEuLA4lcPn6eRngixW7Q3TJErjg3Aw2PuLFBzTkdUb89UtumxjhHTqL3a5GDGETMSwgJA==
   dependencies:
     commander "^8.0.0"
 
@@ -5937,16 +5932,15 @@ mdast-util-to-string@^3.0.0, mdast-util-to-string@^3.1.0:
   resolved "https://registry.yarnpkg.com/mdast-util-to-string/-/mdast-util-to-string-3.1.0.tgz#56c506d065fbf769515235e577b5a261552d56e9"
   integrity sha512-n4Vypz/DZgwo0iMHLQL49dJzlp7YtAJP+N07MZHpjPf/5XJuHUWstviF4Mn2jEiR/GNmtnRRqnwsXExk3igfFA==
 
-mdsmirror@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.1.8.tgz#3f0534e80e1886ee3dc05982ab6b9910b0c6c46d"
-  integrity sha512-bz5X5PhtByeX34MdgCTjUHdTxTxCG3qNcDLZM+bY59+3OZs5KcNeRBB8cj32iJsR3GgxTPm28HoP9oUKvGAI8Q==
+mdsmirror@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.1.12.tgz#202a345222062d35aa0b6fe405796ae1d5d54a6a"
+  integrity sha512-i8Bzrz1JqHEoYAdgfKxocQQ1C1IippREvhjKCTj2j3mlxa1mXdW8eLzmuL3Ix0B2iz01eAh46O/ijzk8vg5vHQ==
   dependencies:
-    "@benrbray/prosemirror-math" "0.2.2"
-    "@tabler/icons" "^1.66.0"
+    "@tabler/icons" "^1.68.0"
     copy-to-clipboard "^3.3.1"
     fuzzy-search "^3.2.1"
-    katex "^0.15.3"
+    katex "^0.15.6"
     lodash "^4.17.21"
     markdown-it "^12.3.2"
     markdown-it-container "^3.0.0"
@@ -5967,7 +5961,7 @@ mdsmirror@^0.1.8:
     prosemirror-view "^1.23.12"
     react-medium-image-zoom "^3.1.3"
     react-portal "^4.2.2"
-    refractor "^3.5.0"
+    refractor "^3.6.0"
     resize-observer-polyfill "^1.5.1"
     slugify "^1.6.5"
     smooth-scroll-into-view-if-needed "^1.1.33"
@@ -7249,7 +7243,7 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-refractor@^3.5.0:
+refractor@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/refractor/-/refractor-3.6.0.tgz#ac318f5a0715ead790fcfb0c71f4dd83d977935a"
   integrity sha512-MY9W41IOWxxk31o+YvFCNyNzdkc9M20NoZK5vq6jkv4I/uh2zkWcfudj0Q1fovjUQJrNewS9NMzeTtqPf+n5EA==

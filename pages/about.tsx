@@ -3,7 +3,7 @@ import MainView from 'components/landing/MainView';
 
 export default function About() {
   return (
-    <MainView>
+    <MainView showFooter={true}>
       <Head>
         <title>About | mdSilo</title>
       </Head>

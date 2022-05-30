@@ -50,7 +50,7 @@
     "react-virtualized": "^9.22.3",
     "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",
-    "mdsmirror": "^0.1.8",
+    "mdsmirror": "^0.1.12",
     "styled-components": "^5.3.5",
     "tailwindcss": "^3.0.24",
     "unified": "^10.1.2",

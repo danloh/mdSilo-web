@@ -14,7 +14,7 @@ export default function AppLayout(props: Props) {
 
 
   const appContainerClassName = classNames(
-    'h-screen',
+    'h-full',
     className
   );
 
