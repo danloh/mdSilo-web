@@ -46,7 +46,7 @@ export default function Home() {
           onSave={onSave}
         />
         <div className="container my-4">
-          <div className="flex-1 px-8 bg-black overflow-auto">
+          <div className="flex-1 min-h-screen px-8 bg-black overflow-auto">
             <MsEditor 
               dark={true} 
               value={md} 

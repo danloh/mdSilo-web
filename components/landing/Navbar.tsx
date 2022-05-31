@@ -4,9 +4,9 @@ import NavDrop from './NavDrop';
 
 type Props = {
   withText?: boolean;
-  onNew: () => void;
-  onOpen: () => void;
-  onSave: () => void;
+  onNew?: () => void;
+  onOpen?: () => void;
+  onSave?: () => void;
 };
 
 export default function Navbar(props: Props) {
@@ -15,7 +15,10 @@ export default function Navbar(props: Props) {
     <div className="container px-6 pt-6">
       <div className="flex items-center justify-between space-x-6">
         {withText ? (<LogoWithText />) : (<Logo />)}
-        <NavDrop onNew={onNew} onOpen={onOpen} onSave={onSave} />
+        {onNew && onOpen && onSave 
+          ? (<NavDrop onNew={onNew} onOpen={onOpen} onSave={onSave} />) 
+          : null 
+        }
       </div>
     </div>
   );
