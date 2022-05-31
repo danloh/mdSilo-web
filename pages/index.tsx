@@ -1,9 +1,67 @@
+import { useCallback, useState } from 'react';
 import MsEditor from "mdsmirror";
+import { saveAs } from 'file-saver';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
+import { useStore } from 'lib/store';
+import { defaultNote } from 'types/model';
+import {nowToRadix36Str } from 'utils/helper';
+import { useImportMd } from 'editor/hooks/useImport';
 
 export default function Home() {
-  const defaultValue = `## Welcome to mdSilo  
+  const [md, setMd] = useState<string>(defaultValue);
+  const upsertNote = useStore((state) => state.upsertNote);
+
+  const onChange = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async (text: string, json: unknown) => {
+      // console.log("on content change", text, json);
+      const newNote = {
+        ...defaultNote,
+        id: 'md-current',
+        content: text,
+      };
+      upsertNote(newNote);
+    },
+    [upsertNote]
+  );
+
+  const onSave = useCallback(async () => {
+    const blob = new Blob([md], {
+      type: 'text/markdown;charset=utf-8',
+    });
+    saveAs(blob, `md-${nowToRadix36Str()}.md`);
+  }, [md]);
+
+  const onOpen = useImportMd(value => setMd(value));
+
+
+  return (
+    <MainView showNavbar={false} showFooter={false}>
+      <div className="shadow-sm max-w-3xl mx-auto">
+        <Navbar 
+          withText={false} 
+          onNew={() => setMd(' ')} 
+          onOpen={onOpen}
+          onSave={onSave}
+        />
+        <div className="container my-4">
+          <div className="flex-1 px-8 bg-black overflow-auto">
+            <MsEditor 
+              dark={true} 
+              value={md} 
+              onChange={onChange} 
+              onOpenLink={(href) => { window.open(href, "_blank");}}
+              onShowToast={() => {/* nothing*/}}
+            />
+          </div>
+        </div>
+      </div>
+    </MainView>
+  );
+}
+
+const defaultValue = `## Welcome to mdSilo  
 
 [mdSilo](https://mdsilo.com/about/) is a Lightweight note-taking tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
@@ -138,26 +196,3 @@ You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Disc
 --- 
 
 We would appreciate any support from you! ❤️`;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onChange = (text: string, json: unknown) => {/* console.log("text: ", text, "JSON: ", json) */};
-
-  return (
-    <MainView showNavbar={false} showFooter={false}>
-      <div className="shadow-sm max-w-3xl mx-auto">
-        <Navbar withText={false} />
-        <div className="container my-4">
-          <div className="flex-1 px-8 bg-black overflow-auto">
-            <MsEditor 
-              dark={true} 
-              defaultValue={defaultValue} 
-              onChange={onChange} 
-              onOpenLink={(href) => { window.open(href, "_blank");}}
-              onShowToast={() => {/* nothing*/}}
-            />
-          </div>
-        </div>
-      </div>
-    </MainView>
-  );
-}

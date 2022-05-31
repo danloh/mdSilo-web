@@ -6,7 +6,14 @@ import { DropdownItem } from 'components/misc/Dropdown';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
 
-export default function NavDrop() {
+type Props = {
+  onNew: () => void;
+  onOpen: () => void;
+  onSave: () => void;
+};
+
+export default function NavDrop(props: Props) {
+  const { onNew, onOpen, onSave } = props;
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
@@ -43,25 +50,25 @@ export default function NavDrop() {
                   {...attributes.popper}
                 >
                   <DropdownItem
-                    onClick={() => {/**/}}
+                    onClick={onNew}
                     className="border-t dark:border-gray-700"
                   >
                     <IconFeather size={18} className="mr-1" />
                     <span>New</span>
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() => {/**/}}
+                    onClick={onOpen}
                     className="border-t dark:border-gray-700"
                   >
                     <IconFile size={18} className="mr-1" />
                     <span>Open</span>
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() => {/**/}}
+                    onClick={onSave}
                     className="border-t dark:border-gray-700"
                   >
                     <IconFileExport size={18} className="mr-1" />
-                    <span>Export</span>
+                    <span>Save</span>
                   </DropdownItem>
                 </Menu.Items>
               </Portal>
