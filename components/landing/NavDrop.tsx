@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Menu } from '@headlessui/react';
 import { usePopper } from 'react-popper';
-import { IconFeather, IconDots, IconFile, IconFileExport } from '@tabler/icons';
+import { IconDots, IconFeather, IconFile, IconMarkdown, IconFileCode } from '@tabler/icons';
 import { DropdownItem } from 'components/misc/Dropdown';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
@@ -10,10 +10,11 @@ type Props = {
   onNew: () => void;
   onOpen: () => void;
   onSave: () => void;
+  onSaveHTML: () => void;
 };
 
 export default function NavDrop(props: Props) {
-  const { onNew, onOpen, onSave } = props;
+  const { onNew, onOpen, onSave, onSaveHTML } = props;
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
@@ -67,8 +68,15 @@ export default function NavDrop(props: Props) {
                     onClick={onSave}
                     className="border-t dark:border-gray-700"
                   >
-                    <IconFileExport size={18} className="mr-1" />
-                    <span>Save</span>
+                    <IconMarkdown size={18} className="mr-1" />
+                    <span>Save md</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={onSaveHTML}
+                    className="border-t dark:border-gray-700"
+                  >
+                    <IconFileCode size={18} className="mr-1" />
+                    <span>Save HTML</span>
                   </DropdownItem>
                 </Menu.Items>
               </Portal>

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import MsEditor from "mdsmirror";
+import MsEditor, { renderToHtml } from "mdsmirror";
 import { saveAs } from 'file-saver';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -33,6 +33,15 @@ export default function Home() {
     saveAs(blob, `md-${nowToRadix36Str()}.md`);
   }, [md]);
 
+  const onSaveHTML = useCallback(async () => {
+    const mdHTML = renderToHtml(md)
+    const html = `<!DOCTYPE html><html><head></head><body>${mdHTML}</body></html>`
+    const blob = new Blob([html], {
+      type: 'text/html;charset=utf-8',
+    });
+    saveAs(blob, `html-${nowToRadix36Str()}.html`);
+  }, [md]);
+
   const onOpen = useImportMd(value => setMd(value));
 
 
@@ -44,6 +53,7 @@ export default function Home() {
           onNew={() => setMd(' ')} 
           onOpen={onOpen}
           onSave={onSave}
+          onSaveHTML={onSaveHTML}
         />
         <div className="container my-4">
           <div className="flex-1 min-h-screen px-8 bg-black overflow-auto">
@@ -61,7 +71,12 @@ export default function Home() {
   );
 }
 
-const defaultValue = `## Welcome to mdSilo  
+const defaultValue = `
+:::info
+This is an editable document. 
+::: 
+
+## Welcome to mdSilo
 
 [mdSilo](https://mdsilo.com/about/) is a Lightweight note-taking tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
@@ -72,6 +87,10 @@ Feel free to edit this document and try out the powerful features:
 * ==Slash Commands== : Typing \`/\` will trigger a list of the commands; 
 * ==Hovering Toolbar== : Styling the text when any selected;
 * ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more;
+
+:::tip
+Click top-right menu to new document, open local md file, save changes.
+:::
 
 ### You can insert tables 
 
@@ -164,7 +183,7 @@ Tip: Feel free to edit this page
 :::
 
 :::warning
-Warning: Any changes will not be saved on this page. 
+Warning: Any changes will not be saved automatically. 
 :::
 
 
