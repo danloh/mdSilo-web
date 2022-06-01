@@ -177,11 +177,10 @@ function Note(props: Props) {
     };
   }, [router, isSynced, isWiki, noteId]);
 
-  const offlineMode = useStore((state) => state.offlineMode);
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-gray-900 dark:text-gray-200';
   const errorContainerClassName = `${noteContainerClassName} items-center justify-center h-full p-4`;
-  const noteClassName = `${noteContainerClassName} ${offlineMode ? 'border-t-2 border-red-600' : ''}`;
+  const noteClassName = `${noteContainerClassName} border-t-2 border-red-600`;
 
   const currentNoteValue = useMemo(() => ({ ty: 'note', id: noteId }), [noteId]);
 

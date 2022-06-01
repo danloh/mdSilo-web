@@ -78,7 +78,7 @@ This is an editable document.
 
 ## Welcome to mdSilo
 
-[mdSilo](https://mdsilo.com/about/) is a Lightweight note-taking tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
 ---
 
@@ -86,7 +86,15 @@ Feel free to edit this document and try out the powerful features:
 
 * ==Slash Commands== : Typing \`/\` will trigger a list of the commands; 
 * ==Hovering Toolbar== : Styling the text when any selected;
-* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more;
+* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more:  
+
+> Quoteblock: typing \`>\` to quote. 
+
+* List: Typing \`-\` or \`*\` or \`1.\` to create list.
+
+- [ ] Checklist: Typing \`[]\` to create todo-list. 
+
+--- 
 
 :::tip
 Click top-right menu to new document, open local md file, save changes.
