@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import MsEditor, { renderToHtml } from "mdsmirror";
 import { saveAs } from 'file-saver';
+import Menubar from 'components/landing/Menubar';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 import { useStore } from 'lib/store';
@@ -48,14 +49,14 @@ export default function Home() {
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="shadow-sm max-w-3xl mx-auto">
-        <Navbar 
-          withText={false} 
-          onNew={() => setMd(' ')} 
-          onOpen={onOpen}
-          onSave={onSave}
-          onSaveHTML={onSaveHTML}
-        />
+        <Navbar withText={false} />
         <div className="container my-4">
+          <Menubar 
+            onNew={() => {onSave(); setMd(' ');}} 
+            onOpen={onOpen}
+            onSave={onSave}
+            onSaveHTML={onSaveHTML}
+          />
           <div className="flex-1 min-h-screen px-8 bg-black overflow-auto">
             <MsEditor 
               dark={true} 
