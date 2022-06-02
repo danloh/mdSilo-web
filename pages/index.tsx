@@ -14,16 +14,16 @@ export default function Home() {
           <div className="shadow-sm">
             <Navbar withText={true} />
             <div className="container">
-              <div className="px-8 py-16 grid gap-6 md:grid-cols-2">
-                <div className="container text-xl px-6 text-center">
+              <div className="px-6 py-16 grid gap-6 md:grid-cols-2">
+                <div className="container text-xl px-2 text-center">
                   <div className="flex-1 mx-auto">
                     <Link href="/writing">
-                      <a className="inline-flex mt-4 mr-2 text-xl btn">
+                      <a className="inline-flex mt-4 mx-1 text-xl btn">
                         Writing on Web
                       </a>
                     </Link>
                     <Link href="https://github.com/danloh/mdSilo-app/releases">
-                      <a className="inline-flex mt-4 ml-2 text-xl btn">
+                      <a className="inline-flex mt-4 mx-1 text-xl btn">
                         Get Desktop App
                       </a>
                     </Link>
@@ -38,7 +38,7 @@ export default function Home() {
                   </Link>
                 </div>
                 <div className="flex flex-1 w-full mx-auto ">
-                  <div className="flex-1 px-8 bg-black overflow-auto p-8">
+                  <div className="flex-1 bg-black overflow-auto p-8">
                     <MsEditor 
                       dark={true} 
                       value={defaultValue} 
@@ -92,7 +92,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Footer className={''} />
+        <Footer className="border-t-2 border-gray-600" />
       </div>
     </MainView>
   );

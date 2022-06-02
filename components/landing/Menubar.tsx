@@ -10,7 +10,7 @@ type Props = {
 export default function Menubar(props: Props) {
   const { onNew, onOpen, onSave, onSaveHTML } = props;
 
-  const itemClassName = `flex items-center px-4 py-2 text-sm text-gray-500 select-none`;
+  const itemClassName = `flex items-center p-1 text-sm text-gray-500 select-none`;
 
   return (
     <div className="flex flex-row flex-wrap item-center justify-center">
