@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import MsEditor, { JSONContent } from "mdsmirror";
+import Title from 'components/note/Title';
 import { store, useStore } from 'lib/store';
 import { Note } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
@@ -198,6 +199,11 @@ function Note(props: Props) {
           <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
             <div className="flex flex-col flex-1 w-full mx-auto md:w-128 lg:w-160 xl:w-192">
               <div className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12">
+                <Title
+                  className="px-8 pb-1 md:px-12"
+                  initialTitle={title}
+                  onChange={onTitleChange}
+                />
                 <MsEditor 
                   value={mdContent}
                   dark={darkMode}

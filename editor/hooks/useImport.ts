@@ -1,7 +1,10 @@
 import { useCallback } from 'react';
 import { getOrNewFileHandle, writeFile } from './useFSA';
 
-export function useImportMd(setValue: (content: string) => void) {
+export function useImportMd(
+  setTitle: (title: string) => void,
+  setValue: (content: string) => void,
+) {
   const onImportMd = useCallback(() => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -20,12 +23,15 @@ export function useImportMd(setValue: (content: string) => void) {
         return;
       }
 
-      const content = await processImport(fileList);
-      if (content) setValue(content);
+      const res = await processImport(fileList);
+      if (res) {
+        setTitle(res.title); // NOT WORK
+        setValue(res.content);
+      }
     };
 
     input.click();
-  }, [setValue]);
+  }, [setTitle, setValue]);
 
   return onImportMd;
 }
@@ -53,7 +59,12 @@ export const processImport = async (fileList: FileList | File[]) => {
     await writeFile(fHandle, fileContent);
   }
 
-  return fileContent;
+  const res = {
+    title: rmFileNameExt(fileName),
+    content: fileContent,
+  };
+
+  return res;
 };
 
 /**

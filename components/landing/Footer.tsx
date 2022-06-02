@@ -17,7 +17,7 @@ export default function Footer(props: Props) {
           <p className="pt-0.5 text-gray-300 max-w-sm">
           </p>
           <div className="flex flex-wrap mt-2 space-x-2">
-            <Link href="/about">
+            <Link href="/writing">
               <a className="text-gray-300 hover:text-primary-500">About</a>
             </Link>
             <Link href="/privacy">
