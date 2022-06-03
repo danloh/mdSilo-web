@@ -1,18 +1,17 @@
 
 # mdSilo
 
-A mind silo for storing ideas, thought, knowledge with a powerful writing tool.
-
-[Desktop App is Here](https://github.com/danloh/mdSilo-app/releases)
+A mind silo for storing ideas, thought, knowledge with a powerful writing tool. [Desktop App is Here.](https://github.com/danloh/mdSilo-app/releases)
 
 [Demo](https://mdsilo.com)  
 [Gitter](https://gitter.im/mdSilo)  
-[Discord](https://discord.gg/EXYSEHRTFt)
+[Discord](https://discord.gg/EXYSEHRTFt)  
+[Download](https://github.com/danloh/mdSilo-app/releases) 
 
 
 ## Welcome to mdSilo
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
 ---
 
@@ -24,9 +23,10 @@ A mind silo for storing ideas, thought, knowledge with a powerful writing tool.
 
 * List: Typing `-` or `*` or `1.` to create list.
 
-- [ ] Checklist: Typing `[]` to create todo-list. 
+* Checklist: Typing \`[]\` to create todo-list.  
+  - [ ] todo-1 
+  - [x] done-1 
 
---- 
 
 ### You can insert tables 
 
@@ -59,14 +59,12 @@ function main() {
 Try to change the language to see the changes on highlight. 
 
 
-
 ### You can insert math equations 
 
 --- 
 
 - Quickly add inline math using the `$` and math block using `$$` ;
 - Insert $\LaTeX$ equations using /math and select Math Equation command;
-
 
 $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
@@ -99,7 +97,7 @@ Warning: Any changes will not be saved automatically.
 - Insert using `![caption](image_link)`
 
 
-![A cat from unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2334&q=80)
+![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
 
 
 ### More is on the way 
@@ -116,7 +114,3 @@ Warning: Any changes will not be saved automatically.
 
 You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Discord](https://discord.gg/EXYSEHRTFt). We are waiting there for you.
 
-
---- 
-
-We would appreciate any support from you! ❤️

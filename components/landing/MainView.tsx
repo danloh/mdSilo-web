@@ -18,8 +18,8 @@ export default function MainView(props: Props) {
   } = props;
 
   return (
-    <div className={`min-h-full font-display dark bg-black text-gray-100 ${className}`}>
-      {showNavbar ? <Navbar /> : null}
+    <div className={`min-h-screen font-display dark bg-black text-gray-100 ${className}`}>
+      {showNavbar ? <Navbar withText={true} /> : null}
       {children}
       {showFooter ? <Footer /> : null}
     </div>

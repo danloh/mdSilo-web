@@ -83,7 +83,7 @@ const defaultValue = `
 This is an editable document. 
 ::: 
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Editor and Markdown support. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
 ---
 
@@ -97,12 +97,14 @@ Feel free to edit this document and try out the powerful features:
 
 * List: Typing \`-\` or \`*\` or \`1.\` to create list.
 
-- [ ] Checklist: Typing \`[]\` to create todo-list. 
+* Checklist: Typing \`[]\` to create todo-list.  
+  - [ ] todo-1 
+  - [x] done-1 
 
 --- 
 
 :::tip
-Click top-right menu to new document, open local md file, save changes.
+Click top menu to new document, open local md file, save changes.
 :::
 
 ### You can insert tables 
@@ -207,7 +209,16 @@ Warning: Any changes will not be saved automatically.
 - Insert using \`![caption](image_link)\`
 
 
-![A cat from unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2334&q=80)
+![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
+
+
+## Install mdSilo
+
+mdSilo is available for Web, Linux, Windows and macOS. 
+
+You can write on [mdsio.com](https://mdsilo.com/writing) entirely in your web browser. And mdSilo web app is also a PWA (Progressive Web App). This means that you can install it on your desktop or mobile, just add it to youre Home Screen. 
+
+You can get the Desktop Application for Windows, macOS, Linux: [download here](https://github.com/danloh/mdSilo-app/releases), it is lightweight and powerful. 
 
 
 ### More is on the way 
@@ -217,7 +228,6 @@ Warning: Any changes will not be saved automatically.
 - [ ] Linking: Backlink, …
 - [ ] Hashtag, 
 - [ ] Embed media, web page, local image... 
-- [ ] Operations: Open local file, Save, Export...  
 
 
 ### Any questions, feedback or suggestions?

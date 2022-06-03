@@ -24,7 +24,7 @@ export default function Home() {
                     </Link>
                     <Link href="https://github.com/danloh/mdSilo-app/releases">
                       <a className="inline-flex mt-4 mx-1 text-xl btn">
-                        Get Desktop App
+                        Get Native App
                       </a>
                     </Link>
                   </div>
