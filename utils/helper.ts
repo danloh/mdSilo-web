@@ -1,5 +1,19 @@
 // helper 
 
+
+export const nowToRadix36Str = () => {
+  const now = Math.floor(Date.now() / 100); // 0.1s
+  const strR = now.toString(36); // radix = 36
+  return strR;
+}
+
+export const getNoteAsBlob = (content: string) => {
+  const blob = new Blob([content], {
+    type: 'text/markdown;charset=utf-8',
+  });
+  return blob;
+};
+
 // date
 //
 // string: yyyy-mm-dd

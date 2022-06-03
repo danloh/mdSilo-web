@@ -16,7 +16,7 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-export default function MyApp({ Component, pageProps, router }: AppProps) {
+export default function MyApp({ Component, pageProps, }: AppProps) {
   return (
     <>
       <Head>
@@ -24,13 +24,9 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
       </Head>
       <ServiceWorker>
         <ProvideAuth>
-          {router.pathname.startsWith('/app') ? (
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          ) : (
+          <AppLayout>
             <Component {...pageProps} />
-          )}
+          </AppLayout>
         </ProvideAuth>
       </ServiceWorker>
       <ToastContainer

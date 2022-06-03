@@ -1,22 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import type { Path, Descendant } from 'slate';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import Editor from 'components/editor/Editor';
-import Title from 'components/editor/Title';
-import Backlinks from 'components/editor/backlinks/Backlinks';
+import MsEditor, { JSONContent } from "mdsmirror";
+import Title from 'components/note/Title';
 import { store, useStore } from 'lib/store';
 import { Note } from 'types/model';
 import { useAuthContext } from 'utils/useAuth';
 import type { NoteUpdate } from 'lib/api/curdNote';
 import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
-import serialize from 'editor/serialization/serialize';
-import { getDefaultEditorValue } from 'editor/constants';
+
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
 import { 
-  writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile,
+  writeFile, getOrNewFileHandle, delFileHandle, 
 } from 'editor/hooks/useFSA';
-import updateBacklinks from 'editor/backlinks/updateBacklinks';
+
 import { FileSystemAccess } from 'editor/checks';
 import { ciStringEqual } from 'utils/helper';
 import ErrorBoundary from '../misc/ErrorBoundary';
@@ -29,25 +27,24 @@ const UNIQUE_VIOLATION_ERROR_CODE = '23505';
 
 type Props = {
   noteId: string;
-  highlightedPath?: Path;
+  highlightedPath?: unknown;
   className?: string;
 };
 
 function Note(props: Props) {
-  const { noteId, highlightedPath, className } = props;
+  const { noteId, className } = props;
   const router = useRouter();
   const { user } = useAuthContext();
-
+  const darkMode = useStore((state) => state.darkMode);
   // get some property of note
-  const storeNotes = useStore((state) => state.notes);
-  const note: Note | undefined = storeNotes[noteId];
+  const [note, setNote] = useState<Note | undefined>(undefined);
   const isPub = note?.is_pub ?? false;
   const isDaily = note?.is_daily ?? false;
   const initIsWiki = note?.is_wiki ?? false;
   // get title and content value
   const title = note?.title ?? 'demo note';
   const [initTitle, setInitTitle] = useState(title); // an initial title copy
-  const value = note?.content ?? getDefaultEditorValue();
+  const mdContent = note?.content || '';
 
   const [isWiki, setIsWiki] = useState(initIsWiki);
   const [isLoaded, setIsLoaded] = useState(false)  // for clean up in useEffect
@@ -55,11 +52,12 @@ function Note(props: Props) {
   // note action
   const updateNote = useStore((state) => state.updateNote);
   const upsertNote = useStore((state) => state.upsertNote);
-  // load note if it isWiki
+
   const loadNote = useCallback(
     async (noteId: string) => {
     const {data: note} = await loadDbNote(noteId);
     if (note) {
+      setNote(note);
       upsertNote(note);
       setIsWiki(note.is_wiki);
     }
@@ -74,23 +72,6 @@ function Note(props: Props) {
     }
   }, [noteId, isWiki, isLoaded, loadNote]);
 
-  // update locally
-  const setValueOnChange = useCallback(
-    async (value: Descendant[]) => {
-      updateNote({ id: noteId, content: value });
-      // write to local file system if hasFSA
-      if (FileSystemAccess.support(window)) {
-        const handle = store.getState().handles[title]
-          || await getOrNewFileHandle(title);
-        if (handle) {
-          const content = value.map((n) => serialize(n)).join('');
-          await writeFile(handle, content);
-          await writeJsonFile();
-        }
-      }
-    },
-    [noteId, title, updateNote]
-  );
   
   // use state and useEffect to trigger and handle update to db
   const [syncState, setSyncState] = useState({
@@ -105,47 +86,20 @@ function Note(props: Props) {
   // update locally, set the syncState
   const onTitleChange = useCallback(
     async (title: string) => {
-      // update note title in storage as unique title
-      const newTitle = title.trim() || getUntitledTitle(noteId);
-      const isTitleUnique = () => {
-        const notesArr = Object.values(storeNotes);
-        return notesArr.findIndex(
-          // no need to be unique for wiki note title
-          (n) => n.id !== noteId && !n.is_wiki && ciStringEqual(n.title, newTitle)
-        ) === -1;
-      };
-      if (isWiki || isTitleUnique()) {
-        updateNote({ id: noteId, title: newTitle });
-        setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
-        await updateBacklinks(newTitle, noteId); 
-        // handle FSA for private note only
-        if (!isWiki) {
-          // #FSA: on rename file: 
-          // 1- new FileHandle 
-          const newHandle = await getOrNewFileHandle(newTitle);
-          // 2- swap value
-          if (newHandle) {
-            const content = value.map((n) => serialize(n)).join('');
-            await writeFile(newHandle, content);
-            await writeJsonFile();
-          }
-          // 3- delete the old redundant FileHandle
-          await delFileHandle(initTitle);
-          // 4- reset initTitle
-          setInitTitle(newTitle);
-        }
-      } else {
-        toast.error(
-          `There's already a note called ${newTitle}. Please use a different title.`
-        );
-      }
+      const newTitle = title.trim();
+      updateNote({ id: noteId, title: newTitle });
+      setSyncState((syncState) => ({ ...syncState, isTitleSynced: false }));
     },
-    [noteId, isWiki, storeNotes, updateNote, initTitle, value]
+    [noteId, updateNote]
   );
 
-  const onValueChange = useCallback(() => {
-    setSyncState((syncState) => ({ ...syncState, isContentSynced: false }));
-  }, []);
+  const onContentChange = useCallback(
+    async (text: string, json: JSONContent) => {
+      //updateNote({ id: noteId, content: value });
+      console.log("on content change", text.length, json);
+    },
+    []
+  );
 
   // update note to db
   const handleNoteUpdate = useCallback(async (note: NoteUpdate, userId: string) => {
@@ -172,7 +126,7 @@ function Note(props: Props) {
     setSyncState({ isTitleSynced: true, isContentSynced: true });
   }, []);
 
-  // Save the note to db, wiki note only
+  // Save the note to db
   useEffect(() => {
     if (!isWiki || !note) { return; }
 
@@ -224,22 +178,12 @@ function Note(props: Props) {
     };
   }, [router, isSynced, isWiki, noteId]);
 
-  const offlineMode = useStore((state) => state.offlineMode);
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-gray-900 dark:text-gray-200';
   const errorContainerClassName = `${noteContainerClassName} items-center justify-center h-full p-4`;
-  const noteClassName = `${noteContainerClassName} ${offlineMode ? 'border-t-2 border-red-600' : ''}`;
+  const noteClassName = `${noteContainerClassName} border-t-2 border-red-600`;
 
   const currentNoteValue = useMemo(() => ({ ty: 'note', id: noteId }), [noteId]);
-  const isNoteExists = useMemo(() => !!storeNotes[noteId], [noteId, storeNotes]);
-
-  if (!isNoteExists) {
-    return (
-      <div className={errorContainerClassName}>
-        <p>it does not look like this note exists! {noteId}</p>
-      </div>
-    );
-  }
 
   return (
     <ErrorBoundary
@@ -254,26 +198,18 @@ function Note(props: Props) {
           <NoteHeader isWiki={isWiki} isPub={isPub} />
           <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
             <div className="flex flex-col flex-1 w-full mx-auto md:w-128 lg:w-160 xl:w-192">
-              <Title
-                className="px-8 pb-1 md:px-12"
-                initialTitle={title}
-                onChange={onTitleChange}
-                isDaily={isDaily}
-                isPub={isPub}
-              />
-              <Editor
-                className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12"
-                noteId={noteId}
-                value={value}
-                setValue={setValueOnChange}
-                onChange={onValueChange}
-                highlightedPath={highlightedPath}
-                isWiki={isWiki}
-                isDaily={isDaily}
-                isPub={isPub}
-              />
-              <div className="pt-2 border-t-2 border-gray-200 dark:border-gray-600">
-                <Backlinks className="mx-4 mb-8 md:mx-8 md:mb-12" isCollapse={isWiki} />
+              <div className="flex-1 px-8 pt-2 pb-8 md:pb-12 md:px-12">
+                <Title
+                  className="px-8 pb-1 md:px-12"
+                  initialTitle={title}
+                  onChange={onTitleChange}
+                />
+                <MsEditor 
+                  value={mdContent}
+                  dark={darkMode}
+                  onChange={onContentChange}
+                  onSearchSelectText={(txt) => console.log("search text", txt)}
+                />
               </div>
             </div>
           </div>
@@ -284,25 +220,3 @@ function Note(props: Props) {
 }
 
 export default memo(Note);
-
-// Get a unique "Untitled" title, ignoring the specified noteId.
-const getUntitledTitle = (noteId: string) => {
-  const title = 'Untitled';
-
-  const getResult = () => (suffix > 0 ? `${title} ${suffix}` : title);
-
-  let suffix = 0;
-  const notesArr = Object.values(store.getState().notes);
-  while (
-    notesArr.findIndex(
-      (note) =>
-        note.id !== noteId &&
-        !note.is_wiki && 
-        ciStringEqual(note.title, getResult())
-    ) > -1
-  ) {
-    suffix += 1;
-  }
-
-  return getResult();
-};

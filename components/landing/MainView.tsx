@@ -13,13 +13,13 @@ export default function MainView(props: Props) {
   const {
     children,
     showNavbar = true,
-    showFooter = true,
+    showFooter = false,
     className = '',
   } = props;
 
   return (
-    <div className={`min-h-screen font-display dark bg-gray-700 text-gray-100 ${className}`}>
-      {showNavbar ? <Navbar /> : null}
+    <div className={`min-h-screen font-display dark bg-black text-gray-100 ${className}`}>
+      {showNavbar ? <Navbar withText={true} /> : null}
       {children}
       {showFooter ? <Footer /> : null}
     </div>

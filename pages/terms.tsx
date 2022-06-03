@@ -3,7 +3,7 @@ import MainView from 'components/landing/MainView';
 
 export default function Terms() {
   return (
-    <MainView>
+    <MainView showFooter={true}>
       <Head>
         <title>Terms of Service | mdSilo</title>
       </Head>

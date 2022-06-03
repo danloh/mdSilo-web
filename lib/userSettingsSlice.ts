@@ -28,18 +28,12 @@ export type UserSettings = {
   setIsSidebarOpen: Setter<boolean>;
   isPageStackingOn: boolean;
   setIsPageStackingOn: Setter<boolean>;
-  noteSort: Sort;
-  setNoteSort: Setter<Sort>;
   isCheckSpellOn: boolean;
   setIsCheckSpellOn: Setter<boolean>;
   readMode: boolean;
   setReadMode: Setter<boolean>;
   wikiReadMode: boolean;
   setWikiReadMode: Setter<boolean>;
-  offlineMode: boolean;
-  setOfflineMode: Setter<boolean>;
-  exportOnClose: boolean;
-  setExportOnClose: Setter<boolean>;
 };
 
 const userSettingsSlice = (
@@ -53,18 +47,12 @@ const userSettingsSlice = (
   setIsSidebarOpen: setter(set, 'isSidebarOpen'),
   isPageStackingOn: true,
   setIsPageStackingOn: setter(set, 'isPageStackingOn'),
-  noteSort: Sort.TitleAscending,
-  setNoteSort: setter(set, 'noteSort'),
   isCheckSpellOn: true,
   setIsCheckSpellOn: setter(set, 'isCheckSpellOn'),
   readMode: false,
   setReadMode: setter(set, 'readMode'),
   wikiReadMode: true,
   setWikiReadMode: setter(set, 'wikiReadMode'),
-  offlineMode: true,
-  setOfflineMode: setter(set, 'offlineMode'),
-  exportOnClose: false,
-  setExportOnClose: setter(set, 'exportOnClose'),
 });
 
 export default userSettingsSlice;

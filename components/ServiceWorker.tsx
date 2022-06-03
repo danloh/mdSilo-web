@@ -14,17 +14,6 @@ export default function ServiceWorker(props: Props) {
       window.workbox !== undefined
     ) {
       const wb = window.workbox;
-
-      // Show a banner when a service worker has updated and is waiting to install
-      const showUpdateBanner = () => {
-        const updateBanner = document.getElementById('update-banner');
-        if (updateBanner) {
-          updateBanner.classList.replace('hidden', 'block');
-        }
-      };
-
-      wb.addEventListener('waiting', showUpdateBanner);
-
       // Register service worker
       wb.register();
     }

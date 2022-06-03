@@ -3,7 +3,7 @@ import MainView from 'components/landing/MainView';
 
 export default function Sponsors() {
   return (
-    <MainView>
+    <MainView showFooter={true}>
       <Head><title>Sponsors | mdSilo</title></Head>
       <div className="container px-6 py-16">
         <h1 className="text-5xl font-semibold text-center">We Appreciate Your Support</h1>

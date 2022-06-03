@@ -1,53 +1,116 @@
 
 # mdSilo
 
-A mind silo for storing ideas, thought, knowledge with a powerful writing tool.
+A mind silo for storing ideas, thought, knowledge with a powerful writing tool. [Desktop App is Here.](https://github.com/danloh/mdSilo-app/releases)
 
-[Desktop App is Here](https://github.com/danloh/mdSilo-app/releases)
-
-[Demo](https://mdsilo.com/app)  
+[Demo](https://mdsilo.com)  
 [Gitter](https://gitter.im/mdSilo)  
-[Discord](https://discord.gg/EXYSEHRTFt)
-
-## Features
-
-- WYSIWYG Editor, Real time preview, Markdown support  
-- Slash command, hotkeys and more toolkits...   
-- Graph view 
-- Task view  
-- Chronicle view  
-- Page stacking view   
-- BackLink   
-- Block Reference  
-- PubLink  
-- HashTag  
-- Full-text search 
-- Available for Web, Windows, macOS, Linux.
+[Discord](https://discord.gg/EXYSEHRTFt)  
+[Download](https://github.com/danloh/mdSilo-app/releases) 
 
 
-## Live Demo
+## Welcome to mdSilo
 
-Here we go: [Live demo](https://mdsilo.com)
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+
+---
+
+* ==Slash Commands== : Typing `/` will trigger a list of the commands; 
+* ==Hovering Toolbar== : Styling the text when any selected;
+* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, `inline code`, and more:  
+
+> Quoteblock: typing `>` to quote. 
+
+* List: Typing `-` or `*` or `1.` to create list.
+
+* Checklist: Typing \`[]\` to create todo-list.  
+  - [ ] todo-1 
+  - [x] done-1 
 
 
-## Credits
+### You can insert tables 
 
-mdSilo is inspired by [notabase](https://github.com/churichard/notabase) and many other note-taking tools.
+--- 
+
+* Insert table by typing `/table` and then select Table command;
+* You can add or remove column or row by floating table toolbar;
+
+| Features | mdSilo | Note | Pricing |
+|----|----|----|---:|
+| WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
+| Writing | Yes | Slash Commands, Hovering Toolbar, Hotkeys  | Free | 
+| Table | Yes | Insert Table, Add or Remove Row or Culumn  | Free | 
+| Code | Yes | Code Block and Highlight  | Free | 
+| Math | Yes | Math Equation($LaTex$): inline or block | Free | 
+| Callout | Yes | Information, Tips, Warning  | Free | 
+
+### You can insert code 
+
+- Quickly add code using the ``` shortcut;
+- Insert code using /code and select Code Block command;
 
 
-## Self-Hosting Web App
+```javascript
+function main() {
+  console.log("Hello World");
+}
+```  
 
-You can self-host mdSilo web app, though it is currently not focused on self-hosting. 
+Try to change the language to see the changes on highlight. 
 
-- The easy way is to deploy it on [Vercel](https://vercel.com), here is the [Vercel docs](https://vercel.com/docs); 
-- The environment variables needed for deployment can be found [here](https://github.com/danloh/mdSilo-web/blob/main/.env.local.example); 
-- [Supabase](https://supabase.io) as backend. Please follow the instructions in [Supabase docs](https://supabase.io/docs/guides/self-hosting); 
-- The schema for database is [here](https://github.com/danloh/mdSilo-web/blob/main/schema/schema.sql).
-- Sentry to mornitor error;
 
-(Vercel and Supabase can be free-to-use for Personal Account)
+### You can insert math equations 
 
-Running locally
-- Rename the `.env.local.example` to `.env.local`, and fill in the environment variables;
-- Install the packages using `npm install`;
-- Run it using `npm run dev`;
+--- 
+
+- Quickly add inline math using the `$` and math block using `$$` ;
+- Insert $\LaTeX$ equations using /math and select Math Equation command;
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+
+### You can insert callout 
+
+--- 
+
+There are three types of editable blocks that can be used to callout information:
+
+:::info
+Information: A WYSIWYG Markdown editor 
+::: 
+
+:::tip
+Tip: Feel free to edit this page
+:::
+
+:::warning
+Warning: Any changes will not be saved automatically. 
+:::
+
+
+### You can insert image 
+
+--- 
+
+- Insert using `![caption](image_link)`
+
+
+![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
+
+
+### More is on the way 
+
+---
+
+- [ ] Linking: Backlink, …
+- [ ] Hashtag, 
+- [ ] Embed media, web page, local image... 
+- [ ] Operations: Open local file, Save, Export...  
+
+
+### Any questions, feedback or suggestions?
+
+You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Discord](https://discord.gg/EXYSEHRTFt). We are waiting there for you.
+
