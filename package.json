@@ -36,7 +36,7 @@
     "jszip": "^3.9.1",
     "localforage": "^1.10.0",
     "next": "^12.1.5",
-    "next-pwa": "5.5.0",
+    "next-pwa": "5.5.2",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.12",
     "react": "17.0.2",

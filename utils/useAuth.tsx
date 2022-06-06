@@ -64,7 +64,7 @@ function useProvideAuth(): AuthContextType {
           email,
           password,
         },
-        { redirectTo: `${process.env.BASE_URL}/app` }
+        { redirectTo: `${process.env.BASE_URL}` }
       ),
     []
   );
@@ -78,9 +78,8 @@ function useProvideAuth(): AuthContextType {
         setUser(session?.user ?? null);
         setIsAuthed(true);
 
-        // Redirect to /app if the user has signed in
         if (event === 'SIGNED_IN' && router.pathname === '/signin') {
-          router.push('/app');
+          router.push('/');
         } else if (event === 'SIGNED_OUT') {
           router.push('/signin');
         }
