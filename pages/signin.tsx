@@ -15,7 +15,7 @@ export default function Signin() {
 
   useEffect(() => {
     if (isAuthed && user) {
-      router.replace('/app');
+      router.replace('/');
     } else if (isAuthed) {
       setIsPageLoaded(true);
     }

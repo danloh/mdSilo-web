@@ -31,9 +31,9 @@ module.exports = (phase) => {
         trailingSlash: true,
         pwa: {
           dest: 'public',
-          scope: '/app/',
+          scope: '/',
           disable: process.env.NODE_ENV === 'development',
-          dynamicStartUrlRedirect: '/signin',
+          dynamicStartUrlRedirect: '/',
           reloadOnOnline: false,
           register: false,
           skipWaiting: false,
