@@ -1,5 +1,17 @@
 // helper 
 
+export function getOS() {
+  const SSR = typeof window === "undefined";
+  if (SSR) return;
+  const platform = window.navigator.platform ?? '';
+  if (platform.indexOf('Win') !== -1) {
+    return 'Win';
+  } else if (platform.indexOf('Linux') !== -1) {
+    return 'Linux';
+  } else if (platform.indexOf('Mac') !== -1) {
+    return 'Mac';
+  }
+}
 
 export const nowToRadix36Str = () => {
   const now = Math.floor(Date.now() / 100); // 0.1s

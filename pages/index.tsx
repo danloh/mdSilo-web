@@ -1,10 +1,36 @@
 import Link from 'next/link';
 import MsEditor from "mdsmirror";
+import { useState, useEffect } from 'react';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
+import { getOS } from 'utils/helper';
 
 export default function Home() {
+  const platform = getOS();
+  const [link, setLink] = useState<string>('https://github.com/danloh/mdSilo-app/releases');
+  const [app, setApp] = useState<string>('');
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => { 
+    if (isLoaded) {
+      return;
+    }
+    if (platform == 'Win') {
+      setLink('https://github.com/danloh/mdSilo-app/releases');
+      setApp('Windows');
+    } else if (platform == 'Mac') {
+      setLink('https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_x64.dmg');
+      setApp('macOS');
+    } else if (platform == 'Linux') {
+      setLink('https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.AppImage');
+      setApp('AppImage');
+    }
+    return () => {
+      setIsLoaded(true);
+    }
+  }, [isLoaded, platform]);
+
   const cardClass = 'p-8 rounded-md shadow bg-neutral-100 text-gray-800';
 
   return (
@@ -22,13 +48,16 @@ export default function Home() {
                         Writing on Web
                       </a>
                     </Link>
-                    <Link href="https://github.com/danloh/mdSilo-app/releases">
-                      <a className="inline-flex mt-4 mx-1 text-xl btn">
-                        Get Native App
+                    <Link href={link}>
+                      <a className="inline-flex mt-4 mx-1 text-xl btn group">
+                        Get App <span className='text-xs text-gray-200'> {app}</span>
                       </a>
                     </Link>
                   </div>
-                  <p className="max-w-3xl pt-6 mx-auto md:text-2xl">
+                  <p className="text-xs pt-3 text-center">
+                    Also available for <a href="https://github.com/danloh/mdSilo-app/releases" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>.
+                  </p>
+                  <p className="max-w-3xl pt-2 mx-auto md:text-2xl">
                     Lightweight plain-text knowledge silo and networked-writing tool.
                   </p>
                   <Link href="/writing">
@@ -100,7 +129,7 @@ export default function Home() {
 
 
 const defaultValue = `
-A Knowledge Silo equipped with WYSIWYG Markdown writing tool. Available for Web, Windows, macOS, Linux.  
+A Knowledge Silo equipped with ==WYSIWYG Markdown== writing and reading tool. Available for **Web**, *Windows*, __macOS__, Linux.  
 
-Free and Open Source. Tiny but Powerful. Try it out here, just start writing...  
+Tiny but Powerful, You can use it for 100% free forever. Please [get the application here](https://github.com/danloh/mdSilo-app/releases), or Try it out and just start writing...  
 `;

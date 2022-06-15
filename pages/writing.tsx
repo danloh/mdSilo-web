@@ -83,7 +83,7 @@ const defaultValue = `
 This is an editable document. 
 ::: 
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can [get the Desktop application here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
 
 ---
 
