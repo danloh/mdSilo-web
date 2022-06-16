@@ -24,14 +24,6 @@ export default function Footer(props: Props) {
             <a className="m-1 text-gray-300 hover:text-primary-500">Terms</a>
           </Link>
           <a
-            href="https://trello.com/b/xzIFkNGb/mdsilo-roadmap"
-            className="m-1 text-gray-300 hover:text-primary-500"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Roadmap
-          </a>
-          <a
             href="https://discord.gg/EXYSEHRTFt"
             className="m-1 text-gray-300 hover:text-primary-500"
             target="_blank"
