@@ -8,7 +8,7 @@ import { getOS } from 'utils/helper';
 
 export default function Home() {
   const platform = getOS();
-  const [link, setLink] = useState<string>('https://github.com/danloh/mdSilo-app/releases');
+  const [link, setLink] = useState<string>('https://github.com/mdSilo/mdSilo/releases');
   const [app, setApp] = useState<string>('');
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -17,13 +17,13 @@ export default function Home() {
       return;
     }
     if (platform == 'Win') {
-      setLink('https://github.com/danloh/mdSilo-app/releases');
+      setLink('https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64_en-US.msi');
       setApp('Windows');
     } else if (platform == 'Mac') {
-      setLink('https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_x64.dmg');
+      setLink('https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64.dmg');
       setApp('macOS');
     } else if (platform == 'Linux') {
-      setLink('https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.AppImage');
+      setLink('https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_amd64.AppImage');
       setApp('AppImage');
     }
     return () => {
@@ -55,7 +55,7 @@ export default function Home() {
                     </Link>
                   </div>
                   <p className="text-xs pt-3 text-center">
-                    Also available for <a href="https://github.com/danloh/mdSilo-app/releases" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/danloh/mdSilo-app/releases/download/app-v0.4.0-beta.2/mdsilo_0.4.0-beta.2_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>.
+                    Also available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>.
                   </p>
                   <p className="max-w-3xl pt-2 mx-auto md:text-2xl">
                     Lightweight plain-text knowledge silo and networked-writing tool.
@@ -131,5 +131,5 @@ export default function Home() {
 const defaultValue = `
 A Knowledge Silo equipped with ==WYSIWYG Markdown== writing and reading tool. Available for **Web**, *Windows*, __macOS__, Linux.  
 
-Tiny but Powerful, You can use it for 100% free forever. Please [get the application here](https://github.com/danloh/mdSilo-app/releases), or Try it out and just start writing...  
+Tiny but Powerful, free and open source. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or just start writing...  
 `;

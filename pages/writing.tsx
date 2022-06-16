@@ -83,7 +83,7 @@ const defaultValue = `
 This is an editable document. 
 ::: 
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can [get the Desktop application here](https://github.com/danloh/mdSilo-app/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can [get the Desktop application here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
 
 ---
 
@@ -218,7 +218,7 @@ mdSilo is available for Web, Linux, Windows and macOS.
 
 You can write on [mdsio.com](https://mdsilo.com/writing) entirely in your web browser. And mdSilo web app is also a PWA (Progressive Web App). This means that you can install it on your desktop or mobile, just add it to youre Home Screen. 
 
-You can get the Desktop Application for Windows, macOS, Linux: [download here](https://github.com/danloh/mdSilo-app/releases), it is lightweight and powerful. 
+You can get the Desktop Application for Windows, macOS, Linux: [download here](https://github.com/mdSilo/mdSilo/releases), it is lightweight and powerful. 
 
 
 ### More is on the way 
