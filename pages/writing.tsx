@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import MsEditor, { renderToHtml } from "mdsmirror";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
+import Toc, { Heading } from 'components/note/Toc';
 import Menubar from 'components/landing/Menubar';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -15,6 +16,15 @@ export default function EditorDemo() {
   const [md, setMd] = useState<string>(defaultValue);
   const upsertNote = useStore((state) => state.upsertNote);
 
+  const [headings, setHeadings] = useState<Heading[]>([]);
+  const editorInstance = useRef<MsEditor>(null);
+  const getHeading = () => {
+    const hdings = editorInstance.current?.getHeadings();
+    // console.log(hdings); 
+    setHeadings(hdings ?? []);
+  };
+  useEffect(() => { getHeading(); }, [title, md]);
+
   const onChange = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (text: string, json: unknown) => {
@@ -25,6 +35,7 @@ export default function EditorDemo() {
         content: text,
       };
       upsertNote(newNote);
+      getHeading();
     },
     [upsertNote]
   );
@@ -64,12 +75,17 @@ export default function EditorDemo() {
               initialTitle={title}
               onChange={(newTitle: string) => setTitle(newTitle)}
             />
+            {headings.length > 0 
+              ? (<Toc headings={headings} />) 
+              : null
+            }
             <MsEditor 
               dark={true} 
               value={md} 
               onChange={onChange} 
               onOpenLink={(href) => { window.open(href, "_blank");}}
               onShowToast={() => {/* nothing*/}}
+              ref={editorInstance}
             />
           </div>
         </div>

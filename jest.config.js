@@ -22,9 +22,6 @@ module.exports = {
     '^d3-drag$': '<rootDir>/__mocks__/d3-drag.ts',
     '^d3-zoom$': '<rootDir>/__mocks__/d3-zoom.ts',
     '^d3-selection$': '<rootDir>/__mocks__/d3-selection.ts',
-    '^unified$': '<rootDir>/__mocks__/unified.ts',
-    '^remark-parse$': '<rootDir>/__mocks__/remark-parse.ts',
-    '^remark-gfm$': '<rootDir>/__mocks__/remark-gfm.ts',
   },
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',

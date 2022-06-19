@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import MsEditor from "mdsmirror";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -10,7 +10,13 @@ export default function Home() {
   const platform = getOS();
   const [link, setLink] = useState<string>('https://github.com/mdSilo/mdSilo/releases');
   const [app, setApp] = useState<string>('');
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const editorInstance = useRef<MsEditor>(null);
+  useEffect(() => {
+    const headings = editorInstance.current?.getHeadings();
+    console.log(headings); // returns array of headings
+  });
 
   useEffect(() => { 
     if (isLoaded) {
@@ -74,6 +80,7 @@ export default function Home() {
                       onChange={() => {/**/}} 
                       onOpenLink={(href) => { window.open(href, "_blank");}}
                       onShowToast={() => {/* nothing*/}}
+                      ref={editorInstance}
                     />
                   </div>
                 </div>
