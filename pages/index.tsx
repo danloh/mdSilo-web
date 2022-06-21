@@ -1,22 +1,16 @@
 import Link from 'next/link';
-import MsEditor from "mdsmirror";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 import { getOS } from 'utils/helper';
+import DemoEditor from './DemoEditor';
 
 export default function Home() {
   const platform = getOS();
   const [link, setLink] = useState<string>('https://github.com/mdSilo/mdSilo/releases');
   const [app, setApp] = useState<string>('');
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const editorInstance = useRef<MsEditor>(null);
-  useEffect(() => {
-    const headings = editorInstance.current?.getHeadings();
-    console.log(headings); // returns array of headings
-  });
 
   useEffect(() => { 
     if (isLoaded) {
@@ -37,8 +31,6 @@ export default function Home() {
     }
   }, [isLoaded, platform]);
 
-  const cardClass = 'p-8 rounded-md shadow bg-neutral-100 text-gray-800';
-
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col min-h-screen splash-bg">
@@ -46,8 +38,9 @@ export default function Home() {
           <div className="shadow-sm">
             <Navbar withText={true} />
             <div className="container">
-              <div className="px-6 py-16 grid gap-6 md:grid-cols-2">
+              <div className="px-4 py-8">
                 <div className="container text-xl px-2 text-center">
+                  <h1 className="p-2 text-4xl font-bold">Tiny Knowledge Silo On Your Desktop</h1>
                   <div className="flex-1 mx-auto">
                     <Link href="/writing">
                       <a className="inline-flex mt-4 mx-1 text-xl btn">
@@ -60,71 +53,19 @@ export default function Home() {
                       </a>
                     </Link>
                   </div>
-                  <p className="text-xs pt-3 text-center">
+                  <p className="text-xl pt-3 text-center">
                     Also available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.0/mdsilo_0.4.0_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>.
                   </p>
-                  <p className="max-w-3xl pt-2 mx-auto md:text-2xl">
-                    Lightweight plain-text knowledge silo and networked-writing tool.
-                  </p>
                   <Link href="/writing">
-                    <a className="inline-flex mt-4 text-2xl link hover:shadow-lg">
-                      Live Demo
-                    </a>
+                    <a className="inline-flex mt-4 text-lg">Live Demo</a>
                   </Link>
                 </div>
-                <div className="flex flex-1 w-full mx-auto ">
-                  <div className="flex-1 bg-black overflow-auto p-8">
-                    <MsEditor 
-                      dark={true} 
-                      value={defaultValue} 
-                      onChange={() => {/**/}} 
-                      onOpenLink={(href) => { window.open(href, "_blank");}}
-                      onShowToast={() => {/* nothing*/}}
-                      ref={editorInstance}
-                    />
+                <div className="flex flex-1 w-full lg:w-2/3 mx-auto pt-2">
+                  <div className="flex-1 bg-black overflow-auto px-8 py-2">
+                    <DemoEditor defaultValue={defaultValue} autoFocus={true} />
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="py-6 md:py-12 bg-neutral-300">
-          <div className="container px-6">
-            <div className="grid gap-6 pt-6 md:grid-cols-3">
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">📝 Enjoy Writing</h3>
-                <p className="pt-1">WYSIWYG Markdown Support</p>
-                <p className="pt-1">Slash commands, Toolbar, Hotkeys</p>
-                <p className="pt-1">Web App and Cross-platform Desktop App</p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">💡 Knowledge Silo</h3>
-                <p className="pt-1">
-                  Store the ideas, thoughts, knowledge in the networked way and 
-                  view them from different perspectives.
-                </p>
-              </div>
-              <div className={cardClass}>
-                <h3 className="text-xl font-semibold">🔒 Private and Secure</h3>
-                <p className="pt-2">
-                  Write completely offline using the tiny but powerful and cross-platform Desktop App. Even the code is entirely in your control.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="py-8 md:py-16">
-          <div className="container px-6">
-            <div className="max-w-3xl pt-6 mx-auto space-y-8 text-center md:pt-8">
-              <p className="text-2xl italic leading-normal">
-                &ldquo; WYSIWYG markdown editor is such a rarity. &rdquo;
-              </p>
-              <p className="text-2xl italic leading-normal">
-                &ldquo; I love the simplicity. &rdquo;
-              </p>
-              <p className="text-2xl italic leading-normal">
-                &ldquo; Very neat product. &rdquo;
-              </p>
             </div>
           </div>
         </div>
@@ -136,7 +77,21 @@ export default function Home() {
 
 
 const defaultValue = `
-A Knowledge Silo equipped with ==WYSIWYG Markdown== writing and reading tool. Available for **Web**, *Windows*, __macOS__, Linux.  
+Lightweight plain-text knowledge silo and networked-writing tool equipped with ==WYSIWYG Markdown== editor and reader.
 
-Tiny but Powerful, free and open source. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or just start writing...  
+## Features
+  - 📝 WYSIWYG Markdown Editor: Table, Math, Hashtag, WikiLink...  
+  - 🔀 Seamless switch between WYSIWYG and raw Markdown
+  - ⌨️ Slash commands, Hotkeys and Hovering toolbar...   
+  - 🪟 Chronicle view, Graph view... 
+  - 🔍 Full-text search 
+  - 📅 Daily activities graph  
+  - ✨ Available for **Web**, *Windows*, __macOS__, Linux
+
+:::info
+You can [Get the application here](https://github.com/mdSilo/mdSilo/releases)
+:::
+
+Tiny but Powerful, free and open source. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or start [writing on web](https://mdsilo.com/writing/)... #Tips# 
+\\
 `;

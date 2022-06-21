@@ -1,94 +1,17 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
-import MsEditor, { renderToHtml } from "mdsmirror";
-import { saveAs } from 'file-saver';
-import Title from 'components/note/Title';
-import Toc, { Heading } from 'components/note/Toc';
-import Menubar from 'components/landing/Menubar';
-import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
-import { useStore } from 'lib/store';
-import { defaultNote } from 'types/model';
-import {nowToRadix36Str } from 'utils/helper';
-import { useImportMd } from 'editor/hooks/useImport';
+import Navbar from 'components/landing/Navbar';
+import DemoEditor from './DemoEditor';
 
-export default function EditorDemo() {
-  const [title, setTitle] = useState<string>("Welcome to mdSilo");
-  const [md, setMd] = useState<string>(defaultValue);
-  const upsertNote = useStore((state) => state.upsertNote);
-
-  const [headings, setHeadings] = useState<Heading[]>([]);
-  const editorInstance = useRef<MsEditor>(null);
-  const getHeading = () => {
-    const hdings = editorInstance.current?.getHeadings();
-    // console.log(hdings); 
-    setHeadings(hdings ?? []);
-  };
-  useEffect(() => { getHeading(); }, [title, md]);
-
-  const onChange = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async (text: string, json: unknown) => {
-      // console.log("on content change", text, json);
-      const newNote = {
-        ...defaultNote,
-        id: 'md-current',
-        content: text,
-      };
-      upsertNote(newNote);
-      getHeading();
-    },
-    [upsertNote]
-  );
-
-  const onSave = useCallback(async () => {
-    const blob = new Blob([md], {
-      type: 'text/markdown;charset=utf-8',
-    });
-    saveAs(blob, `${title}-${nowToRadix36Str()}.md`);
-  }, [md, title]);
-
-  const onSaveHTML = useCallback(async () => {
-    const mdHTML = renderToHtml(md)
-    const html = `<!DOCTYPE html><html><head></head><body>${mdHTML}</body></html>`
-    const blob = new Blob([html], {
-      type: 'text/html;charset=utf-8',
-    });
-    saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
-  }, [md, title]);
-
-  const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
-
+export default function WritingDemo() {
   return (
     <MainView showNavbar={false} showFooter={false}>
-      <div className="shadow-sm max-w-3xl mx-auto">
+      <div className={`shadow-sm max-w-3xl mx-auto`}>
         <Navbar withText={false} />
-        <div className="container my-4">
-          <Menubar 
-            onNew={() => {onSave(); setTitle(''); setMd(' ');}} 
-            onOpen={onOpen}
-            onSave={onSave}
-            onSaveHTML={onSaveHTML}
-          />
-          <div className="flex-1 min-h-screen px-8 bg-black overflow-auto">
-            <Title
-              className="py-2"
-              initialTitle={title}
-              onChange={(newTitle: string) => setTitle(newTitle)}
-            />
-            {headings.length > 0 
-              ? (<Toc headings={headings} />) 
-              : null
-            }
-            <MsEditor 
-              dark={true} 
-              value={md} 
-              onChange={onChange} 
-              onOpenLink={(href) => { window.open(href, "_blank");}}
-              onShowToast={() => {/* nothing*/}}
-              ref={editorInstance}
-            />
-          </div>
-        </div>
+        <DemoEditor 
+          defaultValue={defaultValue}
+          defaultTitle="Welcome to mdSilo"
+          className="flex-1 min-h-screen px-8 bg-black overflow-auto"
+        />
       </div>
     </MainView>
   );
@@ -103,20 +26,30 @@ This is an editable document.
 
 ---
 
-Feel free to edit this document and try out the powerful features: 
+### WYSIWYG Markdown editor and reader  
+
+Feel free to edit this document and check out the powerful features: 
 
 * ==Slash Commands== : Typing \`/\` will trigger a list of the commands; 
 * ==Hovering Toolbar== : Styling the text when any selected;
-* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more:  
+* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more.  
 
 > Quoteblock: typing \`>\` to quote. 
 
-* List: Typing \`-\` or \`*\` or \`1.\` to create list.
+* Numbered List, Bullet List and nested list: Typing \`-\` or \`*\` or \`1.\` to create list.
+  1. This is the first nested list item 
+  - This is another nested list item 
 
-* Checklist: Typing \`[]\` to create todo-list.  
+* use Task List to track your todo-list: Typing \`[]\` to create task list.  
   - [ ] todo-1 
   - [x] done-1 
+  - [ ] the list items are dragable, just click, hold and drag to organize your taks. #Tips# 
+    - [ ] Click
+    - [ ] Hold
+    - [ ] Drag to wherever you want 
 
+* use \`#Hashtag#\` to tag your writing. #Tips# 
+* use [[Wiki Link]] to connect your writing together. 
 --- 
 
 :::tip

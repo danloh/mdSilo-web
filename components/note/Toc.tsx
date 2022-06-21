@@ -15,7 +15,7 @@ type Props = {
 
 export default function Toc(props: Props) {
   const { headings, metaInfo = '', className = '' } = props;
-  const [showTOC, setShowTOC] = useState<boolean>(false);
+  const [showTOC, setShowTOC] = useState<boolean>(true);
 
   return (
     <>
