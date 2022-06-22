@@ -29,7 +29,7 @@ export default function DemoEditor(props: Props) {
     // console.log(hdings); 
     setHeadings(hdings ?? []);
   };
-  
+
   useEffect(() => { 
     getHeading(); 
     // init note in store

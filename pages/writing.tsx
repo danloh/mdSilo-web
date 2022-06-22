@@ -5,12 +5,12 @@ import DemoEditor from './DemoEditor';
 export default function WritingDemo() {
   return (
     <MainView showNavbar={false} showFooter={false}>
-      <div className={`shadow-sm max-w-3xl mx-auto`}>
+      <div className="max-w-3xl mx-auto mb-16">
         <Navbar withText={false} />
         <DemoEditor 
           defaultValue={defaultValue}
           defaultTitle="Welcome to mdSilo"
-          className="flex-1 min-h-screen px-8 bg-black overflow-auto"
+          className="flex-1 min-h-screen px-8 bg-black overflow-auto shadow-inner"
         />
       </div>
     </MainView>

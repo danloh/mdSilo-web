@@ -40,7 +40,7 @@ export default function Home() {
             <div className="container">
               <div className="px-4 py-8">
                 <div className="container text-xl px-2 text-center">
-                  <h1 className="p-2 text-5xl font-bold">Knowledge Silo On Your Desktop</h1>
+                  <h1 className="p-2 text-5xl font-bold">Mind Silo On Your Desktop</h1>
                   <div className="flex-1 mx-auto">
                     <Link href="/writing">
                       <a className="inline-flex mt-4 mx-1 text-xl btn">
@@ -60,8 +60,8 @@ export default function Home() {
                     <a className="inline-flex mt-4 text-lg">Live Demo</a>
                   </Link>
                 </div>
-                <div className="flex flex-1 w-full lg:w-2/3 mx-auto pt-2">
-                  <div className="flex-1 bg-black overflow-auto px-8 py-2">
+                <div className="flex flex-1 w-full lg:w-2/3 mx-auto pt-2 drop-shadow-lg">
+                  <div className="flex-1 bg-black overflow-auto px-8 py-2 rounded">
                     <DemoEditor defaultValue={defaultValue} autoFocus={true} />
                   </div>
                 </div>
