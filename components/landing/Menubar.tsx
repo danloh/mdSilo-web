@@ -1,14 +1,18 @@
-import { IconFeather, IconFile, IconMarkdown, IconFileCode } from '@tabler/icons';
+import { 
+  IconFeather, IconFile, IconMarkdown, IconFileCode, IconNotes, IconCode
+} from '@tabler/icons';
 
 type Props = {
   onNew: () => void;
   onOpen: () => void;
   onSave: () => void;
   onSaveHTML: () => void;
+  onSwitch: () => void;
+  rawMode: boolean;
 };
 
 export default function Menubar(props: Props) {
-  const { onNew, onOpen, onSave, onSaveHTML } = props;
+  const { onNew, onOpen, onSave, onSaveHTML, onSwitch, rawMode = false } = props;
 
   const itemClassName = `flex items-center p-1 text-sm text-gray-500 select-none`;
 
@@ -29,7 +33,15 @@ export default function Menubar(props: Props) {
       <button className={itemClassName} onClick={onSaveHTML}>
         <IconFileCode size={18} className="mr-1" />
         <span className="hover:text-primary-500">Save HTML</span>
-      </button>    
+      </button>   
+      <button className={itemClassName} onClick={onSwitch}>
+        {rawMode ? (
+          <IconCode size={18} className="mr-1" />
+        ) : (
+          <IconNotes size={18} className="mr-1" />
+        )}
+        <span className="hover:text-primary-500">Switch</span>
+      </button> 
     </div>
   );
 }

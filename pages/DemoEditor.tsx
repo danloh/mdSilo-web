@@ -1,10 +1,9 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
-import MsEditor, { renderToHtml } from "mdsmirror";
+import MsEditor, { renderToHtml, RawMarkdown } from "mdsmirror";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
 import Menubar from 'components/landing/Menubar';
-
 import { useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
 import {nowToRadix36Str } from 'utils/helper';
@@ -30,7 +29,20 @@ export default function DemoEditor(props: Props) {
     // console.log(hdings); 
     setHeadings(hdings ?? []);
   };
-  useEffect(() => { getHeading(); }, [title, md]);
+  
+  useEffect(() => { 
+    getHeading(); 
+    // init note in store
+    const initNote = {
+      ...defaultNote,
+      id: 'md-current',
+      title: defaultTitle,
+      content: defaultValue,
+    };
+    upsertNote(initNote);
+  }, [defaultTitle, defaultValue, upsertNote]); 
+
+  const [rawMode, setRawMode] = useState<boolean>(false);
 
   const onChange = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,12 +51,33 @@ export default function DemoEditor(props: Props) {
       const newNote = {
         ...defaultNote,
         id: 'md-current',
+        title,
         content: text,
       };
       upsertNote(newNote);
       getHeading();
     },
-    [upsertNote]
+    [title, upsertNote]
+  );
+
+  const onTitleChange = useCallback(
+    async (newTitle: string) => {
+      setTitle(newTitle);
+      const newNote = {
+        ...defaultNote,
+        id: 'md-current',
+        title: newTitle,
+        content: md,
+      };
+      upsertNote(newNote);
+    },[md, upsertNote]
+  );
+
+  const onMarkdownChange = useCallback(
+    async (text: string) => {
+      console.log("on markdown content change", text);
+      await onChange(text, '');
+    },[onChange]
   );
 
   const onSave = useCallback(async () => {
@@ -63,6 +96,14 @@ export default function DemoEditor(props: Props) {
     saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
   }, [md, title]);
 
+  const note = useStore(state => state.notes)['md-current'];
+  console.log("note: ", note)
+  const onSwitch = useCallback(async () => {
+    setMd(note?.content || ' ');
+    setTitle(note?.title || '')
+    setRawMode(!rawMode)
+  }, [note, rawMode]);
+
   const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
 
   return (
@@ -72,6 +113,8 @@ export default function DemoEditor(props: Props) {
         onOpen={onOpen}
         onSave={onSave}
         onSaveHTML={onSaveHTML}
+        onSwitch={onSwitch} 
+        rawMode={rawMode}
       />
       <div className={className}>
         {title.trim().length > 0 
@@ -79,25 +122,34 @@ export default function DemoEditor(props: Props) {
               <Title
                 className="py-2"
                 initialTitle={title}
-                onChange={(newTitle: string) => setTitle(newTitle)}
+                onChange={onTitleChange}
               />
             ) 
           : null
         }
-        {headings.length > 0 
+        {headings.length > 0 && !rawMode 
           ? (<Toc headings={headings} />) 
           : null
         }
-        <MsEditor 
-          dark={true} 
-          value={md} 
-          onChange={onChange} 
-          onOpenLink={(href) => { window.open(href, "_blank");}}
-          onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
-          onShowToast={() => {/* nothing*/}}
-          autoFocus={autoFocus}
-          ref={editorInstance}
-        />
+        {rawMode ? (
+          <RawMarkdown
+            initialContent={md}
+            onChange={onMarkdownChange}
+            dark={true}
+            readMode={false}
+          />
+        ) : (
+          <MsEditor 
+            dark={true} 
+            value={md} 
+            onChange={onChange} 
+            onOpenLink={(href) => { window.open(href, "_blank");}}
+            onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
+            onShowToast={() => {/* nothing*/}}
+            autoFocus={autoFocus}
+            ref={editorInstance}
+          />
+        )}
       </div>
     </div>
   );

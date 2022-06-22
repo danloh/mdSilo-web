@@ -67,10 +67,12 @@ Click top menu to new document, open local md file, save changes.
 |----|----|----|---:|
 | WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
 | Writing | Yes | Slash Commands, Hovering Toolbar, Hotkeys  | Free | 
-| Table | Yes | Insert Table, Add or Remove Row or Culumn  | Free | 
+| Table | Yes | Insert Table, Add or Remove Row or Column  | Free | 
 | Code | Yes | Code Block and Highlight  | Free | 
 | Math | Yes | Math Equation($LaTex$): inline or block | Free | 
-| Callout | Yes | Information, Tips, Warning  | Free | 
+| Hashtag | Yes | To Tag your writing  | Free | 
+| Wiki Link | Yes | To network your writing  | Free | 
+| Call-out | Yes | Information, Tips, Warning  | Free | 
 
 ### You can insert code 
 

@@ -40,7 +40,7 @@ export default function Home() {
             <div className="container">
               <div className="px-4 py-8">
                 <div className="container text-xl px-2 text-center">
-                  <h1 className="p-2 text-4xl font-bold">Tiny Knowledge Silo On Your Desktop</h1>
+                  <h1 className="p-2 text-5xl font-bold">Knowledge Silo On Your Desktop</h1>
                   <div className="flex-1 mx-auto">
                     <Link href="/writing">
                       <a className="inline-flex mt-4 mx-1 text-xl btn">
@@ -89,7 +89,7 @@ Lightweight plain-text knowledge silo and networked-writing tool equipped with =
   - ✨ Available for **Web**, *Windows*, __macOS__, Linux
 
 :::info
-You can [Get the application here](https://github.com/mdSilo/mdSilo/releases)
+You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), less than 10Mb.
 :::
 
 Tiny but Powerful, free and open source. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or start [writing on web](https://mdsilo.com/writing/)... #Tips# 
