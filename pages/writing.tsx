@@ -48,7 +48,6 @@ Feel free to edit this document and check out the powerful features:
     - [ ] Hold
     - [ ] Drag to wherever you want 
 
-* use \`#Hashtag#\` to tag your writing. #Tips# 
 * use [[Wiki Link]] to connect your writing together. 
 --- 
 
@@ -70,7 +69,6 @@ Click top menu to new document, open local md file, save changes.
 | Table | Yes | Insert Table, Add or Remove Row or Column  | Free | 
 | Code | Yes | Code Block and Highlight  | Free | 
 | Math | Yes | Math Equation($LaTex$): inline or block | Free | 
-| Hashtag | Yes | To Tag your writing  | Free | 
 | Wiki Link | Yes | To network your writing  | Free | 
 | Call-out | Yes | Information, Tips, Warning  | Free | 
 
@@ -175,8 +173,13 @@ You can get the Desktop Application for Windows, macOS, Linux: [download here](h
 ### More is on the way 
 
 ---
+Features: Input end 
 
-- [ ] Linking: Backlink, …
+- [ ] RSS reader
+- [ ] Podcast client 
+
+Features: Output end 
+
 - [ ] Hashtag, 
 - [ ] Embed media, web page, local image... 
 

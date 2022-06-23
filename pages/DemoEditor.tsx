@@ -13,11 +13,12 @@ type Props = {
   defaultValue: string;
   defaultTitle?: string;
   autoFocus?: boolean;
+  dark?: boolean;
   className?: string;
 };
 
 export default function DemoEditor(props: Props) {
-  const { defaultValue, defaultTitle = '', autoFocus, className = '' } = props;
+  const { defaultValue, defaultTitle = '', autoFocus, dark = true, className = '' } = props;
   const [title, setTitle] = useState<string>(defaultTitle);
   const [md, setMd] = useState<string>(defaultValue);
   const upsertNote = useStore((state) => state.upsertNote);
@@ -75,7 +76,7 @@ export default function DemoEditor(props: Props) {
 
   const onMarkdownChange = useCallback(
     async (text: string) => {
-      console.log("on markdown content change", text);
+      // console.log("on markdown content change", text);
       await onChange(text, '');
     },[onChange]
   );
@@ -97,7 +98,7 @@ export default function DemoEditor(props: Props) {
   }, [md, title]);
 
   const note = useStore(state => state.notes)['md-current'];
-  console.log("note: ", note)
+  // console.log("note: ", note)
   const onSwitch = useCallback(async () => {
     setMd(note?.content || ' ');
     setTitle(note?.title || '')
@@ -140,7 +141,7 @@ export default function DemoEditor(props: Props) {
           />
         ) : (
           <MsEditor 
-            dark={true} 
+            dark={dark} 
             value={md} 
             onChange={onChange} 
             onOpenLink={(href) => { window.open(href, "_blank");}}
