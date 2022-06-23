@@ -1,78 +1,17 @@
-import { useCallback, useState } from 'react';
-import MsEditor, { renderToHtml } from "mdsmirror";
-import { saveAs } from 'file-saver';
-import Title from 'components/note/Title';
-import Menubar from 'components/landing/Menubar';
-import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
-import { useStore } from 'lib/store';
-import { defaultNote } from 'types/model';
-import {nowToRadix36Str } from 'utils/helper';
-import { useImportMd } from 'editor/hooks/useImport';
+import Navbar from 'components/landing/Navbar';
+import DemoEditor from './DemoEditor';
 
-export default function EditorDemo() {
-  const [title, setTitle] = useState<string>("Welcome to mdSilo");
-  const [md, setMd] = useState<string>(defaultValue);
-  const upsertNote = useStore((state) => state.upsertNote);
-
-  const onChange = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async (text: string, json: unknown) => {
-      // console.log("on content change", text, json);
-      const newNote = {
-        ...defaultNote,
-        id: 'md-current',
-        content: text,
-      };
-      upsertNote(newNote);
-    },
-    [upsertNote]
-  );
-
-  const onSave = useCallback(async () => {
-    const blob = new Blob([md], {
-      type: 'text/markdown;charset=utf-8',
-    });
-    saveAs(blob, `${title}-${nowToRadix36Str()}.md`);
-  }, [md, title]);
-
-  const onSaveHTML = useCallback(async () => {
-    const mdHTML = renderToHtml(md)
-    const html = `<!DOCTYPE html><html><head></head><body>${mdHTML}</body></html>`
-    const blob = new Blob([html], {
-      type: 'text/html;charset=utf-8',
-    });
-    saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
-  }, [md, title]);
-
-  const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
-
+export default function WritingDemo() {
   return (
     <MainView showNavbar={false} showFooter={false}>
-      <div className="shadow-sm max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto mb-16">
         <Navbar withText={false} />
-        <div className="container my-4">
-          <Menubar 
-            onNew={() => {onSave(); setTitle(''); setMd(' ');}} 
-            onOpen={onOpen}
-            onSave={onSave}
-            onSaveHTML={onSaveHTML}
-          />
-          <div className="flex-1 min-h-screen px-8 bg-black overflow-auto">
-            <Title
-              className="py-2"
-              initialTitle={title}
-              onChange={(newTitle: string) => setTitle(newTitle)}
-            />
-            <MsEditor 
-              dark={true} 
-              value={md} 
-              onChange={onChange} 
-              onOpenLink={(href) => { window.open(href, "_blank");}}
-              onShowToast={() => {/* nothing*/}}
-            />
-          </div>
-        </div>
+        <DemoEditor 
+          defaultValue={defaultValue}
+          defaultTitle="Welcome to mdSilo"
+          className="flex-1 min-h-screen px-8 bg-black overflow-auto shadow-inner"
+        />
       </div>
     </MainView>
   );
@@ -87,20 +26,29 @@ This is an editable document.
 
 ---
 
-Feel free to edit this document and try out the powerful features: 
+### WYSIWYG Markdown editor and reader  
+
+Feel free to edit this document and check out the powerful features: 
 
 * ==Slash Commands== : Typing \`/\` will trigger a list of the commands; 
 * ==Hovering Toolbar== : Styling the text when any selected;
-* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more:  
+* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, \`inline code\`, and more.  
 
 > Quoteblock: typing \`>\` to quote. 
 
-* List: Typing \`-\` or \`*\` or \`1.\` to create list.
+* Numbered List, Bullet List and nested list: Typing \`-\` or \`*\` or \`1.\` to create list.
+  1. This is the first nested list item 
+  - This is another nested list item 
 
-* Checklist: Typing \`[]\` to create todo-list.  
+* use Task List to track your todo-list: Typing \`[]\` to create task list.  
   - [ ] todo-1 
   - [x] done-1 
+  - [ ] the list items are dragable, just click, hold and drag to organize your taks. #Tips# 
+    - [ ] Click
+    - [ ] Hold
+    - [ ] Drag to wherever you want 
 
+* use [[Wiki Link]] to connect your writing together. 
 --- 
 
 :::tip
@@ -118,10 +66,11 @@ Click top menu to new document, open local md file, save changes.
 |----|----|----|---:|
 | WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
 | Writing | Yes | Slash Commands, Hovering Toolbar, Hotkeys  | Free | 
-| Table | Yes | Insert Table, Add or Remove Row or Culumn  | Free | 
+| Table | Yes | Insert Table, Add or Remove Row or Column  | Free | 
 | Code | Yes | Code Block and Highlight  | Free | 
 | Math | Yes | Math Equation($LaTex$): inline or block | Free | 
-| Callout | Yes | Information, Tips, Warning  | Free | 
+| Wiki Link | Yes | To network your writing  | Free | 
+| Call-out | Yes | Information, Tips, Warning  | Free | 
 
 ### You can insert code 
 
@@ -224,8 +173,13 @@ You can get the Desktop Application for Windows, macOS, Linux: [download here](h
 ### More is on the way 
 
 ---
+Features: Input end 
 
-- [ ] Linking: Backlink, …
+- [ ] RSS reader
+- [ ] Podcast client 
+
+Features: Output end 
+
 - [ ] Hashtag, 
 - [ ] Embed media, web page, local image... 
 
