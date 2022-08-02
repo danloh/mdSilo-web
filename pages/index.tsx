@@ -40,7 +40,7 @@ export default function Home() {
 
 
 const defaultValue = `
-Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWYG Markdown editor and reader==. Use it to organize writing, network thoughts and __build a Second Brain__ on top of local plain text Markdown files.
+Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWYG Markdown editor and reader==. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
 
 ## Features
   - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Wiki Link...  
@@ -49,7 +49,7 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
   - 🕸️ Graph view to visualize the networked writing  
   - 📅 Chronicle view and Daily activities tracker  
   - 🔍 Full-text search 
-  - ✨ Available for *Windows*, __macOS__, Linux 
+  - ✨ Available for Windows, macOS, Linux and Web  
 
 :::info
 You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), less than 10Mb.
