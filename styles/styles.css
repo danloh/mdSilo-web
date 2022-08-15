@@ -47,7 +47,20 @@
     -webkit-mask: var(--m);
             mask: var(--m);
   }
-  @keyframes svg-glow {from {filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #3465a4) drop-shadow(0 0 30px #3465a4);} to {filter: drop-shadow(0 0 30px #fff) drop-shadow(0 0 35px #3465a4) drop-shadow(0 0 40px #3465a4);}} .shape-effect, .circle-effect {fill:transparent;} .circle-effect {animation: svg-glow 1.5s ease-in-out infinite alternate;} .shape-effect:hover {fill:green;fill-opacity:0.3;}
+  @keyframes svg-glow {
+    from { stroke: #FF0000; }
+    to { stroke: #00FF00; }
+  } 
+  .shape-effect, .circle-effect {
+    fill:transparent;
+  } 
+  .circle-effect {
+    animation: svg-glow 1.5s ease-in-out infinite alternate;
+  } 
+  .shape-effect:hover {
+    fill:green;
+    fill-opacity:0.3;
+  }
 }
 
 :root {

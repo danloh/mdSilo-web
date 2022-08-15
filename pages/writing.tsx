@@ -155,7 +155,7 @@ Warning: Any changes will not be saved automatically.
 
 --- 
 
-- Insert using \`![caption](image_link)\`
+- Insert using \`![caption](image_link)\` and local image support on desktop app: \`![caption](asset://<full_local_image_path>)\`
 
 
 ![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
