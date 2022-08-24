@@ -180,8 +180,7 @@ Features: Input end
 
 Features: Output end 
 
-- [ ] Hashtag, 
-- [ ] Embed media, web page, local image... 
+- [ ] Embed media, web page... 
 
 
 ### Any questions, feedback or suggestions?

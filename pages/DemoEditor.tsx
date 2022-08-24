@@ -138,6 +138,7 @@ export default function DemoEditor(props: Props) {
             onChange={onMarkdownChange}
             dark={true}
             readMode={false}
+            className="text-lg"
           />
         ) : (
           <MsEditor 
