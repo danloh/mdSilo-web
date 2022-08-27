@@ -33,8 +33,9 @@ export default function Home() {
                     Buffering for your daily I/O 
                   </p>
                   <p className="text-xl py-3 text-center">
-                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.2/mdsilo_0.4.2_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.2/mdsilo_0.4.2_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.2/mdsilo_0.4.2_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.2/mdsilo_0.4.2_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>.
+                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
                   </p>
+                  <p className="text-xs text-slate-500 text-center -mt-1">Version: 0.4.3</p>
                 </div>
                 <h2 className="text-2xl font-bold text-center my-2">
                   Lightweight, Yet Powerful  
@@ -116,7 +117,8 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
   - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Hashtag, Wiki Link...  
   - 🔀 Seamless switch between WYSIWYG and raw Markdown
   - ⌨️ Slash commands, Hotkeys and Hovering toolbar...   
-  - 🕸️ Graph view to visualize the networked writing  
+  - 🕸️ Graph view to visualize the networked writing 
+  - ✔️ Task view to track todo/doing/done   
   - 📅 Chronicle view and Daily activities tracker  
   - 🔍 Full-text search 
   - ✨ Available for Windows, macOS, Linux and Web  
