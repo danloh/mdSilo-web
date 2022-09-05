@@ -1964,6 +1964,11 @@
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.70.0.tgz#28ebbd38f70169887a06111d1e33deff9cf635ee"
   integrity sha512-JsCDrVJdbeMzNWluefQNIjkWIBZMAye+94fdWM96UzrWgDvct8X791wVVgfUurHPF/YtGT9ajOvqr5yo+zDW9g==
 
+"@tabler/icons@^1.92.0":
+  version "1.92.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.92.0.tgz#e068938db61d5f932d317a8fd18acd5c0204496e"
+  integrity sha512-eZP5jYvNPtZKiWj1Bn2C+zjvGXhQoormXAyE3TH7ihCxXBHMzKF/ZLYhU3rnMC/+NjuLDBifKc6dmwoh7s62vQ==
+
 "@tailwindcss/forms@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.5.2.tgz#4ef45f9916dcb37838cbe7fecdcc4ba7a7c2ab59"
@@ -5453,10 +5458,10 @@ markdown-it@^12.0.0, markdown-it@^12.3.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-mdsmirror@^0.1.18:
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.1.18.tgz#281b065ff4e13c6edf3b5fe794181ddfa75fc8e4"
-  integrity sha512-Zp48zVGX9yykActxPFCBjHX/xURDqClEk2K98Cgkmo0u/oGzCARGg1Kt1oKmgkdmXFm2M9ZwC3TV52/Vani2Uw==
+mdsmirror@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.2.3.tgz#9e8181ebf70796974daa8464b34e1f74c0ab6494"
+  integrity sha512-ejxBCR36mZBJ1mCxs6r/JnHnVayBLjZ0rQQ6afx/c/zfHjpY8ARPFCNwp23kBDSoA1XFD45FBGnmfYLOs2sGMg==
   dependencies:
     "@codemirror/commands" "^6.0.0"
     "@codemirror/lang-markdown" "^6.0.0"
@@ -5464,7 +5469,7 @@ mdsmirror@^0.1.18:
     "@codemirror/state" "^6.0.1"
     "@codemirror/view" "^6.0.1"
     "@juggle/resize-observer" "^3.3.1"
-    "@tabler/icons" "^1.70.0"
+    "@tabler/icons" "^1.92.0"
     codemirror "^6.0.0"
     copy-to-clipboard "^3.3.1"
     katex "^0.15.6"

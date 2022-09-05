@@ -19,12 +19,12 @@ export default function Sponsors() {
           recommend it to your friends, report bugs, contribute in coding or donate...
         </p>
         <div className="container p-6 flex flex-col items-center justify-center">
+          <a href="https://buy.stripe.com/6oE9ChgVZeOT4WA000" className="link mb-2 text-xl font-bold" target="_blank" rel="noopener noreferrer">Click to donate</a>
           <Image
             src={payqr}
-            width={220}
-            height={263.75} 
+            width={330}
+            height={395.625} 
           />
-          <a href="https://buy.stripe.com/6oE9ChgVZeOT4WA000" className="link mt-2 text-xl" target="_blank" rel="noopener noreferrer">Click to donate</a>
         </div>
       </div>
     </MainView>

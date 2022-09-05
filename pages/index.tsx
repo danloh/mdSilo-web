@@ -27,15 +27,18 @@ export default function Home() {
               <div className="p-4">
                 <div className="container text-xl px-2 text-center">
                   <p className="text-4xl pt-3 text-center text-primary-500">
-                    Hello, welcome to mdsilo.
+                    Welcome to mdsilo.
                   </p>
                   <p className="text-md pt-3 text-center">
                     Buffering for your daily I/O 
                   </p>
                   <p className="text-xl py-3 text-center">
-                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.3/mdsilo_0.4.3_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
+                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.4/mdsilo_0.4.4_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.4/mdsilo_0.4.4_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.4/mdsilo_0.4.4_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.4/mdsilo_0.4.4_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
                   </p>
-                  <p className="text-xs text-slate-500 text-center -mt-1">Version: 0.4.3</p>
+                  <p className="text-sm text-slate-500 text-center -mt-1">
+                    Version: 0.4.4 
+                    <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">CHANGELOG</a>
+                  </p>
                 </div>
                 <h2 className="text-2xl font-bold text-center my-2">
                   Lightweight, Yet Powerful  
@@ -114,13 +117,15 @@ const defaultValue = `
 Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWYG Markdown editor and reader==. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
 
 ## Features
-  - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Hashtag, Wiki Link...  
-  - 🔀 Seamless switch between WYSIWYG and raw Markdown
+  - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Hashtag...  
+  - 🔀 Seamless switch between WYSIWYG and raw Markdown 
+  - 🗄️ Build personal wiki with bidirectional links  
   - ⌨️ Slash commands, Hotkeys and Hovering toolbar...   
   - 🕸️ Graph view to visualize the networked writing 
   - ✔️ Task view to track todo/doing/done   
-  - 📅 Chronicle view and Daily activities tracker  
+  - 📅 Chronicle view and Daily activities graph    
   - 🔍 Full-text search 
+  - 🔒 Write directly with local Markdown files, entirely offline 
   - ✨ Available for Windows, macOS, Linux and Web  
 
 ## Get Application
@@ -132,5 +137,10 @@ You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), l
 ### Try it out here  
 
 For human brain, Reading and Writing is the I/O: the communication between the information processing system and the outside world. mdSilo is here to boost your daily I/O, it is tiny yet powerful. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or start [writing on web](https://mdsilo.com/writing/)... #Tips# 
-\\
+
+### Road map
+
+See more here:  
+
+[https://trello.com/b/xzIFkNGb/mdsilo-roadmap](https://trello.com/b/xzIFkNGb/mdsilo-roadmap) 
 `;

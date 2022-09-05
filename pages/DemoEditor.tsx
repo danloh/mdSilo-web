@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
-import MsEditor, { renderToHtml, RawMarkdown } from "mdsmirror";
+import MsEditor, { renderToHtml, RawMarkdown, embeds } from "mdsmirror";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -148,7 +148,8 @@ export default function DemoEditor(props: Props) {
             onOpenLink={(href) => { window.open(href, "_blank");}}
             onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
             onShowToast={() => {/* nothing*/}}
-            autoFocus={autoFocus}
+            autoFocus={autoFocus} 
+            embeds={embeds}
             ref={editorInstance}
           />
         )}

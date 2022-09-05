@@ -40,7 +40,7 @@ export default function Menubar(props: Props) {
         ) : (
           <IconNotes size={18} className="mr-1" />
         )}
-        <span className="hover:text-primary-500">Switch</span>
+        <span className="hover:text-primary-500">{rawMode ? 'WYSIWYG' : 'Markdown'}</span>
       </button> 
     </div>
   );
