@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import screenShot from 'public/demo/screenshot.webp';
 import toc from 'public/demo/toc.webp';
@@ -12,7 +13,7 @@ import MainView from 'components/landing/MainView';
 import DemoEditor from './DemoEditor';
 
 export default function Home() {
-  const caseList = ['Demo', 'TOC', 'Writing and Formatting', 'Table', 'Code and Math', 'Image', 'List', 'etc.']; 
+  const caseList = ['Demo', 'TOC', 'Writing and Formatting', 'Mindmap', 'Table', 'Code and Math', 'Image', 'List', 'etc.']; 
   const [caseTab, setCaseTab] = useState('Demo');
 
   const demoClass = "flex flex-1 w-full lg:w-3/4 mx-auto pt-2 drop-shadow-lg";
@@ -68,7 +69,11 @@ export default function Home() {
                   <div className={demoClass}>
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1606 1275"><image id="img-in-svg" xlinkHref={slash.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image></svg>
                   </div>
-                ) : caseTab === 'Table' ? (
+                ) : caseTab === 'Mindmap' ? (
+                  <div className={demoClass}>
+                    <img src="/mindmap.svg"></img>
+                  </div>
+                ): caseTab === 'Table' ? (
                   <div className={demoClass}>
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1597 1265"><image id="img-in-svg" xlinkHref={table.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image><g id="t-plus-0"><circle cx="512" cy="297" r="13.5" style={{fill:'#0284c7',stroke:'#0284c7',strokeWidth:'5px'}}><animate attributeName="opacity" values="1;0.6;1" begin="1s" dur="1.5s" repeatCount="indefinite"></animate></circle><path d="M25 14h-7.37v-7.369h-3.79v7.369h-7.371v3.791h7.371v7.372h3.79v-7.372h7.37z" fill="#fff" transform="translate(499,284) scale(0.8,0.8)"></path><title>Command and Raw Markdown Table support</title></g><polygon id="t-polygon-1" className="shape-effect" points="1065 360 1065 450 1580 450 1580 360" style={{stroke:'transparent',strokeWidth:3}}><title>Styling and Editing Toolbar</title></polygon></svg>
                   </div>
