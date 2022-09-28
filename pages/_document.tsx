@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const DESCRIPTION = 'mdSilo: Lightweight WYSIWYG Markdown Editor';
+const DESCRIPTION = 'mdSilo: Lightweight Mind Silo on Your Desktop';
 
 class MsDocument extends Document {
   render() {

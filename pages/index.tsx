@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import screenShot from 'public/demo/screenshot.webp';
 import toc from 'public/demo/toc.webp';
@@ -12,10 +13,10 @@ import MainView from 'components/landing/MainView';
 import DemoEditor from './DemoEditor';
 
 export default function Home() {
-  const caseList = ['Demo', 'TOC', 'Writing and Formatting', 'Table', 'Code and Math', 'Image', 'List', 'etc.']; 
+  const caseList = ['Demo', 'TOC', 'Writing and Formatting', 'Mindmap', 'Table', 'Code and Math', 'Image', 'List', 'etc.']; 
   const [caseTab, setCaseTab] = useState('Demo');
 
-  const demoClass = "flex flex-1 w-full lg:w-2/3 mx-auto pt-2 drop-shadow-lg";
+  const demoClass = "flex flex-1 w-full lg:w-3/4 mx-auto pt-2 drop-shadow-lg";
 
   return (
     <MainView showNavbar={false} showFooter={false}>
@@ -32,11 +33,11 @@ export default function Home() {
                   <p className="text-md pt-3 text-center">
                     Buffering for your daily I/O 
                   </p>
-                  <p className="text-xl py-3 text-center">
-                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.5/mdsilo_0.4.5_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.5/mdsilo_0.4.5_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.5/mdsilo_0.4.5_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.5/mdsilo_0.4.5_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
+                  <p className="text-2xl py-3 text-center">
+                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
                   </p>
                   <p className="text-sm text-slate-500 text-center -mt-1">
-                    Version: 0.4.5 
+                    Version: 0.4.6 
                     <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">CHANGELOG</a>
                   </p>
                 </div>
@@ -68,7 +69,11 @@ export default function Home() {
                   <div className={demoClass}>
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1606 1275"><image id="img-in-svg" xlinkHref={slash.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image></svg>
                   </div>
-                ) : caseTab === 'Table' ? (
+                ) : caseTab === 'Mindmap' ? (
+                  <div className={demoClass}>
+                    <img src="/mindmap.svg"></img>
+                  </div>
+                ): caseTab === 'Table' ? (
                   <div className={demoClass}>
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1597 1265"><image id="img-in-svg" xlinkHref={table.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image><g id="t-plus-0"><circle cx="512" cy="297" r="13.5" style={{fill:'#0284c7',stroke:'#0284c7',strokeWidth:'5px'}}><animate attributeName="opacity" values="1;0.6;1" begin="1s" dur="1.5s" repeatCount="indefinite"></animate></circle><path d="M25 14h-7.37v-7.369h-3.79v7.369h-7.371v3.791h7.371v7.372h3.79v-7.372h7.37z" fill="#fff" transform="translate(499,284) scale(0.8,0.8)"></path><title>Command and Raw Markdown Table support</title></g><polygon id="t-polygon-1" className="shape-effect" points="1065 360 1065 450 1580 450 1580 360" style={{stroke:'transparent',strokeWidth:3}}><title>Styling and Editing Toolbar</title></polygon></svg>
                   </div>
@@ -118,7 +123,7 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
 
 ## Features
   - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Hashtag...  
-  - 🔀 Seamless switch between WYSIWYG and raw Markdown 
+  - 🔀 Seamless switch between WYSIWYG, raw Markdown and Mind map   
   - 🗄️ Build personal wiki with bidirectional links  
   - ⌨️ Slash commands, Hotkeys and Hovering toolbar...   
   - 🕸️ Graph view to visualize the networked writing 
@@ -139,6 +144,44 @@ You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), l
 For human brain, Reading and Writing is the I/O: the communication between the information processing system and the outside world. mdSilo is here to boost your daily I/O, it is tiny yet powerful. Please [get the application here](https://github.com/mdSilo/mdSilo/releases), or start [writing on web](https://mdsilo.com/writing/)... #Tips# 
 
 ### Road map
+
+- Markdown
+  - [X] Style: **Bold**, *Italic*, ~~Strikethrough~~, \`Inline Code\`
+  - [X] Link: [mdSilo](https://mdsilo.com) and <https://mdsilo.com>, 
+  - [X] Image: \`![]()\` 
+  - [X] Headings and TOC, 
+  - [X] List item: ordered list, bullet list, check list and nested list
+  - [X] Table
+  - [X] Blockquotes  
+  - [X] Horizontal Rules 
+
+- Markdown extension
+  - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`
+  - [X] Highlight code block  
+  - [X] Math: inline math \`$\\LaTeX$\` and math block \`$$\\LaTeX$$\` 
+  - [X] Notice block: info, warning, tips 
+  - [X] Wikilink: \`[[]]\` 
+  - [X] Hashtag: \`#tag#\` 
+  - [ ] Diagram: mermaid... 
+
+- Writing and formatting 
+  - [X] WYSIWYG, raw mode and mindmap mode 
+  - [X] Slash commands  
+  - [X] Hovering toolbar
+  - [X] hotkeys 
+  - [X] Split view
+
+- View
+  - [X] Graph
+  - [X] Task
+  - [X] Chronicle 
+
+- Organize writings
+  - [X] Folder management 
+  - [X] Backlinks 
+  - [X] Recent history 
+  - [ ] Export as PDF,HTML, ... 
+  - [ ] Version control: git intergration 
 
 See more here:  
 
