@@ -13,10 +13,13 @@ import MainView from 'components/landing/MainView';
 import DemoEditor from './DemoEditor';
 
 export default function Home() {
-  const caseList = ['Demo', 'TOC', 'Writing and Formatting', 'Mindmap', 'Table', 'Code and Math', 'Image', 'List', 'etc.']; 
+  const caseList = [
+    'Demo', 'Diagram', 'Charts', 'ABC Notation', 'TOC', 'Mindmap', 
+    'Writing and Formatting', 'Table', 'Code and Math', 'Image', 'List', 'etc.'
+  ]; 
   const [caseTab, setCaseTab] = useState('Demo');
 
-  const demoClass = "flex flex-1 w-full lg:w-3/4 mx-auto pt-2 drop-shadow-lg";
+  const demoClass = "flex flex-1 w-full lg:w-4/5 mx-auto pt-2 drop-shadow-lg";
 
   return (
     <MainView showNavbar={false} showFooter={false}>
@@ -58,7 +61,25 @@ export default function Home() {
                 {caseTab === 'Demo' ? (
                   <div className={demoClass}>
                     <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
-                      <DemoEditor defaultValue={defaultValue} autoFocus={true} dark={false} />
+                      <DemoEditor key="demo" defaultValue={defaultValue} />
+                    </div>
+                  </div>
+                ) : caseTab === 'Diagram' ? (
+                  <div className={demoClass}>
+                    <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
+                      <DemoEditor key="diagram" defaultValue={diagramValue} />
+                    </div>
+                  </div>
+                ) : caseTab === 'Charts' ? (
+                  <div className={demoClass}>
+                    <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
+                      <DemoEditor key="charts" defaultValue={chartsValue} />
+                    </div>
+                  </div>
+                ) : caseTab === 'ABC Notation' ? (
+                  <div className={demoClass}>
+                    <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
+                      <DemoEditor key="abc" defaultValue={abcValue} />
                     </div>
                   </div>
                 ) : caseTab === 'TOC' ? (
@@ -162,7 +183,7 @@ For human brain, Reading and Writing is the I/O: the communication between the i
   - [X] Notice block: info, warning, tips 
   - [X] Wikilink: \`[[]]\` 
   - [X] Hashtag: \`#tag#\` 
-  - [ ] Diagram: mermaid... 
+  - [X] Diagram: mermaid, echarts, abc notation  
 
 - Writing and formatting 
   - [X] WYSIWYG, raw mode and mindmap mode 
@@ -186,4 +207,134 @@ For human brain, Reading and Writing is the I/O: the communication between the i
 See more here:  
 
 [https://trello.com/b/xzIFkNGb/mdsilo-roadmap](https://trello.com/b/xzIFkNGb/mdsilo-roadmap) 
+`;
+
+const diagramValue = `
+- Flowchart
+
+\`\`\`mermaidjs
+flowchart LR
+    A[Start] --> B{Is it?}
+    B -- Yes --> C[OK]
+    C --> D[Rethink]
+    D --> B
+    B -- No ----> E[End]
+\`\`\` 
+
+- Sequence
+
+\`\`\`mermaidjs
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+\`\`\` 
+ 
+- Gantt
+
+\`\`\`mermaidjs
+gantt
+dateFormat  YYYY-MM-DD
+title GANTT Diagram
+excludes weekdays 2022-01-10
+
+section A section
+Completed task            :done,    des1, 2022-01-06,2022-01-08
+Active task               :active,  des2, 2022-01-09, 3d
+Future task               :         des3, after des2, 5d
+Future task2               :         des4, after des3, 5d
+\`\`\` 
+
+Powered by mermaidjs, learn more: https://mermaid-js.github.io
+`;
+
+const chartsValue = `
+- Chart
+
+\`\`\`echartsjs
+{
+  "title": { "text": "Last 30 days" },
+  "tooltip": { "trigger": "axis", "axisPointer": { "lineStyle": { "width": 0 } } },
+  "legend": { "data": ["Post", "User", "Reply"] },
+  "xAxis": [{
+      "type": "category",
+      "boundaryGap": false,
+      "data": ["2022-05-08","2022-05-09","2022-05-10","2022-05-11","2022-05-12","2022-05-13","2022-05-14","2022-05-15","2022-05-16","2022-05-17","2022-05-18","2022-05-19","2022-05-20","2022-05-21","2022-05-22","2022-05-23","2022-05-24","2022-05-25","2022-05-26","2022-05-27","2022-05-28","2022-05-29","2022-05-30","2022-05-31","2022-06-01","2022-06-02","2022-06-03","2022-06-04","2022-06-05","2022-06-06","2022-06-07"],
+      "axisTick": { "show": false },
+      "axisLine": { "show": false }
+  }],
+  "yAxis": [{ "type": "value", "axisTick": { "show": false }, "axisLine": { "show": false }, "splitLine": { "lineStyle": { "color": "rgba(0, 0, 0, .38)", "type": "dashed" } } }],
+  "series": [
+    {
+      "name": "Post", "type": "line", "smooth": true, "itemStyle": { "color": "#d23f31" }, "areaStyle": { "normal": {} }, "z": 3,
+      "data": ["18","14","22","9","12","18","10","12","13","16","36","19","15","25","12","15","8","14","19","10","29","22","14","22","9","10","15","9","19","15","35"]
+    },
+    {
+      "name": "User", "type": "line", "smooth": true, "itemStyle": { "color": "#f1e05a" }, "areaStyle": { "normal": {} }, "z": 2,
+      "data": ["31","33","30","23","16","29","23","37","41","29","16","43","39","23","38","136","89","35","22","50","57","47","36","59","34","23","46","44","51","43","50"]
+    },
+    {
+      "name": "Reply", "type": "line", "smooth": true, "itemStyle": { "color": "#4285f4" }, "areaStyle": { "normal": {} }, "z": 1,
+      "data": ["35","42","73","25","43","58","55","35","46","87","36","55","44","76","130","73","50","20","21","54","48","73","60","89","26","27","70","63","55","37","70"]
+    }
+  ]
+}
+\`\`\` 
+
+- Powered by echartsjs.  
+`;
+
+const abcValue = `
+- Display the music notation and lyrics 
+
+\`\`\`abcjs
+X:1901
+T:Auld Lang Syne
+C:Trad. Words by Burns.
+O:Scotland
+Z:Paul Hardy. Creative Commons cc by-nc-sa licenced.
+M:4/4
+L:1/8
+K:D
+V:1
+%%MIDI program 23 % Tango Accd.
+A,2|"D"D3 D D2 F2|"A"E3 D E2 F2|"D"D3 D F2 A2|"G"B6|
+w:Should auld ac-quain-tance be for-got, and nev-er brought to mind?
+B2|"D"A3 F F2 D2|"A"E3 D E2 F2|"G"D3 B, B,2 A,2|"D"D6||
+w:should auld ac-quain-tance be for-got, In days of auld lang syne?
+V:2
+%%MIDI program 73 % Flute
+a2|a,3 a, a,2 d2|c3 d c2 c2|A3 A d2 d2|d6|
+d2|d3 d d2 d2|c3 d c2 d2|B3 G G2 G2|F6||
+V:1
+"^Chorus"B2|"D"A3 F F2 D2|"A"E3 D E2 B2|"D"A3 F F2 A2|"G"B6|
+w:For auld_ lang_ syne my dear for auld_ lang_ syne.
+D2|"D"A3 F F2 D2|"A"E3 D E2 F2|"G"D3 B, B,2 A,2|"D"D6|]
+w:We'll tak' a cup o' kind-ness yet for auld_ lang_ syne.
+V:2
+d2|d4 d4|c3 B c2 g2|f3 d d4|d6|
+d2|d3 d d2 A2|A3 A A2 ^A2|B3 F G4|F6|]
+W:
+W:We two hae run a-bout the braes, and pu'd the go-wans fine,
+W:We've wan-dered mony a wea-ry foot, sin' auld_ lang_ syne.
+W:
+W:We two hae paid-elt in the burn, frae morn-in sun till dine,
+W:But seas be-tween us braid hae roared, sin' auld_ lang_ syne.
+W:
+W:And here's a hand, my trus-ty fiere, and gis a hand o' thine,
+W:We'll tak' a richt gude wil-lie waught, For auld_ lang_ syne.
+W:
+W:And sure-ly ye'll be your pint-stoup, and sure-ly I'll be mine,
+W:We'll tak' a cup of kind-ness yet, for sake of auld lang syne.
+\`\`\`
+
+- Play the MIDI. 
+- Powered by abcjs. 
 `;
