@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import MsEditor, { renderToHtml, embeds } from "mdsmirror";
-import { RawMark } from "mdkit-mdmark";
-import { parseMd, transform, markmap } from "mdkit-mdmap";
+import { RawMark } from "mdsmark";
+import { parseMd, transform, markmap } from "mdsmap";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -169,7 +169,7 @@ export default function DemoEditor(props: Props) {
             ) 
           : null
         }
-        {headings.length > 0 && !rawMode 
+        {headings.length > 0 && rawMode === 'md' 
           ? (<Toc headings={headings} />) 
           : null
         }

@@ -6039,20 +6039,20 @@ markdown-it@^12.0.0, markdown-it@^12.3.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-mdkit-mdmap@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/mdkit-mdmap/-/mdkit-mdmap-0.0.3.tgz#948a9546aab7513a87f5931de8589a49e91f5f97"
-  integrity sha512-FDybcDj0ggpbiq1MbPlzMoZazYg+Wx9ZaBULKL+FGnynlZvomgi/1ksYJ/LpngZg7+RnvD2rj0mIJQKRh1zpdw==
+mdsmap@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/mdsmap/-/mdsmap-0.0.1.tgz#b2b22179ec6be1161602e28f544e52252275bda8"
+  integrity sha512-ZDOR8NPbqUshDsgkydWhTfs+D+hXjwPwf/Xtuyk9LOcsACfOJVBlHKzNAXOEODljP8hKtS9TJuaW1KedRAJfwA==
   dependencies:
     d3 "3.5.6"
     react "^17.0.2"
     react-dom "^17.0.2"
     remarkable "2.0.1"
 
-mdkit-mdmark@0.0.1:
+mdsmark@0.0.1:
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mdkit-mdmark/-/mdkit-mdmark-0.0.1.tgz#3fcf78714ed709bdbcd6cf6439eed94a50612efa"
-  integrity sha512-pCv02bl/wx8IA99V27WZdRBHmcjXY5r1IiNHzmB/wBl102kO13Jexq1y+szADweJwiuYtZBWSzI5pV/VeuMA4Q==
+  resolved "https://registry.yarnpkg.com/mdsmark/-/mdsmark-0.0.1.tgz#d291bd666dc3a6446cf40084b1b942071b0d741f"
+  integrity sha512-+02FveLqclKBlvKS3VIrJFbKlhK77AnaiqdSPCDjaZNvFVMS1eCdqa0C8JbTJcv2U1M/sbkldt/AnOGoA40N+w==
   dependencies:
     "@codemirror/commands" "^6.0.0"
     "@codemirror/lang-markdown" "^6.0.0"
