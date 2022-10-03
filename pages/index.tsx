@@ -16,7 +16,7 @@ export default function Home() {
   ]; 
   const [caseTab, setCaseTab] = useState('Demo');
 
-  const demoClass = "flex flex-1 w-full lg:w-4/5 mx-auto pt-2 drop-shadow-lg";
+  const demoClass = "flex flex-1 w-full lg:w-4/5 mx-auto p-2 drop-shadow-lg";
 
   return (
     <MainView showNavbar={false} showFooter={false}>
@@ -36,6 +36,9 @@ export default function Home() {
                   <p className="text-sm text-slate-300 text-center -mt-1">
                     <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">Version: 0.4.6  CHANGELOG</a>
                   </p>
+                </div>
+                <div className="container p-2 text-center rounded">
+                  <img src="/3-mode.webp"></img>
                 </div>
                 <h2 className="text-2xl font-bold text-center my-2">
                   Lightweight, Yet Powerful  
@@ -164,7 +167,8 @@ For human brain, Reading and Writing is the I/O: the communication between the i
   - [X] Horizontal Rules 
 
 - Markdown extension
-  - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`
+  - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`, \`H&sub&\` 
+    - [X] e.g. 1^st^: 2H&2& + O&2& = 2H&2&O 
   - [X] Highlight code block  
   - [X] Math: inline math \`$\\LaTeX$\` and math block \`$$\\LaTeX$$\` 
   - [X] Notice block: info, warning, tips 
@@ -200,7 +204,7 @@ const diagramValue = `
 # Diagram 
 - Flowchart
 
-\`\`\`mermaidjs
+\`\`\`mermaid
 flowchart LR
     A[Start] --> B{Is it?}
     B -- Yes --> C[OK]
@@ -211,7 +215,7 @@ flowchart LR
 
 - Sequence
 
-\`\`\`mermaidjs
+\`\`\`mermaid
 sequenceDiagram
     participant Alice
     participant Bob
@@ -227,7 +231,7 @@ sequenceDiagram
  
 - Gantt
 
-\`\`\`mermaidjs
+\`\`\`mermaid
 gantt
 dateFormat  YYYY-MM-DD
 title GANTT Diagram
@@ -246,7 +250,7 @@ Powered by mermaidjs, learn more: https://mermaid-js.github.io
 const chartsValue = `
 - Chart
 
-\`\`\`echartsjs
+\`\`\`echarts
 {
   "title": { "text": "Last 30 days" },
   "tooltip": { "trigger": "axis", "axisPointer": { "lineStyle": { "width": 0 } } },
