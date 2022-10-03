@@ -11,8 +11,8 @@ import DemoEditor from './DemoEditor';
 
 export default function Home() {
   const caseList = [
-    'Demo', 'Shortcuts', 'Table', 'Code and Math', 'Diagram', 'Charts', 'ABC Notation', 
-    'TOC', 'Mindmap', 'Writing and Formatting', 'Image', 'etc.'
+    'Demo', 'Shortcuts', 'Table', 'Code and Math', 'Diagram', 'Charts', 'ABC Notation', 'Image', 
+    'Mindmap', 'Writing and Formatting', 'etc.'
   ]; 
   const [caseTab, setCaseTab] = useState('Demo');
 
@@ -96,21 +96,19 @@ export default function Home() {
                       <DemoEditor key="abc" defaultValue={abcValue} />
                     </div>
                   </div>
-                ) : caseTab === 'TOC' ? (
+                ) : caseTab === 'Image' ? (
                   <div className={demoClass}>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1682 1468"><image id="img-in-svg" xlinkHref={toc.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image><g id="t-plus-0"><circle cx="512" cy="297" r="13.5" style={{fill:'#0284c7',stroke:'#0284c7',strokeWidth:'5px'}}><animate attributeName="opacity" values="1;0.6;1" begin="1s" dur="1.5s" repeatCount="indefinite"></animate></circle><path d="M25 14h-7.37v-7.369h-3.79v7.369h-7.371v3.791h7.371v7.372h3.79v-7.372h7.37z" fill="#fff" transform="translate(499,284) scale(0.8,0.8)"></path><title>Expand or Collapse TOC</title></g><polygon id="t-polygon-1" className="shape-effect" points="200 320 200 970 950 970 950 320" style={{stroke:'transparent',strokeWidth:3}}><title>Auto Generate, Live Update</title></polygon></svg>
-                  </div>
-                ) : caseTab === 'Writing and Formatting' ? (
-                  <div className={demoClass}>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1606 1275"><image id="img-in-svg" xlinkHref={slash.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image></svg>
+                    <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
+                      <DemoEditor key="img" defaultValue={imgValue} />
+                    </div>
                   </div>
                 ) : caseTab === 'Mindmap' ? (
                   <div className={demoClass}>
                     <img src="/mindmap.svg"></img>
                   </div>
-                ) : caseTab === 'Image' ? (
+                ) : caseTab === 'Writing and Formatting' ? (
                   <div className={demoClass}>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 2048 1620"><image id="img-in-svg" xlinkHref={img.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image><g id="t-plus-0"><circle cx="782" cy="1590" r="15" style={{fill:'red',stroke:'red',strokeWidth:'5px'}}><animate attributeName="opacity" values="1;0.6;1" begin="1s" dur="1.5s" repeatCount="indefinite"></animate></circle><circle cx="782" cy="1590" r="8" fill="#fff"></circle><title>Caption here</title></g></svg>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1606 1275"><image id="img-in-svg" xlinkHref={slash.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image></svg>
                   </div>
                 ) : (
                   <div className={demoClass}>
@@ -433,4 +431,12 @@ $$
 $$
 x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
 $$
+`;
+
+const imgValue = `
+* Insert image using \`![caption](image_link)\`
+
+ ![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
+
+- Insert local image using \`/image\` command. 
 `;
