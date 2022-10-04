@@ -6063,10 +6063,10 @@ mdsmark@0.0.1:
     react "^17.0.2"
     react-dom "^17.0.2"
 
-mdsmirror@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.6.tgz#398d02b15d3b1c0d33bc1542591a7159b0d81c19"
-  integrity sha512-6x32nAEdIaJr35hc3jXyXZ3hDIhPI/p3BHpq2ahfFmn8oLYUpZE0icmkCj2TEa81XPXfGlIOYD0VSMD0olCHTw==
+mdsmirror@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.7.tgz#6b00d469193f926257f6990b0da543016074333d"
+  integrity sha512-0Am5Kr80qu9h5GxXtFLPvt1MFK3p8wdQpNl+GxBXEmpKdaUr6O9rr0Ebihk8BGnN0bQ1k/CJWFCHpsyW/J/xNQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@tabler/icons" "^1.92.0"

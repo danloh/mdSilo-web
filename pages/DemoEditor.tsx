@@ -138,6 +138,12 @@ export default function DemoEditor(props: Props) {
     saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
   }, [md, title]);
 
+  const onSaveDiagram = useCallback(async (svg: string, ty: string) => {
+    const rawSVG = decodeSVG(svg);
+    const blob = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' });
+    saveAs(blob, `${ty}-${nowToRadix36Str()}.svg`);
+  }, []);
+
   const note = useStore(state => state.notes)['md-current'];
   // console.log("note: ", note)
   const onSwitch = useCallback(async (mode: string) => {
@@ -187,6 +193,7 @@ export default function DemoEditor(props: Props) {
               dark={dark} 
               value={md} 
               onChange={onChange} 
+              onSaveDiagram={onSaveDiagram}
               onOpenLink={(href) => { window.open(href, "_blank");}}
               onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
               onShowToast={() => {/* nothing*/}}
@@ -201,4 +208,17 @@ export default function DemoEditor(props: Props) {
       </div>
     </div>
   );
+}
+
+function decodeSVG(text: string) {
+  const dummy = document.createElement("div");
+  const txt = text.replace(
+    /(&(?!(amp|gt|lt|quot|apos))[^;]+;)/g, // excerpt these html entities
+    (a: string) => {
+      dummy.innerHTML = a;
+      return dummy.textContent || ' '; // real value
+    }
+  );
+
+  return txt;
 }

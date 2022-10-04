@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import screenShot from 'public/demo/screenshot.webp';
-import toc from 'public/demo/toc.webp';
 import slash from 'public/demo/slash.webp';
-import img from 'public/demo/image.webp';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -376,13 +374,13 @@ const tableValue = `
 * You can resize table via floating toolbar;
 
 | Features | mdSilo | Note | Pricing |
-|----|----|----|---:|
+|----|:----:|----|---:|
 | Mode | Yes | Raw Markdown mode, WYSIWYG mode, Mindmap mode | Free |
 | Writing | Yes | Slash Commands, Hovering Toolbar, Hotkeys | Free |
 | Linking | Yes | BackLinks, Mentions | Free |
 | View | Yes | Chronicle, Graph, Task | Free |
 | WYSIWYG | Yes | Markdown and extension: Code, Math... | Free |
-| Table | Yes | Insert Table, Add or Remove Row or Culumn | Free |
+| Table | Yes | Insert Table, Add or Remove Row or Column | Free |
 | Notice | Yes | Information, Tips, Warning | Free |
 | Code Fence | Yes | Code Block and Highlight | Free |
 | Math | Yes | Math Equation($LaTex$): inline or block | Free |
