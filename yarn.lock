@@ -6049,16 +6049,17 @@ mdsmap@0.0.1:
     react-dom "^17.0.2"
     remarkable "2.0.1"
 
-mdsmark@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mdsmark/-/mdsmark-0.0.1.tgz#d291bd666dc3a6446cf40084b1b942071b0d741f"
-  integrity sha512-+02FveLqclKBlvKS3VIrJFbKlhK77AnaiqdSPCDjaZNvFVMS1eCdqa0C8JbTJcv2U1M/sbkldt/AnOGoA40N+w==
+mdsmark@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/mdsmark/-/mdsmark-0.0.2.tgz#aa4835c28f3e7af81eeff27534f071267bc8c63e"
+  integrity sha512-T/qn0Kv5CV7jAGYoTCJdiN8hra/N3pCGH3uR33EDW4g5cotE+TcNqwE/iE/DRMIYOOFpJFv2hddn2Vn3tiiPEg==
   dependencies:
     "@codemirror/commands" "^6.0.0"
     "@codemirror/lang-markdown" "^6.0.0"
     "@codemirror/language-data" "^6.1.0"
     "@codemirror/state" "^6.0.1"
     "@codemirror/view" "^6.0.1"
+    "@lezer/highlight" "^1.0.0"
     codemirror "^6.0.0"
     react "^17.0.2"
     react-dom "^17.0.2"

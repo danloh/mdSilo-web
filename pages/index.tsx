@@ -28,7 +28,7 @@ export default function Home() {
                   <p className="text-5xl pt-3 text-center text-primary-500">
                     Buffering for your daily I/O 
                   </p>
-                  <p className="text-xl py-3 text-center">
+                  <p className="text-xl py-3 text-center text-white">
                     Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
                   </p>
                   <p className="text-sm text-slate-300 text-center -mt-1">
@@ -38,14 +38,14 @@ export default function Home() {
                 <div className="container p-2 text-center rounded">
                   <img src="/3-mode.webp"></img>
                 </div>
-                <h2 className="text-2xl font-bold text-center my-2">
+                <h2 className="text-white text-2xl font-bold text-center my-2">
                   Lightweight, Yet Powerful  
                 </h2>
                 <div className="flex flex-row flex-wrap items-center justify-center overflow-auto">
                   {caseList.map((c, idx) => { return (
                     <button 
                       key={idx} 
-                      className={`m-1 bg-slate-500 p-1 rounded hover:bg-green-500 ${c === caseTab ? 'bg-gray-500' : ''}`}
+                      className={`m-1 bg-slate-500 p-1 rounded hover:bg-green-500 text-white ${c === caseTab ? 'bg-gray-500' : ''}`}
                       onClick={() => setCaseTab(c)}
                     >
                       {c}
@@ -189,7 +189,7 @@ For human brain, Reading and Writing is the I/O: the communication between the i
   - [X] Backlinks 
   - [X] Recent history 
   - [ ] Export as PDF,HTML, ... 
-  - [ ] Version control: git intergration 
+  - [ ] Version control: git integration 
 
 See more here:  
 

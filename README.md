@@ -11,7 +11,7 @@ A mind silo for storing ideas, thought, knowledge with a powerful writing tool. 
 
 ## Welcome to mdSilo
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor. Open Source and Free. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
 
 ---
 

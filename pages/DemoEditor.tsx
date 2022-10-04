@@ -182,7 +182,7 @@ export default function DemoEditor(props: Props) {
         <div className="flex-1 p-2">
           {rawMode === 'raw' ? (
             <RawMark
-              initialContent={md}
+              value={md}
               onChange={onMarkdownChange}
               dark={true}
               readMode={false}

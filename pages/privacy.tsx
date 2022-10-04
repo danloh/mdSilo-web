@@ -7,7 +7,7 @@ export default function Privacy() {
       <Head>
         <title>Privacy Policy | mdSilo</title>
       </Head>
-      <article className="container px-4 py-12 prose prose-primary text-gray-300">
+      <article className="container py-6 prose prose-primary text-gray-300">
         <h1>Privacy Policy</h1>
 
         <p>Last updated: December 01, 2021</p>
