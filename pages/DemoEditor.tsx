@@ -72,7 +72,9 @@ export default function DemoEditor(props: Props) {
     setHeadings(hdings ?? []);
   };
 
+  const [isInited, setInited] = useState(false);
   useEffect(() => { 
+    if (isInited) return;
     getHeading(); 
     // init note in store
     const initNote = {
@@ -82,7 +84,10 @@ export default function DemoEditor(props: Props) {
       content: defaultValue,
     };
     upsertNote(initNote);
-  }, [defaultTitle, defaultValue, upsertNote]); 
+    return () => {
+      setInited(true);
+    }
+  }, [defaultTitle, defaultValue, isInited, upsertNote]); 
 
   const [rawMode, setRawMode] = useState<string>('md'); // md|raw|mp
 
@@ -138,7 +143,7 @@ export default function DemoEditor(props: Props) {
     saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
   }, [md, title]);
 
-  const onSaveDiagram = useCallback(async (svg: string, ty: string) => {
+  const onSaveDiagram = useCallback((svg: string, ty: string) => {
     const rawSVG = decodeSVG(svg);
     const blob = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' });
     saveAs(blob, `${ty}-${nowToRadix36Str()}.svg`);

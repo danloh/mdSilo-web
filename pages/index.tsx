@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import screenShot from 'public/demo/screenshot.webp';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
@@ -7,11 +7,22 @@ import MainView from 'components/landing/MainView';
 import DemoEditor from './DemoEditor';
 
 export default function Home() {
-  const caseList = [
-    'Demo', 'Shortcuts', 'Table', 'Code and Math', 'Diagram', 'Charts', 'ABC Notation', 'Image', 
-    'Mindmap', 'Writing and Formatting', 'etc.'
-  ]; 
+  const caseList = useMemo(() => [
+    'Demo', 'Shortcuts', 'Table', 'MathCode', 'Diagram', 'Charts', 'ABCNotation', 'Image', 
+    'Mindmap', 'Writing', 'etc.'
+  ], []); 
   const [caseTab, setCaseTab] = useState('Demo');
+  const [isMounted, setMounted] = useState(false);
+  useEffect(()=>{
+    if (isMounted) return;
+    const hash = (window && window.location.hash)?.split('#')[1];
+    if (hash && caseList.includes(hash)) {
+      setCaseTab(hash);
+    }
+    return () => {
+      setMounted(true);
+    }
+  }, [caseList, isMounted]);
 
   const demoClass = "flex flex-1 w-full lg:w-4/5 mx-auto p-2 drop-shadow-lg";
 
@@ -72,7 +83,7 @@ export default function Home() {
                       <DemoEditor key="table" defaultValue={tableValue} />
                     </div>
                   </div>
-                ) : caseTab === 'Code and Math' ? (
+                ) : caseTab === 'MathCode' ? (
                   <div className={demoClass}>
                     <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
                       <DemoEditor key="codemath" defaultValue={codeValue} />
@@ -90,7 +101,7 @@ export default function Home() {
                       <DemoEditor key="charts" defaultValue={chartsValue} />
                     </div>
                   </div>
-                ) : caseTab === 'ABC Notation' ? (
+                ) : caseTab === 'ABCNotation' ? (
                   <div className={demoClass}>
                     <div className="flex-1 bg-white overflow-auto px-8 py-2 rounded">
                       <DemoEditor key="abc" defaultValue={abcValue} />
@@ -106,7 +117,7 @@ export default function Home() {
                   <div className={demoClass}>
                     <img src="/mindmap.svg"></img>
                   </div>
-                ) : caseTab === 'Writing and Formatting' ? (
+                ) : caseTab === 'Writing' ? (
                   <div className={demoClass}>
                     <img src="/wnf.webp"></img>
                   </div>
@@ -145,7 +156,7 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
 ## Get Application
 
 :::info
-You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), less than 10Mb.
+You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), 10Mb only.
 Benefited from Tauri(Rust), mdSilo is lightweight and fast.  
 :::
 
