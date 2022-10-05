@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import screenShot from 'public/demo/screenshot.webp';
-import slash from 'public/demo/slash.webp';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -35,10 +34,13 @@ export default function Home() {
                     <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">Version: 0.4.6  CHANGELOG</a>
                   </p>
                 </div>
-                <div className="container p-2 text-center rounded">
-                  <img src="/3-mode.webp"></img>
+                <div 
+                  className="container p-2 text-center drop-shadow-lg" 
+                  title="Multi-Modes: WYSIWYG, Raw, MindMap"
+                >
+                  <img className="rounded-md" src="/3-mode.webp"></img>
                 </div>
-                <h2 className="text-white text-2xl font-bold text-center my-2">
+                <h2 className="text-white text-3xl text-center my-2">
                   Lightweight, Yet Powerful  
                 </h2>
                 <div className="flex flex-row flex-wrap items-center justify-center overflow-auto">
@@ -106,7 +108,7 @@ export default function Home() {
                   </div>
                 ) : caseTab === 'Writing and Formatting' ? (
                   <div className={demoClass}>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1606 1275"><image id="img-in-svg" xlinkHref={slash.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image></svg>
+                    <img src="/wnf.webp"></img>
                   </div>
                 ) : (
                   <div className={demoClass}>
@@ -128,8 +130,8 @@ const defaultValue = `
 Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWYG Markdown editor and reader==. You can use it to organize writing, network thoughts and build a ==Second Brain on top of local plain text Markdown files==.
 
 ## Features
-  - 📝 WYSIWYG Markdown Editor: Table, Math, Code block, Diagram, Hashtag...  
-  - 🔀 Seamless switch between WYSIWYG, raw Markdown and Mind map   
+  - 📝 All-In-One Editor: Markdown and extensions(Table, Math...), Diagram, Echarts, MindMap...  
+  - 🔀 Seamlessly switch between WYSIWYG, raw Markdown and Mind map   
   - 🗄️ Build personal wiki with bidirectional links  
   - ⌨️ Slash commands, Hotkeys and Hovering toolbar...   
   - 🕸️ Graph view to visualize the networked writing 
@@ -137,6 +139,7 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
   - 📅 Chronicle view and Daily activities graph    
   - 🔍 Full-text search 
   - 🔒 Write directly with local Markdown files, entirely offline 
+  - 🌓 Dark and light mode 
   - ✨ Available for Windows, macOS, Linux and Web  
 
 ## Get Application
