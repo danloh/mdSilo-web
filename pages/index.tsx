@@ -39,10 +39,10 @@ export default function Home() {
                     Buffering for your daily I/O 
                   </p>
                   <p className="text-xl py-3 text-center text-white">
-                    Available for <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">Windows</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">macOS</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">Linux(deb)</a> and <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.6/mdsilo_0.4.6_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>. 
+                    Available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>). 
                   </p>
                   <p className="text-sm text-slate-300 text-center -mt-1">
-                    <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">Version: 0.4.6  CHANGELOG</a>
+                    <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">Version: 0.4.7  Changelog</a>
                   </p>
                 </div>
                 <div 
@@ -177,7 +177,7 @@ For human brain, Reading and Writing is the I/O: the communication between the i
   - [X] Horizontal Rules 
 
 - Markdown extension
-  - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`, \`H&sub&\` 
+  - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`, \`H&sub&\`   
     - [X] e.g. 1^st^: 2H&2& + O&2& = 2H&2&O 
   - [X] Highlight code block  
   - [X] Math: inline math \`$\\LaTeX$\` and math block \`$$\\LaTeX$$\` 
@@ -446,9 +446,11 @@ $$
 `;
 
 const imgValue = `
-* Insert image using \`![caption](image_link)\`
+- Insert image using \`![caption](image_link)\`
 
  ![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
 
 - Insert local image using \`/image\` command. 
+
+- Relative local file path support.
 `;

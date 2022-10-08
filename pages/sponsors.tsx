@@ -7,7 +7,7 @@ export default function Sponsors() {
   return (
     <MainView showFooter={true}>
       <Head><title>Sponsors | mdSilo</title></Head>
-      <div className="container px-6 py-16">
+      <div className="container p-6 text-white">
         <h1 className="text-5xl font-semibold text-center">We Appreciate Your Support</h1>
         <p className="text-2xl text-center mt-4">
           mdSilo is free for everyone. We appreciate any support from you: 
