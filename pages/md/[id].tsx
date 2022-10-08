@@ -8,10 +8,7 @@ export default function NotePage() {
   const router = useRouter();
   const { query: { id: noteId } } = router;
 
-  
-
   const siteTitle = 'mdSilo';
-
 
   if (!noteId || typeof noteId !== 'string') {
     return (

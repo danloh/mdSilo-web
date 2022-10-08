@@ -1,5 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
-import MsEditor, { renderToHtml, RawMarkdown, embeds } from "mdsmirror";
+import MsEditor, { renderToHtml, embeds } from "mdsmirror";
+import { RawMark } from "mdsmark";
+import { parseMd, transform, markmap } from "mdsmap";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -7,7 +9,46 @@ import Menubar from 'components/landing/Menubar';
 import { useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
 import {nowToRadix36Str } from 'utils/helper';
-import { useImportMd } from 'editor/hooks/useImport';
+import { useImportMd } from 'editor/hooks/useImport'; 
+
+type MapProps = {
+  mdValue: string;
+  className?: string;
+};
+
+export function Mindmap(props: MapProps) {
+  const { mdValue, className='' } = props;
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  const renderSVG = useCallback(() => {
+    if (!svgRef.current || !mdValue.trim()) { return; }
+
+    const data = transform(parseMd(mdValue, {}));
+    markmap(svgRef.current, data, {
+      preset: 'colorful', // or default
+      linkShape: 'diagonal' // or bracket
+    });
+  }, [mdValue]);
+
+  useEffect(() => {
+    if (!svgRef.current) { return; }
+
+    renderSVG();
+  }, [renderSVG]);
+
+  return (
+    <div className={`w-full h-full bg-slate-100 ${className}`}>
+      <svg
+        id="mindmap"
+        ref={svgRef}
+        version="1.1" 
+        xmlns="http://www.w3.org/2000/svg" 
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="100%" 
+      />
+    </div>
+  );
+}
 
 type Props = {
   defaultValue: string;
@@ -18,7 +59,7 @@ type Props = {
 };
 
 export default function DemoEditor(props: Props) {
-  const { defaultValue, defaultTitle = '', autoFocus, dark = true, className = '' } = props;
+  const { defaultValue, defaultTitle = '', autoFocus, dark = false, className = '' } = props;
   const [title, setTitle] = useState<string>(defaultTitle);
   const [md, setMd] = useState<string>(defaultValue);
   const upsertNote = useStore((state) => state.upsertNote);
@@ -31,7 +72,9 @@ export default function DemoEditor(props: Props) {
     setHeadings(hdings ?? []);
   };
 
+  const [isInited, setInited] = useState(false);
   useEffect(() => { 
+    if (isInited) return;
     getHeading(); 
     // init note in store
     const initNote = {
@@ -41,9 +84,12 @@ export default function DemoEditor(props: Props) {
       content: defaultValue,
     };
     upsertNote(initNote);
-  }, [defaultTitle, defaultValue, upsertNote]); 
+    return () => {
+      setInited(true);
+    }
+  }, [defaultTitle, defaultValue, isInited, upsertNote]); 
 
-  const [rawMode, setRawMode] = useState<boolean>(false);
+  const [rawMode, setRawMode] = useState<string>('md'); // md|raw|mp
 
   const onChange = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -97,18 +143,24 @@ export default function DemoEditor(props: Props) {
     saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
   }, [md, title]);
 
+  const onSaveDiagram = useCallback((svg: string, ty: string) => {
+    const rawSVG = decodeSVG(svg);
+    const blob = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' });
+    saveAs(blob, `${ty}-${nowToRadix36Str()}.svg`);
+  }, []);
+
   const note = useStore(state => state.notes)['md-current'];
   // console.log("note: ", note)
-  const onSwitch = useCallback(async () => {
+  const onSwitch = useCallback(async (mode: string) => {
     setMd(note?.content || ' ');
     setTitle(note?.title || '')
-    setRawMode(!rawMode)
-  }, [note, rawMode]);
+    setRawMode(mode)
+  }, [note]);
 
   const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
 
   return (
-    <div className="container">
+    <div className={`container ${className}`}>
       <Menubar 
         onNew={() => {onSave(); setTitle(''); setMd(' ');}} 
         onOpen={onOpen}
@@ -117,7 +169,7 @@ export default function DemoEditor(props: Props) {
         onSwitch={onSwitch} 
         rawMode={rawMode}
       />
-      <div className={className}>
+      <div className="">
         {title.trim().length > 0 
           ? (
               <Title
@@ -128,32 +180,50 @@ export default function DemoEditor(props: Props) {
             ) 
           : null
         }
-        {headings.length > 0 && !rawMode 
+        {headings.length > 0 && rawMode === 'md' 
           ? (<Toc headings={headings} />) 
           : null
         }
-        {rawMode ? (
-          <RawMarkdown
-            initialContent={md}
-            onChange={onMarkdownChange}
-            dark={true}
-            readMode={false}
-            className="text-lg"
-          />
-        ) : (
-          <MsEditor 
-            dark={dark} 
-            value={md} 
-            onChange={onChange} 
-            onOpenLink={(href) => { window.open(href, "_blank");}}
-            onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
-            onShowToast={() => {/* nothing*/}}
-            autoFocus={autoFocus} 
-            embeds={embeds}
-            ref={editorInstance}
-          />
-        )}
+        <div className="flex-1 p-2">
+          {rawMode === 'raw' ? (
+            <RawMark
+              value={md}
+              onChange={onMarkdownChange}
+              dark={true}
+              readMode={false}
+              className="text-lg"
+            />
+          ) : rawMode === 'md' ? (
+            <MsEditor 
+              dark={dark} 
+              value={md} 
+              onChange={onChange} 
+              onSaveDiagram={onSaveDiagram}
+              onOpenLink={(href) => { window.open(href, "_blank");}}
+              onClickHashtag={(text) => { console.info("Click Hahtag: ", text);}}
+              onShowToast={() => {/* nothing*/}}
+              autoFocus={autoFocus} 
+              embeds={embeds}
+              ref={editorInstance}
+            />
+          ) : (
+            <Mindmap mdValue={md} />
+          )}
+        </div>
       </div>
     </div>
   );
+}
+
+function decodeSVG(text: string) {
+  const dummy = document.createElement("div");
+  const txt = text.replace(
+    /(&(?!(amp|gt|lt|quot|apos))[^;]+;)/g, // excerpt these html entities
+    (a: string) => {
+      dummy.innerHTML = a;
+      return dummy.textContent || ' '; // real value
+    }
+  );
+
+  return txt;
 }

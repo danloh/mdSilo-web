@@ -14,11 +14,11 @@ export default function MainView(props: Props) {
     children,
     showNavbar = true,
     showFooter = false,
-    className = '',
+    className = 'splash-bg',
   } = props;
 
   return (
-    <div className={`min-h-screen font-display dark bg-black text-gray-100 ${className}`}>
+    <div className={`min-h-screen font-display text-gray-800 dark:text-gray-100 ${className}`}>
       {showNavbar ? <Navbar withText={true} /> : null}
       {children}
       {showFooter ? <Footer /> : null}

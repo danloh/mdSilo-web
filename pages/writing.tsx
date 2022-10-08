@@ -1,16 +1,14 @@
 import MainView from 'components/landing/MainView';
-import Navbar from 'components/landing/Navbar';
 import DemoEditor from './DemoEditor';
 
 export default function WritingDemo() {
   return (
-    <MainView showNavbar={false} showFooter={false}>
-      <div className="max-w-3xl mx-auto mb-16">
-        <Navbar withText={false} />
+    <MainView showNavbar={false} showFooter={false} className="bg-slate-800">
+      <div className="max-w-4xl mx-auto">
         <DemoEditor 
           defaultValue={defaultValue}
-          defaultTitle="Welcome to mdSilo"
-          className="flex-1 min-h-screen px-8 bg-black overflow-auto shadow-inner"
+          dark={true}
+          className="flex-1 p-8 bg-black overflow-auto shadow-inner"
         />
       </div>
     </MainView>
@@ -22,7 +20,7 @@ const defaultValue = `
 This is an editable document. 
 ::: 
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Open Source and Free. Available for Web, Linux, Windows and macOS. You can [get the Desktop application here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
+[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor, Available for Web, Linux, Windows and macOS. You can [get the Desktop application here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
 
 ---
 

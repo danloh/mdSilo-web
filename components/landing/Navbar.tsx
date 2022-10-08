@@ -13,7 +13,7 @@ export default function Navbar(props: Props) {
       <div className="flex items-center justify-between space-x-6">
         {withText ? (<LogoWithText />) : (<Logo />)}
         <Link href="/sponsors">
-          <a className="px-4 py-1 font-bold text-white bg-green-600 hover:bg-opacity-75 rounded">
+          <a className="px-4 py-1 font-medium text-white hover:text-opacity-75 rounded">
             Help Us
           </a>
         </Link>

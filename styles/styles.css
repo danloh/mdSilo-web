@@ -47,6 +47,7 @@
     -webkit-mask: var(--m);
             mask: var(--m);
   }
+
   @keyframes svg-glow {
     from { stroke: #FF0000; }
     to { stroke: #00FF00; }
