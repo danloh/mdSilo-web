@@ -11,7 +11,7 @@ export default function Home() {
     'Demo', 'Shortcuts', 'Table', 'MathCode', 'Diagram', 'Charts', 'ABCNotation', 'Image', 
     'Mindmap', 'Writing', 'etc.'
   ], []); 
-  const [caseTab, setCaseTab] = useState('Demo');
+  const [caseTab, setCaseTab] = useState('');
   const [isMounted, setMounted] = useState(false);
   useEffect(()=>{
     if (isMounted) return;
@@ -47,11 +47,11 @@ export default function Home() {
                 </div>
                 <div 
                   className="container p-2 text-center drop-shadow-lg" 
-                  title="Multi-Modes: WYSIWYG, Raw, MindMap"
+                  title="Multi-Modes: WYSIWYG, Markdown, MindMap"
                 >
                   <img className="rounded-md" src="/3-mode.webp"></img>
                 </div>
-                <h2 className="text-white text-3xl text-center my-2">
+                <h2 className="text-white text-4xl text-center mt-4 mb-2">
                   Lightweight, Yet Powerful  
                 </h2>
                 <div className="flex flex-row flex-wrap items-center justify-center overflow-auto">
@@ -122,8 +122,28 @@ export default function Home() {
                     <img src="/wnf.webp"></img>
                   </div>
                 ) : (
-                  <div className={demoClass}>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 2313 1310"><image id="img-in-svg" xlinkHref={screenShot.src} overflow="visible" width="100%" height="100%" xmlnsXlink="http://www.w3.org/1999/xlink"></image><polygon id="polygon-1" className="shape-effect" points="560 50 560 120 1250 120 1250 50" style={{stroke:'transparent',strokeWidth:3}}><title>Switch between WYSIWYG and Markdown Mode</title></polygon><polygon id="polygon-2" className="shape-effect" points="1025 230 1025 685 2205 685 2205 230" style={{stroke:'transparent',strokeWidth:3,cursor:'pointer'}}onClick={()=> window.open('https://github.com/mdSilo/mdSilo/releases', '_blank')}><title>Get Application</title> </polygon><polygon id="polygon-3" className="shape-effect" points="640 205 640 650 1200 650 1200 205" style={{stroke:'transparent',strokeWidth:3}}><title>Generate TOC Automatically for you</title></polygon><polyline id="polyline-4" className="shape-effect" points="110 220 110 620 500 620 500 250" style={{stroke:'transparent',strokeWidth:3}}><title>Sort Writings</title></polyline><polygon id="polygon-5" className="shape-effect" points="100 640 100 1300 520 1300 520 640" style={{stroke:'transparent',strokeWidth:3}}><title>Organize writing</title> </polygon><polygon id="polygon-6" className="shape-effect" points="650 750 650 1300 2205 1300 2205 750" style={{stroke:'transparent',strokeWidth:3}}> <title>Writing and formatting Toolkits: Slash Commands, Hovering Toolbar, Hotkeys...</title></polygon><polygon id="polygon-7" className="shape-effect" points="1860 50 1860 120 2300 120 2300 50" style={{stroke:'transparent',strokeWidth:3,cursor:'pointer'}}onClick={()=> window.open('https://mdsilo.com/writing', '_blank')}><title>Try out more features</title></polygon><polygon id="polygon-8" className="shape-effect" points="10 205 10 260 80 260 80 205" style={{stroke:'transparent',strokeWidth:3}}><title>Start writing</title> </polygon><polygon id="polygon-9" className="shape-effect" points="10 275 10 330 80 330 80 275" style={{stroke:'transparent',strokeWidth:3}}> <title>Chronicle view</title> </polygon><polygon id="polygon-10" className="shape-effect" points="10 345 10 400 80 400 80 345" style={{stroke:'transparent',strokeWidth:3}}> <title>Graph view</title> </polygon><polygon id="polygon-11" className="shape-effect" points="350 15 350 75 450 75 450 15" style={{stroke:'transparent',strokeWidth:3}}> <title>Light and Dark Mode Support</title> </polygon></svg>
+                  <div className={`${demoClass} flex-col`}>
+                    <h2 className="text-white text-2xl text-center my-2">
+                      Connect everything in the context 
+                    </h2>
+                    <p className="text-sm text-center text-white">
+                      Visualize the networked thoughts, Get further inspiration. 
+                    </p>
+                    <div title="Local graph of linked thoughts">
+                      <img className="rounded-md" src="/graph.webp"></img>
+                    </div>
+                    <h2 className="text-white text-2xl text-center mb-2 mt-4">
+                      Write locally, and in version control   
+                    </h2>
+                    <p className="text-sm text-center text-white">
+                      Tips: You can sync your writing to GitHub using git or any other version control services. 
+                    </p>
+                    <div title="Daily Activities recorded locally">
+                      <img className="rounded-md" src="/activity.webp"></img>
+                    </div>
+                    <p className="text-xs text-center text-white">
+                      Count daily activities locally. 
+                    </p>
                   </div>
                 )}
               </div>
