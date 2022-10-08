@@ -34,16 +34,16 @@ export default function Home() {
             <Navbar withText={true} />
             <div className="container">
               <div className="p-4">
-                <div className="container text-xl px-2 text-center">
+                <div className="container text-xl px-2 text-center mb-4">
                   <p className="text-5xl pt-3 text-center text-primary-500">
                     Buffering for your daily I/O 
                   </p>
-                  <p className="text-xl py-3 text-center text-white">
+                  <p className="text-2xl py-3 text-center text-white">
                     Available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>). 
                   </p>
-                  <p className="text-sm text-slate-300 text-center -mt-1">
-                    <a href="https://github.com/mdSilo/mdSilo/releases" className="hover:text-green-100 ml-2" target="_blank" rel="noopener noreferrer">Version: 0.4.7  Changelog</a>
-                  </p>
+                  <button className="text-lg text-white text-center m-1 bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
+                    <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">Version: 0.4.7  Changelog</a>
+                  </button>
                 </div>
                 <div 
                   className="container p-2 text-center drop-shadow-lg" 
