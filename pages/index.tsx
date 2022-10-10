@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from 'react';
-import screenShot from 'public/demo/screenshot.webp';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
@@ -38,11 +37,14 @@ export default function Home() {
                   <p className="text-5xl pt-3 text-center text-primary-500">
                     Buffering for your daily I/O 
                   </p>
+                  <p className="text-xl pt-4 text-center text-white">
+                    A Lightweight Personal Wiki  
+                  </p>
                   <p className="text-2xl py-3 text-center text-white">
                     Available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>). 
                   </p>
                   <button className="text-lg text-white text-center m-1 bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
-                    <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">Version: 0.4.7  Changelog</a>
+                    <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">VERSION  0.4.7  CHANGELOG</a>
                   </button>
                 </div>
                 <div 
@@ -51,10 +53,7 @@ export default function Home() {
                 >
                   <img className="rounded-md" src="/3-mode.webp"></img>
                 </div>
-                <h2 className="text-white text-4xl text-center mt-4 mb-2">
-                  Lightweight, Yet Powerful  
-                </h2>
-                <div className="flex flex-row flex-wrap items-center justify-center overflow-auto">
+                <div className="flex flex-row flex-wrap items-center justify-center overflow-auto mt-4">
                   {caseList.map((c, idx) => { return (
                     <button 
                       key={idx} 
@@ -126,7 +125,7 @@ export default function Home() {
                     <h2 className="text-white text-2xl text-center my-2">
                       Connect everything in the context 
                     </h2>
-                    <p className="text-sm text-center text-white">
+                    <p className="text-md text-center text-white">
                       Visualize the networked thoughts, Get further inspiration. 
                     </p>
                     <div title="Local graph of linked thoughts">
@@ -135,13 +134,13 @@ export default function Home() {
                     <h2 className="text-white text-2xl text-center mb-2 mt-4">
                       Write locally, and in version control   
                     </h2>
-                    <p className="text-sm text-center text-white">
-                      Tips: You can sync your writing to GitHub using git or any other version control services. 
+                    <p className="text-md text-center text-white">
+                      You can sync your writing to GitHub using git or any other version control services you trust. 
                     </p>
                     <div title="Daily Activities recorded locally">
                       <img className="rounded-md" src="/activity.webp"></img>
                     </div>
-                    <p className="text-xs text-center text-white">
+                    <p className="text-sm text-center text-white">
                       Count daily activities locally. 
                     </p>
                   </div>
@@ -200,7 +199,7 @@ For human brain, Reading and Writing is the I/O: the communication between the i
   - [X] more style: \`==mark==\`, \`__underline__\`, \`1^sup^\`, \`H&sub&\`   
     - [X] e.g. 1^st^: 2H&2& + O&2& = 2H&2&O 
   - [X] Highlight code block  
-  - [X] Math: inline math \`$\\LaTeX$\` and math block \`$$\\LaTeX$$\` 
+  - [X] Math and Chemical equation: inline \`$\\LaTeX$\` and block \`$$\\LaTeX$$\` 
   - [X] Notice block: info, warning, tips 
   - [X] Wikilink: \`[[]]\` 
   - [X] Hashtag: \`#tag#\` 
@@ -462,6 +461,14 @@ $$
 
 $$
 x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
+$$
+
+## Chemical Equations
+
+---
+
+$$
+\\ce{x Na(NH4)HPO4 ->[\\Delta] (NaPO3)_x + x NH3 ^ + x H2O}
 $$
 `;
 
