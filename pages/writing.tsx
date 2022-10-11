@@ -178,7 +178,7 @@ Features: Input end
 
 Features: Output end 
 
-- [ ] Embed media, web page... 
+- [ ] Drawing  
 
 
 ### Any questions, feedback or suggestions?
