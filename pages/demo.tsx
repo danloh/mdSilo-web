@@ -209,8 +209,8 @@ See more here:
 [https://trello.com/b/xzIFkNGb/mdsilo-roadmap](https://trello.com/b/xzIFkNGb/mdsilo-roadmap) 
 `;
 
-const diagramValue = `
-# Diagram 
+const diagramValue = `Type \`\`\`\` \`\`\`mermaid \`\`\`\` to add text-to-diagram block. 
+
 - Flowchart
 
 \`\`\`mermaid
@@ -253,11 +253,11 @@ Future task               :         des3, after des2, 5d
 Future task2               :         des4, after des3, 5d
 \`\`\` 
 
-Powered by mermaidjs, learn more: https://mermaid-js.github.io
+Powered by [mermaidjs](https://mermaid-js.github.io).
 `;
 
-const chartsValue = `
-- Chart
+const chartsValue = `Type \`\`\`\` \`\`\`echarts \`\`\`\` to add text-to-chart block. 
+- Display Chart  
 
 \`\`\`echarts
 {
@@ -289,10 +289,12 @@ const chartsValue = `
 }
 \`\`\` 
 
-- Powered by echartsjs.  
+- Powered by [echartsjs](https://echarts.apache.org/examples/en/index.html).  
 `;
 
 const abcValue = `
+Type \`\`\`\` \`\`\`abcjs \`\`\`\` to add music notation block. 
+
 - Display the music notation and lyrics 
 
 \`\`\`abcjs
@@ -337,7 +339,7 @@ W:We'll tak' a cup of kind-ness yet, for sake of auld lang syne.
 \`\`\`
 
 - Play the MIDI. 
-- Powered by abcjs. 
+- Powered by [abcjs](https://paulrosen.github.io/abcjs/). 
 `;
 
 const shortcutsValue = `
@@ -353,24 +355,24 @@ const shortcutsValue = `
 
 #### Bullet List
 
-* Typing \`-\` or \`*\` to create bullet list(unordered list).
-* Nested list support. 
+* Type \`-\` or \`*\` to create bullet list(unordered list).
+* Nested list is supported. 
   - This is nested list item.  
 * \`Enter\` to add more list item.
 
 #### Numbered List
 
-1. Typing  \`1.\` to create numbered list(ordered list).  
-2. Nested list support.  
+1. Type \`1.\` to create numbered list(ordered list).  
+2. Nested numbered list is supported.  
 
 
 #### Check List(Task List)
 
-- [X] Typing \`[]\` to create Check list. 
-- [X] Nested Check list support too.  
+- [X] Type \`[]\` to create Check list. 
+- [X] Support nested Check list too.  
 - [X] Main task.
   - [X] Sub task.
-- [X] Drag and move support.
+- [X] Support drag and move.
 
 ## Markdown Extensions 
 
@@ -422,12 +424,13 @@ fn main() {
 }
 \`\`\`
 
-## Math Equations
+## Math/Chemical Equations
 
 ---
 
-* Quickly add inline math using the \`$\` and math block using \`$$\` .
-* Insert $LaTeX$ equations using /math and select Math Equation command.
+* Add inline math using \`$equation$\` or \`Mod-Space\`
+* Add math block using \`$$-Space\`.
+* Insert using slash command: \`/math\` and select Math Equation command.
 
 > Source code for math equation
 
@@ -443,13 +446,13 @@ $$
 x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}
 $$
 
-## Chemical Equations
-
----
+* Support chemical equation block with \\ce
 
 $$
 \\ce{x Na(NH4)HPO4 ->[\\Delta] (NaPO3)_x + x NH3 ^ + x H2O}
 $$
+
+* Support Live preview for Math/Chemical equation block. 
 `;
 
 const imgValue = `
@@ -459,5 +462,5 @@ const imgValue = `
 
 - Insert local image using \`/image\` command. 
 
-- Relative local file path support.
+- Relative local file path is supported.
 `;

@@ -39,7 +39,7 @@
     "react-popper": "^2.2.5",
     "react-toastify": "^8.2.0",
     "react-virtual": "^2.10.4",
-    "mdsmirror": "^0.0.7",
+    "mdsmirror": "^0.0.11",
     "mdsmap": "0.0.1",
     "mdsmark": "0.0.2",
     "styled-components": "^5.3.5",
