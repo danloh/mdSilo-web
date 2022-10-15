@@ -15,14 +15,14 @@ export default function Home() {
                 Buffering for your daily I/O 
               </p>
               <p className="text-xl pt-4 text-center text-white">
-                A Lightweight Personal Wiki: available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.7/mdsilo_0.4.7_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>). 
+                A Lightweight Personal Wiki: available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.8/mdsilo_0.4.8_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.8/mdsilo_0.4.8_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.8/mdsilo.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.8/mdsilo_0.4.8_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.4.8/mdsilo_0.4.8_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>). 
               </p>
               <div className="flex flex-wrap items-center justify-center mt-4">
                 <button className="m-1 text-lg text-white text-center bg-slate-700 py-2 px-4 rounded hover:bg-green-400">
-                  <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">VERSION  0.4.7</a>
+                  <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">VERSION  0.4.8</a>
                 </button>
                 <button className="m-1 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
-                  <a href="/demo" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                  <a href="/playground" target="_blank" rel="noopener noreferrer">Live Demo</a>
                 </button>
               </div>
             </div>

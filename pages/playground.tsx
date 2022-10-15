@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from 'react';
+import Head from 'next/head';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 import DemoEditor from './DemoEditor';
+
 
 export default function Home() {
   const caseList = useMemo(() => [
@@ -27,6 +29,9 @@ export default function Home() {
 
   return (
     <MainView showNavbar={false} showFooter={false}>
+      <Head>
+        <title>Playground - mdSilo</title>
+      </Head>
       <div className="flex flex-col min-h-screen splash-bg">
         <div className="flex-1 border-b-2 border-gray-600">
           <div className="shadow-sm bg-gradient-to-r from-slate-600 via-gray-600 to-stone-600">
@@ -357,8 +362,10 @@ const shortcutsValue = `
 
 * Type \`-\` or \`*\` to create bullet list(unordered list).
 * Nested list is supported. 
-  - This is nested list item.  
+  - This is nested list item. 
+  - \`Mod + [ or ] \` can lift or sink the nested list item.
 * \`Enter\` to add more list item.
+* \`Alt + ArrowUp or ArrowDown\` can move list item up or down.
 
 #### Numbered List
 
@@ -382,6 +389,11 @@ const shortcutsValue = `
 - Wiki Link: \`[[]]\`. 
 - Hashtag: \`#tag#\` #tips# 
 - Diagram: mermaid, echarts, ABC Notation. 
+
+## Quick Action
+
+- Type \`/\` to trigger slash commands
+- Insert current date, time or datetime using \`/date\`, \`/time\`, \`/now\` and a space.
 `;
 
 const tableValue = `
