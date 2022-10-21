@@ -1,5 +1,5 @@
 import { store } from 'lib/store';
-import apiClient from 'lib/apiClient';
+import apiClient from 'api/apiClient';
 import type { Note } from 'types/model';
 import type { PickPartial } from 'types/utils';
 
@@ -10,7 +10,7 @@ export type NoteUpsert = PickPartial<
   'id' | 'title' | 'content' | 'created_at' | 'updated_at' | 'is_daily'
 >;
 
-export async function upsertDbNote(note: NoteUpsert, userId: string) {
+export async function upsertDbNote(note: NoteUpsert) {
   // for userId
   const response = await apiClient
     .from<Note>('notes')
@@ -30,7 +30,7 @@ export type NoteUpdate = PickPartial<
   'title' | 'content' | 'file_path' | 'cover' | 'created_at' | 'updated_at' | 'is_daily'
 >;
 
-export async function updateDbNote(note: NoteUpdate, userId: string) {
+export async function updateDbNote(note: NoteUpdate) {
   const response = await apiClient
     .from<Note>('notes')
     .update({ ...note, updated_at: new Date().toISOString() })

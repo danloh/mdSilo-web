@@ -6,6 +6,7 @@ import Journals from './journals';
 import Tasks from './tasks';
 import Graph from './graph';
 import NotePage from './md';
+import HashTags from "./hashtags";
 
 export default function MainView() {
   const currentView = useCurrentViewContext();
@@ -21,6 +22,8 @@ export default function MainView() {
         <Tasks />
       ) : viewTy === 'graph' ? (
         <Graph />
+      ) : viewTy === 'tag' ? (
+        <HashTags />
       ) : viewTy === 'journal' ? (
         <Journals />
       ) : (

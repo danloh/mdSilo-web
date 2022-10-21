@@ -12,8 +12,8 @@ import { defaultNote, Note as NoteType } from 'types/model';
 import { ProvideCurrentMd } from 'context/useCurrentMd';
 import { useCurrentViewContext } from 'context/useCurrentView';
 import { useAuthContext } from 'utils/useAuth';
-import type { NoteUpdate } from 'lib/api/curdNote';
-import { updateDbNote, loadDbNote } from 'lib/api/curdNote';
+import type { NoteUpdate } from 'api/curdNote';
+import { updateDbNote, loadDbNote } from 'api/curdNote';
 
 import { ProvideCurrent } from 'editor/hooks/useCurrent';
 import { writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';

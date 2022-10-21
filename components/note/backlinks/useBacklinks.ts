@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { parser, getJSONContent } from "mdsmirror";
 import { Notes, useStore } from 'lib/store';
 import useDebounce from 'editor/hooks/useDebounce';
@@ -21,9 +21,6 @@ export type Backlink = {
 };
 
 export default function useBacklinks(noteId: string) {
- 
-  const initDir = useStore((state) => state.initDir);
-  
   const [notes] = useDebounce(
     useStore((state) => state.notes),
     DEBOUNCE_MS

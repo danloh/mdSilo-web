@@ -5,12 +5,12 @@ import {
   memo,
   useMemo,
 } from 'react';
-import { IconCaretRight, IconMarkdown } from '@tabler/icons';
+import { IconMarkdown } from '@tabler/icons';
 import { useStore } from 'lib/store';
 import { isMobile } from 'utils/helper';
 import useOnNoteLinkClick from 'editor/hooks/useOnNoteLinkClick';
 import SidebarItem from './SidebarItem';
-import { SidebarDirDropdown, SidebarNoteDropdown } from './SidebarDropdown';
+import { SidebarNoteDropdown } from './SidebarDropdown';
 import { FlattenedNoteTreeItem } from './SidebarNotesTree';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -26,9 +26,7 @@ const SidebarNoteLink = (
 
   const note = useStore((state) => state.notes[node.id]);
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
-  const lastOpenNoteId = useStore(
-    (state) => state.openNoteIds[state.openNoteIds.length - 1]
-  );
+
   const { onClick: onNoteLinkClick } = useOnNoteLinkClick();
 
   // We add 16px for every level of nesting, plus 8px base padding

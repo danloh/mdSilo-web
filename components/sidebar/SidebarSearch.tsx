@@ -1,11 +1,12 @@
 import { memo, useMemo } from 'react';
 import Highlighter from 'react-highlight-words';
 import Fuse from 'fuse.js';
-// import { useCurrentViewContext } from 'context/useCurrentView';
+import { useCurrentViewContext } from 'context/useCurrentView';
 import useNoteSearch, { NoteBlock } from 'editor/hooks/useNoteSearch';
 import useDebounce from 'editor/hooks/useDebounce';
 import { useStore } from 'lib/store';
 import { isMobile } from 'utils/helper';
+import { refreshFile } from 'editor/hooks/useRefresh';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import VirtualTree from '../misc/VirtualTree';
 
@@ -127,8 +128,8 @@ type SearchLeafProps = {
 export const SearchLeaf = memo(function SearchLeaf(props: SearchLeafProps) {
   const { noteId, text, searchQuery, block, className = '' } = props;
 
-  // const currentView = useCurrentViewContext();
-  // const dispatch = currentView.dispatch;
+  const currentView = useCurrentViewContext();
+  const dispatch = currentView.dispatch;
 
   const setIsSidebarOpen = useStore((state) => state.setIsSidebarOpen);
 
@@ -142,7 +143,8 @@ export const SearchLeaf = memo(function SearchLeaf(props: SearchLeafProps) {
           setIsSidebarOpen(false);
         }
         // console.log("block hash", hash, text)
-        // dispatch({view: 'md', params: {noteId, hash}});
+        await refreshFile(noteId);
+        dispatch({view: 'md', params: {noteId, hash}});
       }}
     >
       <Highlighter

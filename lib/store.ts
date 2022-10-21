@@ -4,9 +4,8 @@ import { persist, StateStorage } from 'zustand/middleware';
 import produce, { Draft } from 'immer';
 import localforage from 'localforage';
 import type { Note } from 'types/model';
-
+import type { NoteUpdate } from 'api/curdNote';
 import userSettingsSlice, { UserSettings } from './userSettingsSlice';
-import type { NoteUpdate } from './api/curdNote';
 
 export { default as shallowEqual } from 'zustand/shallow';
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useCurrentViewContext } from 'context/useCurrentView';
 import { useStore, store, Notes } from 'lib/store';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
@@ -6,13 +6,14 @@ import NoteSumList from 'components/note/NoteSumList';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { defaultNote, Note } from 'types/model';
 import { dateCompare, getStrDate, regDateStr, joinPath } from 'utils/helper';
+import { refreshFile } from 'editor/hooks/useRefresh';
 import HeatMap from './HeatMap';
 
 export default function Chronicle() {
   
   const initDir = useStore((state) => state.initDir);
-  // const currentView = useCurrentViewContext();
-  // const dispatch = currentView.dispatch;
+  const currentView = useCurrentViewContext();
+  const dispatch = currentView.dispatch;
 
   const onNewDailyNote = useCallback(async (date: string) => {
     if (!initDir || !regDateStr.test(date)) return;
@@ -41,8 +42,9 @@ export default function Chronicle() {
       cNote[noteId] = newNote;
       store.getState().setCurrentNote(cNote);
     }
-    // dispatch({view: 'md', params: { noteId }});
-  }, [initDir]);
+    await refreshFile(noteId);
+    dispatch({view: 'md', params: { noteId }});
+  }, [dispatch, initDir]);
 
   const today = getStrDate((new Date()).toString());
 

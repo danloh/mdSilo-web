@@ -8,7 +8,7 @@ import {
 } from 'react';
 import type { User, GoTrueClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
-import apiClient from 'lib/apiClient';
+import apiClient from 'api/apiClient';
 
 type AuthContextType = {
   isAuthed: boolean;

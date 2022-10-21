@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import LogoWithText from 'components/LogoWithText';
 import MainView from 'components/landing/MainView';
-import apiClient from 'lib/apiClient';
+import apiClient from 'api/apiClient';
 
 export default function Reset() {
   const [email, setEmail] = useState('');

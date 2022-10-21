@@ -11,9 +11,6 @@ import { computeLinkedBacklinks } from './useBacklinks';
  * @param newTitle of current note, it is undefined on delete note 
  */
 const updateBacklinks = async (noteTitle: string, newTitle?: string) => {
-  
-  const initDir = store.getState().initDir;
-
   const notes = store.getState().notes;
   const updateNote = store.getState().updateNote;
   const backlinks = computeLinkedBacklinks(notes, noteTitle);
@@ -57,7 +54,7 @@ const updateBacklinks = async (noteTitle: string, newTitle?: string) => {
     }
 
     // update content and write file
-    // updateNote({ id: note.id, content });
+    updateNote({ id: note.id, content });
     // await writeFile(note?.file_path, content);
   }
 };

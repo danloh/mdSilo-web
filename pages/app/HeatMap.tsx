@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { store } from 'lib/store';
 import { getStrDate } from 'utils/helper';
 import { Note } from 'types/model';
 
