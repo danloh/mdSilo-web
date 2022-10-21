@@ -9,7 +9,7 @@ import Menubar from 'components/landing/Menubar';
 import { useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
 import {nowToRadix36Str } from 'utils/helper';
-import { useImportMd } from 'editor/hooks/useImport'; 
+import { useImportFiles } from 'editor/hooks/useImport'; 
 
 type MapProps = {
   mdValue: string;
@@ -157,7 +157,7 @@ export default function DemoEditor(props: Props) {
     setRawMode(mode)
   }, [note]);
 
-  const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
+  const onOpen = useImportFiles();
 
   return (
     <div className={`container ${className}`}>

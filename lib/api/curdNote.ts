@@ -2,24 +2,21 @@ import { store } from 'lib/store';
 import apiClient from 'lib/apiClient';
 import type { Note } from 'types/model';
 import type { PickPartial } from 'types/utils';
-import { defaultUserId } from 'types/model';
 
 // upsert
 // 
 export type NoteUpsert = PickPartial<
   Note,  // title, user_id required
-  'id' | 'title' | 'content' | 'created_at' | 'updated_at' | 'is_pub' | 'is_wiki' | 'is_daily'
+  'id' | 'title' | 'content' | 'created_at' | 'updated_at' | 'is_daily'
 >;
 
 export async function upsertDbNote(note: NoteUpsert, userId: string) {
   // for userId
-  const isWiki = note.is_wiki;
-  const user_id = isWiki ? defaultUserId : userId;
   const response = await apiClient
     .from<Note>('notes')
     .upsert(
-      { ...note, user_id, updated_at: new Date().toISOString() },
-      { onConflict: 'user_id, title', ignoreDuplicates: isWiki }
+      { ...note, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id, title', }
     )
     .single();
 
@@ -30,14 +27,13 @@ export async function upsertDbNote(note: NoteUpsert, userId: string) {
 // 
 export type NoteUpdate = PickPartial<
   Note, // id required
-  'title' | 'content' | 'user_id' | 'created_at' | 'updated_at' | 'is_pub' | 'is_wiki' | 'is_daily'
+  'title' | 'content' | 'file_path' | 'cover' | 'created_at' | 'updated_at' | 'is_daily'
 >;
 
 export async function updateDbNote(note: NoteUpdate, userId: string) {
-  const user_id = note.is_wiki ? defaultUserId : userId;
   const response = await apiClient
     .from<Note>('notes')
-    .update({ ...note, user_id, updated_at: new Date().toISOString() })
+    .update({ ...note, updated_at: new Date().toISOString() })
     .eq('id', note.id)
     .single();
 
@@ -60,43 +56,6 @@ export async function loadDbNote(noteId: string) {
     .from<Note>('notes')
     .select(selectColumns)
     .eq('id', noteId)
-    .single();
-
-  return response;
-}
-
-/**
- * load wiki note from db per keyword
- * @param kw 
- * @param n limit
- * @returns Response
- */
-export async function loadDbWikiNotes(kw: string, n = 42) {
-  const len = kw.trim().length;
-  if (len <= 0) return;
-  const kword = `%${kw.replaceAll(' ', '%')}%`;
-  const response = await apiClient
-    .from<Note>('notes')
-    .select(selectColumns)
-    .eq('is_wiki', true)
-    .ilike('title', kword)
-    .order('title')
-    .limit(n);
-
-  return response;
-}
-
-/**
- * load wiki note from db per title
- * @param noteTitle 
- * @returns Response
- */
-export async function loadDbWikiNotePerTitle(noteTitle: string) {
-  const response = await apiClient
-    .from<Note>('notes')
-    .select(selectColumns)
-    .eq('is_wiki', true)
-    .eq('title', noteTitle)
     .single();
 
   return response;

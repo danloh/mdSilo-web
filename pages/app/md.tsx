@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import Note from 'components/note/Note';
-
+import { useCurrentViewContext } from 'context/useCurrentView';
 
 export default function NotePage() {
-  const router = useRouter();
-  const { query: { id: noteId } } = router;
+  const currentView = useCurrentViewContext();
+  const params = currentView.state.params;
+  const noteId = params?.noteId || ''; 
+
+  console.log("go to note id", noteId)
 
   const siteTitle = 'mdSilo';
 

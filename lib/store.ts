@@ -4,7 +4,6 @@ import { persist, StateStorage } from 'zustand/middleware';
 import produce, { Draft } from 'immer';
 import localforage from 'localforage';
 import type { Note } from 'types/model';
-import { ciStringEqual } from 'utils/helper';
 
 import userSettingsSlice, { UserSettings } from './userSettingsSlice';
 import type { NoteUpdate } from './api/curdNote';
@@ -41,34 +40,55 @@ export type Notes = Record<Note['id'], Note>;
 export type FileHandles = Record<string, any>; // FileSystemFileHandle
 
 export type NoteTreeItem = {
-  id: Note['id'];  
-  children: NoteTreeItem[];
-  collapsed: boolean;
+  id: Note['id']; 
+  title: string;
+  created_at: string;
+  updated_at: string; 
+  is_dir: boolean;
+  children?: NoteTreeItem[]; // to del
+  collapsed?: boolean;       // to del
 };
+
+export type NoteTree = Record<Note['id'], NoteTreeItem[]>;
+
+export type NotesData = {
+  notesobj: Notes;
+  notetree: NoteTree;
+}
 
 export enum SidebarTab {
   Silo,
   Search,
+  Hashtag,
 }
 
 export type Store = {
+  currentNoteId: string;
+  setCurrentNoteId: Setter<string>;
+  initDir: string | undefined;  // first open dir path
+  setInitDir: Setter<string | undefined>;
+  currentDir: string | undefined;  // dir path
+  setCurrentDir: Setter<string | undefined>;
+  currentNote: Notes;  // one record only
+  setCurrentNote: Setter<Notes>;
   // note
   notes: Notes;
   setNotes: Setter<Notes>;
   // operate note
   upsertNote: (note: Note, ifUpTree?: boolean) => void;
-  upsertTree: (note: Note) => void;
+  upsertTree: (targetDir: string, noteList: Note[], isDir?: boolean) => void;
   updateNote: (note: NoteUpdate) => void;
   deleteNote: (noteId: string) => void;
   openNoteIds: string[];
   setOpenNoteIds: (openNoteIds: string[], index?: number) => void;
-  noteTree: NoteTreeItem[];
-  setNoteTree: Setter<NoteTreeItem[]>;
-  updateNoteTree: (item: NoteTreeItem, target: string | null) => void;
+  noteTree: NoteTree;
+  setNoteTree: Setter<NoteTree>;
   sidebarTab: SidebarTab;
   setSidebarTab: Setter<SidebarTab>;
   sidebarSearchQuery: string;
   setSidebarSearchQuery: Setter<string>;
+  sidebarSearchType: string; // content or hashtag
+  setSidebarSearchType: Setter<string>;
   // FileSystemFileHandle
   handles: FileHandles;
   setHandles: Setter<FileHandles>;
@@ -109,6 +129,14 @@ export const setter =
 export const store = createVanilla<Store>(
   persist(
     immer((set) => ({
+      currentNoteId: '',
+      setCurrentNoteId: setter(set, 'currentNoteId'),
+      currentNote: {},
+      setCurrentNote: setter(set, 'currentNote'),
+      initDir: undefined,
+      setInitDir: setter(set, 'initDir'),
+      currentDir: undefined,
+      setCurrentDir: setter(set, 'currentDir'),
       //  Map of note id to notes
       notes: {},  // all private notes and related wiki notes
       // Sets the notes
@@ -116,50 +144,39 @@ export const store = createVanilla<Store>(
       /**
        * update or insert the note
        * @param {Note} note the note to upsert
-       * @param ifUpTree, boolean, optional, Defaut True,if upsertTree on upsert
        */
-      upsertNote: (note: Note, ifUpTree = true) => {
+       upsertNote: (note: Note) => {
         set((state) => {
           if (state.notes[note.id]) {
-            // if existing per id
+            // if existing per id, update 
             state.notes[note.id] = { ...state.notes[note.id], ...note };
           } else {
-            // if existing per title
-            const existingNote = Object.values(state.notes).find((n) =>
-              n.title && note.title &&
-              ciStringEqual(n.title, note.title)
-            );
-            if (existingNote) {
-              // Update existing note
-              state.notes[existingNote.id] = {
-                ...state.notes[existingNote.id],
-                ...note,
-              };
-            } else {
-              // Insert new note
-              state.notes[note.id] = note;
-              if (ifUpTree) {
-                if (!note.is_wiki) {
-                  insertTreeItem(
-                    state.noteTree,
-                    { id: note.id, children: [], collapsed: true },
-                    null
-                  );
-                }
-              }
-            }
+            // otherwise, new insert
+            state.notes[note.id] = note;
           }
+          // alert: not check title unique, wiki-link will link to first searched note
         });
       },
-      upsertTree: (note: Note) => {
+      upsertTree: (targetDir: string, noteList: Note[]) => {
         set((state) => {
-          if (!note.is_wiki) {
-            insertTreeItem(
-              state.noteTree,
-              { id: note.id, children: [], collapsed: true },
-              null
-            );
-          }
+          const itemsToInsert: NoteTreeItem[] = noteList.map(note => ({ 
+            id: note.id, 
+            title: note.title,
+            created_at: note.created_at,
+            updated_at: note.updated_at,
+            is_dir: note.is_dir ?? false,
+            children: [], 
+            collapsed: true, 
+          }));
+          const targetList = state.noteTree[targetDir] || [];
+          const newTargetList = [...targetList, ...itemsToInsert];
+          const newList: NoteTreeItem[] = [];
+          newTargetList.forEach(item => {
+            if (!newList.some(n => n.id === item.id)) {
+              newList.push(item)
+            }
+          })
+          state.noteTree[targetDir] = newList;
         });
       },
       // Update the given note
@@ -178,12 +195,7 @@ export const store = createVanilla<Store>(
       deleteNote: (noteId: string) => {
         set((state) => {
           delete state.notes[noteId];
-          const item = deleteTreeItem(state.noteTree, noteId);
-          if (item && item.children.length > 0) {
-            for (const child of item.children) {
-              insertTreeItem(state.noteTree, child, null);
-            }
-          }
+          deleteTreeItem(state.noteTree, noteId);
         });
       },
       // The visible notes, including the main note and the stacked notes
@@ -206,18 +218,15 @@ export const store = createVanilla<Store>(
         });
       },
       // The tree of notes visible in the sidebar
-      noteTree: [], // private notes
+      noteTree: {}, // private notes
       setNoteTree: setter(set, 'noteTree'),
       
-      updateNoteTree: (item: NoteTreeItem, target: string | null) => {
-        set((state) => {
-          insertTreeItem(state.noteTree, item, target);
-        });
-      },
       sidebarTab: SidebarTab.Silo,
       setSidebarTab: setter(set, 'sidebarTab'),
       sidebarSearchQuery: '',
       setSidebarSearchQuery: setter(set, 'sidebarSearchQuery'),
+      sidebarSearchType: 'content',
+      setSidebarSearchType: setter(set, 'sidebarSearchType'),
       // FileSystemFileHandles
       // map name(title) to FileHandle
       handles: {},
@@ -264,61 +273,21 @@ export const useStore = create<Store>(store);
 /**
  * Deletes the tree item with the given id and returns it.
  */
-const deleteTreeItem = (
-  tree: NoteTreeItem[],
+ const deleteTreeItem = (
+  tree: NoteTree,
   id: string
 ): NoteTreeItem | null => {
-  for (let i = 0; i < tree.length; i++) {
-    const item = tree[i];
-    if (item.id === id) {
-      tree.splice(i, 1);
-      return item;
-    } else if (item.children.length > 0) {
-      const result = deleteTreeItem(item.children, id);
-      if (result) {
-        return result;
+  for (const [key, treeList] of Object.entries(tree)) {
+    for (let i = 0; i < treeList.length; i++) {
+      const item = treeList[i];
+      if (item.id === id) {
+        treeList.splice(i, 1);
+        tree[key] = treeList;
+        return item;
       }
     }
   }
   return null;
-};
-
-/**
- * Inserts the given item into the tree as a child of the item with targetId, and returns true if it was inserted.
- * If targetId is null, inserts the item into the root level.
- */
-const insertTreeItem = (
-  tree: NoteTreeItem[],
-  item: NoteTreeItem,
-  targetId: string | null
-): boolean => {
-  if (targetId === null) {
-    const itemExist = tree.find((n) => n.id === item.id);
-    if (itemExist) { 
-      return true; // existed
-    }
-    tree.push(item);
-    return true;
-  }
-
-  for (let i = 0; i < tree.length; i++) {
-    const treeItem = tree[i];
-    if (treeItem.id === targetId) {
-      const children = treeItem.children;
-      const itemExist = children.find((n) => n.id === item.id);
-      if (itemExist) {
-        return true; // existed
-      }
-      children.push(item);
-      return true;
-    } else if (treeItem.children.length > 0) {
-      const result = insertTreeItem(treeItem.children, item, targetId);
-      if (result) {
-        return result;
-      }
-    }
-  }
-  return false;
 };
 
 /**
@@ -332,7 +301,7 @@ export const getNoteTreeItem = (
     const item = tree[i];
     if (item.id === id) {
       return item;
-    } else if (item.children.length > 0) {
+    } else if (item.children && item.children.length > 0) {
       const result = getNoteTreeItem(item.children, id);
       if (result) {
         return result;

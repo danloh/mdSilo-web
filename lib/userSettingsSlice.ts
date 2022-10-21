@@ -26,12 +26,24 @@ export type UserSettings = {
   setDarkMode: Setter<boolean>;
   isSidebarOpen: boolean;
   setIsSidebarOpen: Setter<boolean>;
+  isSettingsOpen: boolean;
+  setIsSettingsOpen: Setter<boolean>;
+  isFindOrCreateModalOpen: boolean;
+  setIsFindOrCreateModalOpen: Setter<boolean>;
+  noteSort: Sort;
+  setNoteSort: Setter<Sort>;
   isPageStackingOn: boolean;
   setIsPageStackingOn: Setter<boolean>;
   isCheckSpellOn: boolean;
   setIsCheckSpellOn: Setter<boolean>;
+  isRTL: boolean;
+  setIsRTL: Setter<boolean>;
   readMode: boolean;
   setReadMode: Setter<boolean>;
+  rawMode: string; // 'raw' | 'wysiwyg' | 'mindmap'; 
+  setRawMode: Setter<string>;
+  useAsset: boolean;
+  setUseAsset: Setter<boolean>;
   wikiReadMode: boolean;
   setWikiReadMode: Setter<boolean>;
 };
@@ -45,10 +57,22 @@ const userSettingsSlice = (
   setDarkMode: setter(set, 'darkMode'),
   isSidebarOpen: true,
   setIsSidebarOpen: setter(set, 'isSidebarOpen'),
+  isSettingsOpen: false,
+  setIsSettingsOpen: setter(set, 'isSettingsOpen'),
+  isFindOrCreateModalOpen: false,
+  setIsFindOrCreateModalOpen: setter(set, 'isFindOrCreateModalOpen'),
+  noteSort: Sort.TitleAscending,
+  setNoteSort: setter(set, 'noteSort'),
   isPageStackingOn: true,
   setIsPageStackingOn: setter(set, 'isPageStackingOn'),
   isCheckSpellOn: true,
   setIsCheckSpellOn: setter(set, 'isCheckSpellOn'),
+  isRTL: false,
+  setIsRTL: setter(set, 'isRTL'),
+  rawMode: 'wysiwyg',
+  setRawMode: setter(set, 'rawMode'),
+  useAsset: true,
+  setUseAsset: setter(set, 'useAsset'),
   readMode: false,
   setReadMode: setter(set, 'readMode'),
   wikiReadMode: true,

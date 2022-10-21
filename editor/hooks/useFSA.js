@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 
 import { toast } from 'react-toastify';
+import { saveAs } from 'file-saver';
 import { FileSystemAccess } from 'editor/checks';
 import { store } from 'lib/store';
+import { nowToRadix36Str } from 'utils/helper';
+import { processFiles, checkFileIsMd, rmFileNameExt, buildNotesJson } from './useImport';
 
 /**
  * open local folder to import files
@@ -15,8 +17,11 @@ export async function openDirDialog() {
     return;
   }
 
+  // export works and clean store notes
+  // const exportOnClose = store.getState().exportOnClose;
+  // if (exportOnClose) { await exportNotesJson(); }
   // cleaning noteTree first, thus will not trigger noteSort in sidebar
-  store.getState().setNoteTree([]);
+  store.getState().setNoteTree({});
   store.getState().setNotes({});
   store.getState().setOpenNoteIds([]);
   store.getState().setHandles({});
@@ -27,9 +32,13 @@ export async function openDirDialog() {
     // dialog to open folder
     // will prompt to require read permission
     dirHandle = await window.showDirectoryPicker();
+    console.log("dirHandle", dirHandle);
     // store dirHandle, import files in dir and store FileHandes
     if (dirHandle) {
       store.getState().setDirHandle(dirHandle);
+      const dirName = dirHandle.name;
+      store.getState().setInitDir(dirName);
+      store.getState().setCurrentDir(dirName);
       // Show a toast
       const openToast = toast.info('Opening files, Please wait...', {
         autoClose: false,
@@ -41,16 +50,24 @@ export async function openDirDialog() {
       // key: filename or dir name 
       // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
       for await (const [key, value] of dirHandle.entries()) {
-        //console.log(key, value)
+        console.log("dir entries: ", key, value)
         if (value.kind !== 'file') {
           continue;
         }
-        // TODO: upsert Handle in store
-       
+        // upsert Handle in store
+        if (checkFileIsMd(key)) {
+          // remove filename's extension, unique title as key to store Handle
+          // Issue Alert: same title but diff ext, only one file can be imported
+          const title = rmFileNameExt(key);
+          // need to upsert FileHandle
+          store.getState().upsertHandle(title, value);
+          // import md files 
+          const fileData = await value.getFile();
+          fileList.push(fileData);
+        }
       }
-      
-      // TODO process file
-
+      console.log("handles", store.getState().handles)
+      await processFiles(fileList, dirName);
       // close the toast
       toast.dismiss(openToast);
     }
@@ -184,18 +201,19 @@ function getRealHandleName(name, withExt) {
  * @param {string} json, optional, Contents to write to json Handle.
  */
 export async function writeJsonFile(json = '') {
-  if (!FileSystemAccess.support(window)) {
-    return;
-  }
-
+  const notesJson = json || buildNotesJson();
   try {
-    const jsonHandle = await getOrNewFileHandle('mdSilo_all.json', true);
-    const notesJson = json;
+    const jsonHandle = await getOrNewFileHandle('mdSilo-all.json', true);
     if (jsonHandle) {
       await writeFile(jsonHandle, notesJson);
     }
   } catch (error) {
     console.log('An error occured on write json file: ', error);
+    const jsonContent = new Blob([notesJson], {
+      type: 'application/json;charset=utf-8',
+    });
+    const now = nowToRadix36Str();
+    saveAs(jsonContent, `mdSilo-${now}.json`);
   }
 }
 
@@ -240,19 +258,4 @@ export async function verifyPermission(fileHandle, ifWrite) {
   }
   // The user did not grant permission, return false.
   return false;
-}
-
-
-/**
- * remove file name extension
- *
- * @param {string} fname, file name.
- */
- export const rmFileNameExt = (fname) => {
-  return fname.replace(/\.[^/.]+$/, '');
-}
-
-export const checkFileIsMd = (fname) => {
-  const check = /\.(text|txt|md|mkdn|mdwn|mdown|markdown){1}$/i.test(fname);
-  return check;
 }
