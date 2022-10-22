@@ -1,9 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Menu } from '@headlessui/react';
-import { IconDots, IconFileText, IconLayout, IconMarkdown, IconTournament, IconTrash } from '@tabler/icons';
+import { IconDots, IconFileText, IconLayout, IconMarkdown, IconPrinter, IconTournament, IconTrash } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { useCurrentMdContext } from 'context/useCurrentMd';
-import { useStore } from 'lib/store';
+import { store, useStore } from 'lib/store';
 import { refreshFile } from 'editor/hooks/useRefresh';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
@@ -38,6 +39,12 @@ export default function NoteHeader() {
 
   const [isNoteDelModalOpen, setIsNoteDelModalOpen] = useState(false);
   const onDelClick = useCallback(() => setIsNoteDelModalOpen(true), []);
+
+  const router = useRouter();
+  const onPreviewClick = useCallback(() => {
+    store.getState().setCurrentNoteId(note.id);
+    router.push({pathname: '/preview'});
+  }, [note.id, router]);
 
   const buttonClassName =
     'rounded hover:bg-gray-300 active:bg-gray-400 dark:hover:bg-gray-700 dark:active:bg-gray-600';
@@ -94,6 +101,13 @@ export default function NoteHeader() {
                     >
                       <IconTrash className="mr-1" />
                       <span>Delete Permanently</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={onPreviewClick}
+                      className="border-t dark:border-gray-700"
+                    >
+                      <IconPrinter className="mr-1" />
+                      <span>Print Preview</span>
                     </DropdownItem>
                     <NoteMetadata noteId={note.id} />
                   </Menu.Items>

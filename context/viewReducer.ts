@@ -11,6 +11,7 @@ export interface ViewState {
 }
 
 export type ViewAction =
+  | { view: 'default' }
   | { view: 'chronicle' }
   | { view: 'task' }
   | { view: 'graph' }
@@ -33,6 +34,8 @@ export function viewReducer(state: ViewState, action: ViewAction): ViewState {
   }
 
   switch (actionView) {
+    case 'default':
+      return {...state, view: 'default'};
     case 'chronicle':
       return {...state, view: 'chronicle'};
     case 'task':

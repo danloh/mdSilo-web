@@ -325,7 +325,7 @@ function Note(props: Props) {
                 ? (<Toc headings={headings} />) 
                 : null
               }
-              <div className="flex-1 px-2 pt-2 pb-8">
+              <div className="flex-1 p-2">
                 {rawMode === 'raw' ? (
                   <RawMark
                     key={`raw-${title}`}
@@ -358,10 +358,7 @@ function Note(props: Props) {
                     protocol={protocol}
                   />
                 ) : rawMode === 'mindmap' ? (
-                  <Mindmap 
-                    key={`mp-${noteId}`} 
-                    mdValue={mdContent} 
-                  />
+                  <Mindmap key={`mp-${noteId}`} mdValue={mdContent} />
                 ) : (
                   <div className="grid grid-cols-2 gap-1 justify-between">
                     <div className="flex-1 mr-4 border-r-2 border-gray-200 dark:border-gray-600">
