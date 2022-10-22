@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import MsEditor, { embeds, JSONContent } from "mdsmirror";
 import { RawMark } from "mdsmark";
-import { Mindmap } from "pages/DemoEditor";
+import { Mindmap } from "editor/DemoEditor";
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
 import { Notes, SidebarTab, store, useStore } from 'lib/store';

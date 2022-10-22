@@ -8,7 +8,7 @@ export default function NotePage() {
   const params = currentView.state.params;
   const noteId = params?.noteId || ''; 
 
-  console.log("go to note id", noteId)
+  // console.log("go to note id", noteId)
 
   const siteTitle = 'mdSilo';
 

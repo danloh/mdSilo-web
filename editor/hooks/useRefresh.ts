@@ -11,7 +11,7 @@ import { refreshImport, rmFileNameExt } from './useImport';
 // currently not in BackLinkMatchLeaf,BackLinkNoteBranch,BlockRefElement 
 export async function refreshFile(id: string) {
   const title = rmFileNameExt(id);
-  console.log("title: ", title, id)
+  // console.log("title: ", title, id)
   if (title.trim().length == 0) {
     return; 
   }

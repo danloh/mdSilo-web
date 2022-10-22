@@ -6181,10 +6181,10 @@ markdown-it@^12.0.0, markdown-it@^12.3.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-mdsmap@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mdsmap/-/mdsmap-0.0.1.tgz#b2b22179ec6be1161602e28f544e52252275bda8"
-  integrity sha512-ZDOR8NPbqUshDsgkydWhTfs+D+hXjwPwf/Xtuyk9LOcsACfOJVBlHKzNAXOEODljP8hKtS9TJuaW1KedRAJfwA==
+mdsmap@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/mdsmap/-/mdsmap-0.0.2.tgz#5b1c3c8b6da27949af8b90bf54d67359743054b9"
+  integrity sha512-WANAdPtDboqscfEqr5tEW91IXov9Ly05AR9+jBvw0NWUJaDg6JNQnRGMfUU0c6WGgTOIM1QSaCMhEdvU246hJQ==
   dependencies:
     d3 "3.5.6"
     react "^17.0.2"
@@ -6206,10 +6206,10 @@ mdsmark@0.0.2:
     react "^17.0.2"
     react-dom "^17.0.2"
 
-mdsmirror@^0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.16.tgz#a31a8ab9d574a5c46f4b7aeef3e8ec6b1bb4ec2f"
-  integrity sha512-S+OT56yl9U0S62SZF9gB0iZC+Y69CJUXNP3kfRB6H4Ff9/2R8N03kyYNsPzpIGt6y31uBoVV6K0Psa0c3eA98Q==
+mdsmirror@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.17.tgz#6cb2db526cc3739acd7cb0d6b0a1cc5ebcbb5329"
+  integrity sha512-KHtttshA4Q19bmi7V24SFmELKqskFL70AM2yORdbSVuAre+X3dxf6TPnndSOAUR/u8n0Y58Ssi2M86lkgOcvvg==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@tabler/icons" "^1.92.0"

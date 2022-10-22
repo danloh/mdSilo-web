@@ -32,7 +32,7 @@ export async function openDirDialog() {
     // dialog to open folder
     // will prompt to require read permission
     dirHandle = await window.showDirectoryPicker();
-    console.log("dirHandle", dirHandle);
+    // console.log("dirHandle", dirHandle);
     // store dirHandle, import files in dir and store FileHandes
     if (dirHandle) {
       store.getState().setDirHandle(dirHandle);
@@ -50,7 +50,7 @@ export async function openDirDialog() {
       // key: filename or dir name 
       // value: FileSystemFileHandle or sub FileSystemDirectoryHandle
       for await (const [key, value] of dirHandle.entries()) {
-        console.log("dir entries: ", key, value)
+        // console.log("dir entries: ", key, value)
         if (value.kind !== 'file') {
           continue;
         }
@@ -66,7 +66,7 @@ export async function openDirDialog() {
           fileList.push(fileData);
         }
       }
-      console.log("handles", store.getState().handles)
+      // console.log("handles", store.getState().handles)
       await processFiles(fileList, dirName);
       // close the toast
       toast.dismiss(openToast);
@@ -101,7 +101,7 @@ export async function writeFile(fileHandle, content) {
     await writable.close();
   } catch (error) {
     console.log('An error occured on write file: ', error);
-    //alert('An error occured, change can not be saved to file');
+    // alert('An error occured, change can not be saved to file');
   }
 }
 

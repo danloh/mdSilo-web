@@ -10,7 +10,7 @@ export default function useOnNoteLinkClick() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async (toId: string, highlightedPath?: any) => {
       const note = await refreshFile(toId);
-      console.log("note", note)
+      // console.log("note", note)
       if (!note) return;
       const noteId = note.id;
       const hash = highlightedPath ? `0-${highlightedPath}` : ''; // TODO

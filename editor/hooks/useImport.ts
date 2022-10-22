@@ -130,7 +130,6 @@ export function useImportFiles() {
       }
 
       const inputElement = e.target as HTMLInputElement;
-      console.log("import input: ", inputElement)
       const fileList = inputElement.files;
 
       if (!fileList) {
@@ -155,7 +154,7 @@ export function useImportFiles() {
  */
  export const refreshImport = async (file: File, title: string) => {
   // if the file rename?
-  console.log("title", file, title)
+  // console.log("title", file, title)
   const fileName = file.name;
   const checkMd = checkFileIsMd(fileName);
   if (!fileName || !checkMd) {

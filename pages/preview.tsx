@@ -1,5 +1,5 @@
 import { useStore } from 'lib/store';
-import DemoEditor from './DemoEditor';
+import DemoEditor from 'editor/DemoEditor';
 
 export default function Preview() {
   const noteId = useStore(state => state.currentNoteId);

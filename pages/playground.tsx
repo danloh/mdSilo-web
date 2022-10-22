@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Footer from 'components/landing/Footer';
 import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
-import DemoEditor from './DemoEditor';
+import DemoEditor from 'editor/DemoEditor';
 
 
 export default function Home() {

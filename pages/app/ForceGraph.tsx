@@ -52,8 +52,7 @@ type Props = {
 
 export default function ForceGraph(props: Props) {
   const { className } = props;
-  // console.log("fg loaded?");
-
+  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const transform = useRef(zoomIdentity);
   const hoveredNode = useRef<NodeDatum | null>(null);

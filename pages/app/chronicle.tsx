@@ -59,7 +59,7 @@ export default function Chronicle() {
           ) : null}
         </div>
         <div className="my-1 p-1 rounded text-center">
-          <button onClick={() => console.log({view: 'journal'})} className="link text-2xl">
+          <button onClick={() => dispatch({view: 'journal'})} className="link text-2xl">
             Journals
           </button>
           <button className="link w-full mt-2" onClick={() => onNewDailyNote(today)}>

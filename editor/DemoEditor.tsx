@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import MsEditor, { renderToHtml, embeds } from "mdsmirror";
 import { RawMark } from "mdsmark";
-import { parseMd, transform, markmap } from "mdsmap";
+import { parse, transform, markmap } from "mdsmap";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -23,7 +23,7 @@ export function Mindmap(props: MapProps) {
   const renderSVG = useCallback(() => {
     if (!svgRef.current || !mdValue.trim()) { return; }
 
-    const data = transform(parseMd(mdValue, {}));
+    const data = transform(parse(mdValue, {}));
     markmap(svgRef.current, data, {
       preset: 'colorful', // or default
       linkShape: 'diagonal' // or bracket
