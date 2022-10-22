@@ -11,18 +11,11 @@ DROP TABLE IF EXISTS public.notes;
 CREATE TABLE public.notes (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   title citext NOT NULL,
-  content jsonb NOT NULL DEFAULT (('[ { "id": "'::text || uuid_generate_v4()) || '", "type": "paragraph", "children": [{ "text": "" }] } ]'::text)::jsonb,
+  content jsonb NOT NULL DEFAULT (('{ "notesobj": { }, "notetree": { }}'::text)::jsonb,
   user_id uuid NULL,
-  md_content text NULL,
-  cover text NULL, -- todo
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  is_pub BOOLEAN NOT NULL DEFAULT FALSE, 
-  is_wiki BOOLEAN NOT NULL DEFAULT FALSE,
-  is_daily BOOLEAN NOT NULL DEFAULT FALSE,
-  CONSTRAINT non_empty_title CHECK ((title <> ''::citext)),
-  CONSTRAINT notes_pkey PRIMARY KEY (id),
-  CONSTRAINT notes_user_id_title_key UNIQUE (user_id, title)
+  CONSTRAINT notes_pkey PRIMARY KEY (id)
 );
 
 -- public.users definition
@@ -30,8 +23,6 @@ CREATE TABLE public.notes (
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE public.users (
   id uuid NOT NULL,
-  note_tree jsonb NULL,
-  wiki_tree jsonb NULL,
   CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 

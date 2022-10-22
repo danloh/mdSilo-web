@@ -1,17 +1,24 @@
-import MainView from 'components/landing/MainView';
-import DemoEditor from './DemoEditor';
+import { useStore } from 'lib/store';
+import DemoEditor from 'editor/DemoEditor';
 
-export default function WritingDemo() {
+export default function Preview() {
+  const noteId = useStore(state => state.currentNoteId);
+  const note = useStore(state => state.notes[noteId]);
+  const value = note?.content || defaultValue;
+  const title = note?.title || '';
+  const dark = useStore(state => state.darkMode)
+
   return (
-    <MainView showNavbar={false} showFooter={false} className="bg-slate-800">
+    <div className={`min-h-screen font-display ${dark ? 'bg-black text-white' : 'bg-white text-black'}`}>
       <div className="max-w-4xl mx-auto">
         <DemoEditor 
-          defaultValue={defaultValue}
-          dark={true}
-          className="flex-1 p-8 bg-black overflow-auto shadow-inner"
+          defaultValue={value}
+          defaultTitle={title}
+          dark={dark}
+          className="flex-1 p-8 overflow-auto shadow-inner"
         />
       </div>
-    </MainView>
+    </div>
   );
 }
 

@@ -26,6 +26,68 @@ export const getNoteAsBlob = (content: string) => {
   return blob;
 };
 
+// file and path
+
+/**
+ * trim slash or backslash
+ * @param txt 
+ * @param mode start or end
+ * @returns triemed txt
+ */
+ function trimSlash(txt: string, mode = 'start') {
+  if (mode === 'start') {
+    while (txt.startsWith('/') || txt.startsWith('\\')) {
+      txt = txt.substring(1);
+    }
+    return txt;
+  } else {
+    while (txt.endsWith('/') || txt.endsWith('\\')) {
+      txt = txt.substring(0, txt.length - 1);
+    }
+    return txt;
+  }
+}
+
+// export for test
+export function trimSlashAll(txt: string) {
+  const txt0 = trimSlash(txt);
+  const txt1 = trimSlash(txt0, 'end');
+  return txt1;
+}
+
+/**
+ * Normalize slashes of a file path, sync version
+ * @param {string} path
+ * @returns {string}
+ */
+ export const normalizeSlash = (path: string): string => {
+  // replace all '\' to '/'
+  path = path.replace(/\\/g, '/');
+  // not end with '/', consistent with rust end: paths::normalize_slash
+  return trimSlash(path, 'end') || '/';
+};
+
+/**
+ * Join multi path parts into a string. sync version
+ * @param {string[]} ...args paths
+ * @returns {string}
+ */
+export const joinPath = (...args: string[]): string => {
+  if (args.length === 0) { return '.'; }
+
+  let joined: string | undefined = undefined;
+  for (const arg of args) {
+    if (arg.length > 0) {
+      if (joined === undefined) {
+        joined = trimSlash(normalizeSlash(arg), 'end');
+      } else {
+        joined += `/${trimSlashAll(arg)}`;
+      }
+    }
+  }
+  return joined || '.';
+};
+
 // date
 //
 // string: yyyy-mm-dd
@@ -71,6 +133,24 @@ export function ciStringCompare(str1: string, str2: string) {
 
 export function ciStringEqual(str1: string, str2: string) {
   return ciStringCompare(str1, str2) === 0;
+}
+
+// shorten a string but must include centre text
+export function shortenString(txt: string, centre: string, len = 128) {
+  const txtLen = txt.length;
+  if (txtLen <= len) {
+    return txt.replaceAll(centre, `==${centre}==`);
+  }
+  
+  const idx = txt.indexOf(centre);
+  const cenLen = centre.length;
+  const step = Math.floor((len - cenLen) / 2);
+  const span1 = idx - step; 
+  const span2 = idx + cenLen + step;
+  const start = Math.max(span1 + Math.min(txtLen - span2, 0), 0);
+  const end = Math.min(txtLen, span2 - Math.min(span1, 0));
+
+  return txt.substring(start, end).replaceAll(centre, `==${centre}==`);
 }
 
 const ymdNums = (date: string) => {

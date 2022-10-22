@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import MsEditor, { renderToHtml, embeds } from "mdsmirror";
 import { RawMark } from "mdsmark";
-import { parseMd, transform, markmap } from "mdsmap";
+import { parse, transform, markmap } from "mdsmap";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -9,7 +9,7 @@ import Menubar from 'components/landing/Menubar';
 import { useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
 import {nowToRadix36Str } from 'utils/helper';
-import { useImportMd } from 'editor/hooks/useImport'; 
+import { useImportFiles } from 'editor/hooks/useImport'; 
 
 type MapProps = {
   mdValue: string;
@@ -23,7 +23,7 @@ export function Mindmap(props: MapProps) {
   const renderSVG = useCallback(() => {
     if (!svgRef.current || !mdValue.trim()) { return; }
 
-    const data = transform(parseMd(mdValue, {}));
+    const data = transform(parse(mdValue, {}));
     markmap(svgRef.current, data, {
       preset: 'colorful', // or default
       linkShape: 'diagonal' // or bracket
@@ -45,6 +45,7 @@ export function Mindmap(props: MapProps) {
         xmlns="http://www.w3.org/2000/svg" 
         xmlnsXlink="http://www.w3.org/1999/xlink"
         width="100%" 
+        height="100%"
       />
     </div>
   );
@@ -157,7 +158,7 @@ export default function DemoEditor(props: Props) {
     setRawMode(mode)
   }, [note]);
 
-  const onOpen = useImportMd(val => setTitle(val), value => setMd(value));
+  const onOpen = useImportFiles();
 
   return (
     <div className={`container ${className}`}>

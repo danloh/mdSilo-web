@@ -14,7 +14,7 @@ export default function Footer(props: Props) {
           <LogoWithText />
         </div>
         <div className="flex flex-wrap flex-col lg:flex-row mt-2">
-          <Link href="/writing">
+          <Link href="/app/demo">
             <a className="m-1 text-gray-300 hover:text-primary-500">About</a>
           </Link>
           <a
