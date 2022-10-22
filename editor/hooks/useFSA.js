@@ -202,18 +202,29 @@ function getRealHandleName(name, withExt) {
  */
 export async function writeJsonFile(json = '') {
   const notesJson = json || buildNotesJson();
-  try {
-    const jsonHandle = await getOrNewFileHandle('mdSilo-all.json', true);
-    if (jsonHandle) {
-      await writeFile(jsonHandle, notesJson);
-    }
-  } catch (error) {
-    console.log('An error occured on write json file: ', error);
+  const saveJson = () => {
     const jsonContent = new Blob([notesJson], {
       type: 'application/json;charset=utf-8',
     });
     const now = nowToRadix36Str();
     saveAs(jsonContent, `mdSilo-${now}.json`);
+  };
+
+  if (!FileSystemAccess.support(window)) {
+    saveJson();
+    return;
+  }
+
+  try {
+    const jsonHandle = await getOrNewFileHandle('mdSilo-all.json', true);
+    if (jsonHandle) {
+      await writeFile(jsonHandle, notesJson);
+    } else {
+      saveJson();
+    }
+  } catch (error) {
+    console.log('An error occured on write json file: ', error);
+    saveJson();
   }
 }
 

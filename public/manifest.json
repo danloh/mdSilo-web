@@ -1,7 +1,7 @@
 {
   "name": "mdSilo",
   "short_name": "mdSilo",
-  "description": "mdSilo",
+  "description": "mdSilo: Lightweight Personal Wiki",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -22,7 +22,7 @@
   ],
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
-  "start_url": "/",
+  "start_url": "/app/",
   "display": "standalone",
   "orientation": "portrait"
 }
