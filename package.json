@@ -2,7 +2,7 @@
   "name": "mdsilo",
   "version": "0.1.0",
   "private": true,
-  "license": "AGPL",
+  "license": "AGPL-3.0-or-later",
   "homepage": "https://mdsilo.com",
   "scripts": {
     "dev": "next dev",
@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .tsx,.ts",
-    "typecheck": "tsc",
+    "tc": "tsc",
     "prettier": "prettier --write .",
     "analyze": "env ANALYZE=true next build"
   },
@@ -65,6 +65,7 @@
     "@types/d3-selection": "^3.0.2",
     "@types/d3-zoom": "^3.0.1",
     "@types/file-saver": "^2.0.5",
+    "@types/is-hotkey": "^0.1.7",
     "@types/node": "^17.0.24",
     "@types/nprogress": "^0.2.0",
     "@types/react": "^17.0.40",

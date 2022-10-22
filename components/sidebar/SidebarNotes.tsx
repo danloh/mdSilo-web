@@ -22,7 +22,7 @@ function SidebarNotes(props: SidebarNotesProps) {
   const noteSort = useStore((state) => state.noteSort);
   const [sortedNoteTree, numOfNotes] = useMemo(() => {
     if (currentDir) {
-      const treeList = noteTree[currentDir] || [];
+      const treeList = (noteTree[currentDir] || []).filter(n => !n.is_dir);
       return [sortNoteTree(treeList, noteSort), treeList.length];
     } else {
       return [[], 0];
