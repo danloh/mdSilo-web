@@ -14,6 +14,15 @@ export default function ServiceWorker(props: Props) {
       window.workbox !== undefined
     ) {
       const wb = window.workbox;
+
+      const showUpdateBanner = () => {
+        const updateBanner = document.getElementById('update-banner');
+        if (updateBanner) {
+          updateBanner.classList.replace('hidden', 'block');
+        }
+      };
+      wb.addEventListener('waiting', showUpdateBanner);
+
       // Register service worker
       wb.register();
     }
