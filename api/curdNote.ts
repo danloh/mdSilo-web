@@ -1,19 +1,27 @@
 import { store } from 'lib/store';
 import apiClient from 'api/apiClient';
-import type { Note } from 'types/model';
 import type { PickPartial } from 'types/utils';
+
+export type DbNotesData = {
+  id: string; 
+  title: string;   // aka. folder name
+  content: string; // all notes
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+};
 
 // upsert
 // 
 export type NoteUpsert = PickPartial<
-  Note,  // title, user_id required
-  'id' | 'title' | 'content' | 'created_at' | 'updated_at' | 'is_daily'
+  DbNotesData, 
+  'id' | 'title' | 'content' | 'created_at' | 'updated_at' | 'user_id'
 >;
 
 export async function upsertDbNote(note: NoteUpsert) {
   // for userId
   const response = await apiClient
-    .from<Note>('notes')
+    .from<DbNotesData>('notes')
     .upsert(
       { ...note, updated_at: new Date().toISOString() },
       { onConflict: 'user_id, title', }
@@ -26,13 +34,13 @@ export async function upsertDbNote(note: NoteUpsert) {
 // update
 // 
 export type NoteUpdate = PickPartial<
-  Note, // id required
-  'title' | 'content' | 'file_path' | 'cover' | 'created_at' | 'updated_at' | 'is_daily'
+  DbNotesData, // id required
+  'title' | 'content' | 'created_at' | 'updated_at' | 'user_id'
 >;
 
 export async function updateDbNote(note: NoteUpdate) {
   const response = await apiClient
-    .from<Note>('notes')
+    .from<DbNotesData>('notes')
     .update({ ...note, updated_at: new Date().toISOString() })
     .eq('id', note.id)
     .single();
@@ -49,30 +57,13 @@ export async function updateDbNote(note: NoteUpdate) {
 
 // get
 //
-const selectColumns = 'id, title, content, user_id, created_at, updated_at, is_pub, is_wiki, is_daily';
+const selectColumns = 'id, title, content, created_at, updated_at, user_id';
 
 export async function loadDbNote(noteId: string) {
   const response = await apiClient
-    .from<Note>('notes')
+    .from<DbNotesData>('notes')
     .select(selectColumns)
     .eq('id', noteId)
-    .single();
-
-  return response;
-}
-
-
-/* useless, to be del  */
-/**
- * load note from db per title
- * @param noteTitle 
- * @returns Response
- */
-export async function loadDbNotePerTitle(noteTitle: string) {
-  const response = await apiClient
-    .from<Note>('notes')
-    .select(selectColumns)
-    .eq('title', noteTitle)
     .single();
 
   return response;
@@ -82,11 +73,9 @@ export async function loadDbNotePerTitle(noteTitle: string) {
 // 
 export async function deleteDbNote(id: string, userId: string) {
   const response = await apiClient
-    .from<Note>('notes')
+    .from<DbNotesData>('notes')
     .delete()
     .match({'id': id, 'user_id': userId});
 
   return response;
 }
-
-/* end useless, to be del  */

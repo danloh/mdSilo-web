@@ -127,27 +127,27 @@ export default function AppLayout(props: Props) {
   );
   useHotkeys(hotkeys);
 
-  useEffect(() => {
-    const warningText = `Make sure all changes have been saved`;
+  // useEffect(() => {
+  //   const warningText = `Make sure all changes have been saved`;
 
-    const handleWindowClose = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      return (e.returnValue = warningText);
-    };
-    const handleBrowseAway = () => {
-      if (window.confirm(warningText)) return;
-      router.events.emit('routeChangeError');
-      throw 'routeChange aborted';
-    };
+  //   const handleWindowClose = (e: BeforeUnloadEvent) => {
+  //     e.preventDefault();
+  //     return (e.returnValue = warningText);
+  //   };
+  //   const handleBrowseAway = () => {
+  //     if (window.confirm(warningText)) return;
+  //     router.events.emit('routeChangeError');
+  //     throw 'routeChange aborted';
+  //   };
 
-    window.addEventListener('beforeunload', handleWindowClose);
-    router.events.on('routeChangeStart', handleBrowseAway);
+  //   window.addEventListener('beforeunload', handleWindowClose);
+  //   router.events.on('routeChangeStart', handleBrowseAway);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleWindowClose);
-      router.events.off('routeChangeStart', handleBrowseAway);
-    };
-  }, [router]);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleWindowClose);
+  //     router.events.off('routeChangeStart', handleBrowseAway);
+  //   };
+  // }, [router]);
 
   const appContainerClassName = classNames(
     'h-screen',

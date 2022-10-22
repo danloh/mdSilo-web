@@ -4,7 +4,7 @@ export type User = {
 };
 
 export type Note = {
-  id: string;  // !!Important!! id === file_path
+  id: string;  
   title: string;
   content: string;
   file_path: string;
