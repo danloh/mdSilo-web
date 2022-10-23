@@ -5,11 +5,12 @@ import { parse, transform, markmap } from "mdsmap";
 import { saveAs } from 'file-saver';
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
+import { saveDiagram } from 'components/note/Note';
 import Menubar from 'components/landing/Menubar';
 import { useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
-import {nowToRadix36Str } from 'utils/helper';
 import { useImportFiles } from 'editor/hooks/useImport'; 
+import { nowToRadix36Str } from 'utils/helper';
 
 type MapProps = {
   mdValue: string;
@@ -168,24 +169,20 @@ export default function DemoEditor(props: Props) {
   const onSaveHTML = useCallback(async () => {
     const mdHTML = renderToHtml(md)
     const html = `<!DOCTYPE html><html><head></head><body>${mdHTML}</body></html>`
-    const blob = new Blob([html], {
-      type: 'text/html;charset=utf-8',
-    });
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     saveAs(blob, `${title}-${nowToRadix36Str()}.html`);
   }, [md, title]);
 
   const onSaveDiagram = useCallback((svg: string, ty: string) => {
-    const rawSVG = decodeSVG(svg);
-    const blob = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' });
-    saveAs(blob, `${ty}-${nowToRadix36Str()}.svg`);
+    saveDiagram(svg, ty);
   }, []);
 
   const note = useStore(state => state.notes)['md-current'];
   // console.log("note: ", note)
   const onSwitch = useCallback(async (mode: string) => {
     setMd(note?.content || ' ');
-    setTitle(note?.title || '')
-    setRawMode(mode)
+    setTitle(note?.title || '');
+    setRawMode(mode);
   }, [note]);
 
   const onOpen = useImportFiles();
@@ -244,17 +241,4 @@ export default function DemoEditor(props: Props) {
       </div>
     </div>
   );
-}
-
-function decodeSVG(text: string) {
-  const dummy = document.createElement("div");
-  const txt = text.replace(
-    /(&(?!(amp|gt|lt|quot|apos))[^;]+;)/g, // excerpt these html entities
-    (a: string) => {
-      dummy.innerHTML = a;
-      return dummy.textContent || ' '; // real value
-    }
-  );
-
-  return txt;
 }

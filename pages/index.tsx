@@ -7,11 +7,11 @@ export default function Home() {
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col splash-bg">
-        <div className="shadow-sm bg-slate-600">
+        <div className="shadow-sm bg-slate-600 pb-12">
           <Navbar withText={true} />
           <div className="container flex flex-col lg:flex-row items-center justify-center my-12">
             <div className="container flex flex-col items-center justify-center px-2">
-              <p className="text-3xl pt-3 text-center text-primary-500">
+              <p className="text-4xl pt-3 text-center text-primary-500">
                 Buffering for your daily I/O 
               </p>
               <p className="text-xl pt-4 text-center text-white">
@@ -40,7 +40,7 @@ export default function Home() {
         <div>
           <svg className="fill-slate-600" viewBox="0 0 1024 65"><path d="M99 0.25C59.25 0 0 25 0 25.2V0.25H99C99 0.25 99 0.25 99 0.25C99 0.25 99 0.25 99 0.25H1150V65C1018 22 958 25 820 23C672 21 573 73 427 73C308 73 218 0.25 99 0.25H99Z"></path></svg>
         </div>
-        <Footer className="mt-10" />
+        <Footer className="mt-12" />
       </div>
     </MainView>
   );

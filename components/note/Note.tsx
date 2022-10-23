@@ -268,14 +268,9 @@ function Note(props: Props) {
     window.open(decodeURI(realHref));
   }, [initDir]);
 
-  const onSaveDiagram = useCallback(async (svg: string, ty: string) => {
-    if (!initDir) return;
-    const rawSVG = decodeHTMLEntity(svg);
-    const svgBlob = new Blob([rawSVG], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
-    saveAs(svgBlob, `${title}-${ty}.svg`);
-  }, [initDir, title]);
+  const onSaveDiagram = useCallback((svg: string, ty: string) => {
+    saveDiagram(svg, ty, title);
+  }, [title]);
 
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-black dark:text-gray-200';
@@ -434,4 +429,10 @@ const createNewNote = async (parentDir: string, title: string) => {
   // await writeFile(notePath, ' ');
 
   return notePath;
+};
+
+export const saveDiagram = (svg: string, ty: string, title = 'untitled') => {
+  const rawSVG = decodeHTMLEntity(svg);
+  const svgBlob = new Blob([rawSVG], { type: 'image/svg+xml;charset=utf-8' });
+  saveAs(svgBlob, `${title}-${ty}.svg`);
 };
