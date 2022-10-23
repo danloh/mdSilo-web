@@ -42,7 +42,7 @@ export default function SideMenu() {
         callback: dispatchChron,
       },
       {
-        hotkey: 'mod+shift+t',
+        hotkey: 'mod+shift+k',
         callback: dispatchTask,
       },
     ],
@@ -166,7 +166,7 @@ const TaskButton = (props: ButtonProps) => {
   return (
     <SidebarItem isHighlighted={viewTy === 'task'} onClick={onClick}>
       <Tooltip
-        content="Tasks View (Ctrl+Shift+T)"
+        content="Tasks View (Ctrl+Shift+K)"
         placement="right" 
       >
         <button className={btnClass} onClick={onDispatch}>

@@ -1,13 +1,14 @@
 import type { ForwardedRef } from 'react';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import type { TablerIcon } from '@tabler/icons';
 import { IconFilePlus, IconSearch } from '@tabler/icons';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { getOrNewFileHandle } from 'editor/hooks/useFSA';
 import { ciStringEqual, joinPath, regDateStr } from 'utils/helper';
-import { store, useStore } from 'lib/store';
+import { Notes, store, useStore } from 'lib/store';
 import { defaultNote } from 'types/model';
+import { useCurrentViewContext } from 'context/useCurrentView';
+import { refreshFile } from 'editor/hooks/useRefresh';
 
 enum OptionType {
   NOTE,
@@ -28,7 +29,9 @@ type Props = {
 
 function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
   const { onOptionClick: onOptionClickCallback, className = '' } = props;
-  const router = useRouter();
+  
+  const currentView = useCurrentViewContext();
+  const dispatch = currentView.dispatch;
 
   const currentDir = useStore((state) => state.currentDir); 
   const [inputText, setInputText] = useState('');
@@ -83,14 +86,18 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
         // new FileHandle for the new create note and set in store
         await getOrNewFileHandle(note.title);
         // navigate to md view
-        router.push(`/app/md/${note.id}`);
+        const cNote: Notes = {};
+        cNote[note.id] = note;
+        store.getState().setCurrentNote(cNote);
+        dispatch({view: 'md', params: {noteId: note.id}});
       } else if (option.type === OptionType.NOTE) {
-        router.push(`/app/md/${option.id}`);
+        await refreshFile(option.id);
+        dispatch({view: 'md', params: {noteId: option.id}});
       } else {
         throw new Error(`Type ${option.type} is not supported`);
       }
     },
-    [onOptionClickCallback, currentDir, inputTxt, router]
+    [onOptionClickCallback, currentDir, inputTxt, dispatch]
   );
 
   const onKeyDown = useCallback(
