@@ -107,23 +107,11 @@ export default function AppLayout(props: Props) {
         callback: () => setSidebarTab(SidebarTab.Search),
       },
       {
-        hotkey: 'mod+shift+g',
-        callback: () => router.push('/app/graph'),
-      },
-      {
-        hotkey: 'mod+shift+c',
-        callback: () => router.push('/app/chronicle'),
-      },
-      {
-        hotkey: 'mod+shift+t',
-        callback: () => router.push('/app/tasks'),
-      },
-      {
         hotkey: 'alt+x',
         callback: () => setIsSidebarOpen((isOpen) => !isOpen),
       },
     ],
-    [setIsFindOrCreateModalOpen, setSidebarTab, setIsSidebarOpen, router]
+    [setIsFindOrCreateModalOpen, setSidebarTab, setIsSidebarOpen]
   );
   useHotkeys(hotkeys);
 

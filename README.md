@@ -23,7 +23,7 @@ If your browser doesn't support local file system APIs, you'll still be able to 
 
 Since mdSilo Web app is running completely within the browser, some experiences will naturally be more constrained, when compared to the desktop app. For example, we cannot attach local images or files, no relative path to image/file support and no folder management. 
 
-Howerver, we can also benefit from the browser environment, for example, we can export our writing to PDF via the `Print` in browser and we can run mdsilo on mobile as mdsilo web is alsp a PWA(Progressive Web App). 
+Howerver, we can also benefit from the browser environment, for example, we can export our writing to PDF via the `Print` in browser and we can run mdsilo on mobile as mdsilo web is also a PWA(Progressive Web App). 
 
 And, BTW, [Desktop App is here](https://github.com/mdSilo/mdSilo/releases) 
 

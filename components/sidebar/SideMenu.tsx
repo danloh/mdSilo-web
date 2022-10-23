@@ -42,7 +42,7 @@ export default function SideMenu() {
         callback: dispatchChron,
       },
       {
-        hotkey: 'mod+shift+t',
+        hotkey: 'mod+shift+k',
         callback: dispatchTask,
       },
     ],
@@ -134,7 +134,6 @@ const GraphButton = (props: ButtonProps) => {
       <Tooltip
         content="Visualization of networked writing (Ctrl+Shift+G)"
         placement="right"
-        touch={true}
       >
         <button className={btnClass} onClick={onDispatch}>
           <IconDna size={24} className={btnIconClass} />
@@ -151,8 +150,7 @@ const ChronButton = (props: ButtonProps) => {
     <SidebarItem isHighlighted={viewTy === 'chronicle'} onClick={onClick}>
       <Tooltip
         content="Chronicle View (Ctrl+Shift+C)"
-        placement="right"
-        touch={true}
+        placement="right" 
       >
         <button className={btnClass} onClick={onDispatch}>
           <IconCalendar size={24} className={btnIconClass} />
@@ -168,9 +166,8 @@ const TaskButton = (props: ButtonProps) => {
   return (
     <SidebarItem isHighlighted={viewTy === 'task'} onClick={onClick}>
       <Tooltip
-        content="Tasks View (Ctrl+Shift+T)"
-        placement="right"
-        touch={true}
+        content="Tasks View (Ctrl+Shift+K)"
+        placement="right" 
       >
         <button className={btnClass} onClick={onDispatch}>
           <IconCheckbox size={24} className={btnIconClass} />
@@ -223,7 +220,7 @@ const FileButton = () => {
       {({ open }) => (
         <>
           <Menu.Button ref={btnRef} className="hover:bg-gray-200 dark:hover:bg-gray-700">
-            <Tooltip content="File Menu" placement="right" touch={true}>
+            <Tooltip content="File Menu" placement="right">
               <span className={btnClass}>
                 <IconFile size={24} className={btnIconClass} />
               </span>
