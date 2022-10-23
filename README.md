@@ -1,116 +1,86 @@
 
 # mdSilo
 
-A mind silo for storing ideas, thought, knowledge with a powerful writing tool. [Desktop App is Here.](https://github.com/danloh/mdSilo-app/releases)
+A local-first mind silo for storing ideas, thought, knowledge with a powerful writing tool,
+running fully in the browser. 
 
-[Demo](https://mdsilo.com)  
-[Gitter](https://gitter.im/mdSilo)  
-[Discord](https://discord.gg/EXYSEHRTFt)  
-[Download](https://github.com/mdSilo/mdSilo/releases) 
+[Web App](https://mdsilo.com/app)   
+[Demo](https://mdsilo.com/app/demo)    
+[Discord](https://discord.gg/EXYSEHRTFt) 
 
+## Features
 
-## Welcome to mdSilo
+- All-In-One Editor: Markdown, WYSIWYG, MindMap... 
+- Markdown and extensions: Diagram, Table, Math/Chemical, Code block(Highlight)...   
+- Slash commands, Hovering toolbar, hotkeys and more toolkits...   
+- Chronicle view, Graph view, Task view... 
+- Full-text search; 
+- Dark and Light Mode  
+- PWA  
+- On top of local plain-text files. No install required, no registration required, no privacy issue. 
 
-[mdSilo](https://mdsilo.com/about/) is a lightweight writing tool with WYSIWYG Markdown Editor. Available for Web, Linux, Windows and macOS. You can get the Desktop application [here](https://github.com/mdSilo/mdSilo/releases) and enjoy more features. 
+If your browser doesn't support local file system APIs, you'll still be able to open individual local files or import JSON file exported from mdsilo desktop app. 
 
----
+Since mdSilo Web app is running completely within the browser, some experiences will naturally be more constrained, when compared to the desktop app. For example, we cannot attach local images or files, no relative path to image/file support and no folder management. 
 
-* ==Slash Commands== : Typing `/` will trigger a list of the commands; 
-* ==Hovering Toolbar== : Styling the text when any selected;
-* ==Markdown shortcuts== :  **Bold**,  *Italic*, __underline__, `inline code`, and more:  
+Howerver, we can also benefit from the browser environment, for example, we can export our writing to PDF via the `Print` in browser and we can run mdsilo on mobile as mdsilo web is alsp a PWA(Progressive Web App). 
 
-> Quoteblock: typing `>` to quote. 
+And, BTW, [Desktop App is here](https://github.com/mdSilo/mdSilo/releases) 
 
-* List: Typing `-` or `*` or `1.` to create list.
+## Tech Stack
 
-* Checklist: Typing \`[]\` to create todo-list.  
-  - [ ] todo-1 
-  - [x] done-1 
+- Editor Framework: [ProseMirror](https://prosemirror.net/)      
+- Frontend Framework: [React](https://reactjs.org/) and [Nextjs](https://nextjs.org/)
 
+## Road map 
 
-### You can insert tables 
+- Markdown
+  - [X] Style: **Bold**, *Italic*, ~~Strikethrough~~, `Inline Code`
+  - [X] Link: [mdSilo](https://mdsilo.com) and <https://mdsilo.com>, 
+  - [X] Image: `![]()`   
+  - [X] Headings and TOC, 
+  - [X] List item: ordered list, bullet list, check list and nested list
+  - [X] Table
+  - [X] Blockquotes  
+  - [X] Horizontal Rules 
 
---- 
+- Markdown extension
+  - [X] more style: `==mark==`, `__underline__`, `1^sup^`
+  - [X] Highlight code block  
+  - [X] Math and Chemical Equation: inline `$\KaTeX$` and block `$$\LaTeX$$` 
+  - [X] Notice block: info, warning, tips 
+  - [X] Wikilink: `[[]]` 
+  - [X] Hashtag: `#tag#` 
+  - [X] Diagram: mermaid, echarts, music notation... 
+  - [X] Embed web page: YouTube, Figma... 
 
-* Insert table by typing `/table` and then select Table command;
-* You can add or remove column or row by floating table toolbar;
+- Writing, formatting and drawing 
+  - [X] WYSIWYG, Markdown, MindMap and Split view 
+  - [X] Slash commands  
+  - [X] Hovering toolbar
+  - [X] hotkeys 
+  - [ ] Drawing  
 
-| Features | mdSilo | Note | Pricing |
-|----|----|----|---:|
-| WYSIWYG | Yes | Live Preview: Markdown, Code, Math... | Free |
-| Writing | Yes | Slash Commands, Hovering Toolbar, Hotkeys  | Free | 
-| Table | Yes | Insert Table, Add or Remove Row or Culumn  | Free | 
-| Code | Yes | Code Block and Highlight  | Free | 
-| Math | Yes | Math Equation($LaTex$): inline or block | Free | 
-| Callout | Yes | Information, Tips, Warning  | Free | 
+- View
+  - [X] Graph
+  - [X] Task
+  - [X] Chronicle 
 
-### You can insert code 
+- Organize writings
+  - [X] Folder management 
+  - [X] Backlinks 
+  - [X] Recent history 
+  - [ ] Block reference  
+  - [ ] Flashcards 
+  - [ ] Export as PDF,HTML, ... 
+  - [ ] Version control: git integration 
 
-- Quickly add code using the ``` shortcut;
-- Insert code using /code and select Code Block command;
-
-
-```javascript
-function main() {
-  console.log("Hello World");
-}
-```  
-
-Try to change the language to see the changes on highlight. 
-
-
-### You can insert math equations 
-
---- 
-
-- Quickly add inline math using the `$` and math block using `$$` ;
-- Insert $\LaTeX$ equations using /math and select Math Equation command;
-
-$$
-x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-$$
-
-
-### You can insert callout 
-
---- 
-
-There are three types of editable blocks that can be used to callout information:
-
-:::info
-Information: A WYSIWYG Markdown editor 
-::: 
-
-:::tip
-Tip: Feel free to edit this page
-:::
-
-:::warning
-Warning: Any changes will not be saved automatically. 
-:::
+- Cross-Platform 
+  - [x] Windows, macOS, Linux. 
+  - [X] Web: https://mdsilo.com/app/ 
+  - [ ] Mobile: iOS/iPadOS and Android(soon...)
 
 
-### You can insert image 
-
---- 
-
-- Insert using `![caption](image_link)`
-
-
-![A cat, Image credits: Dorota Dylka@unsplash](https://images.unsplash.com/photo-1456677698485-dceeec22c7fc)
-
-
-### More is on the way 
-
----
-
-- [ ] Linking: Backlink, …
-- [ ] Hashtag, 
-- [ ] Embed media, web page, local image... 
-- [ ] Operations: Open local file, Save, Export...  
-
-
-### Any questions, feedback or suggestions?
+## Any questions, feedback or suggestions?
 
 You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Discord](https://discord.gg/EXYSEHRTFt). We are waiting there for you.
-
