@@ -4,7 +4,6 @@ import { useCurrentViewContext, DispatchType } from 'context/useCurrentView';
 import { Note } from 'types/model';
 import Tree from 'components/misc/Tree';
 import Tooltip from 'components/misc/Tooltip';
-// import { openFilePath } from 'file/open';
 import { useStore } from 'lib/store';
 
 type Props = {

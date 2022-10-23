@@ -5,7 +5,6 @@ import { Note } from 'types/model';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { realDateCompare, regDateStr, strToDate } from 'utils/helper';
-// import { openFilePath } from "file/open";
 
 export default function Journals() {
   const initDir = useStore((state) => state.initDir);

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
 import MsEditor, { embeds, JSONContent } from "mdsmirror";
 import { RawMark } from "mdsmark";
+import saveAs from 'file-saver';
 import { Mindmap } from "editor/DemoEditor";
 import Title from 'components/note/Title';
 import Toc, { Heading } from 'components/note/Toc';
@@ -11,28 +11,17 @@ import { Notes, SidebarTab, store, useStore } from 'lib/store';
 import { defaultNote, Note as NoteType } from 'types/model';
 import { ProvideCurrentMd } from 'context/useCurrentMd';
 import { useCurrentViewContext } from 'context/useCurrentView';
-import { useAuthContext } from 'utils/useAuth';
-import type { NoteUpdate } from 'api/curdNote';
-import { updateDbNote, loadDbNote } from 'api/curdNote';
-
-import { ProvideCurrent } from 'editor/hooks/useCurrent';
-import { writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile } from 'editor/hooks/useFSA';
+import { 
+  writeFile, getOrNewFileHandle, delFileHandle, writeJsonFile 
+} from 'editor/hooks/useFSA';
 import useNoteSearch from 'editor/hooks/useNoteSearch';
 import { FileSystemAccess } from 'editor/checks';
-import { ciStringEqual, isUrl, joinPath, regDateStr } from 'utils/helper';
+import { ciStringEqual, decodeHTMLEntity, isUrl, joinPath, regDateStr } from 'utils/helper';
 import { refreshFile } from 'editor/hooks/useRefresh';
 import ErrorBoundary from '../misc/ErrorBoundary';
 import NoteHeader from './NoteHeader';
 import Backlinks from './backlinks/Backlinks';
 import updateBacklinks from './backlinks/updateBacklinks';
-
-
-
-
-const SYNC_DEBOUNCE_MS = 1000;
-
-const CHECK_VIOLATION_ERROR_CODE = '23514';
-const UNIQUE_VIOLATION_ERROR_CODE = '23505';
 
 type Props = {
   noteId: string;
@@ -57,13 +46,9 @@ function Note(props: Props) {
   const rawMode = useStore((state) => state.rawMode);
   const readMode = useStore((state) => state.readMode);
   const isRTL = useStore((state) => state.isRTL);
-  const useAsset = useStore((state) => state.useAsset);
   
   const initDir = useStore((state) => state.initDir);
   const currentDir = useStore((state) => state.currentDir);
-
-  // need to update timely if possible
-  const protocol = navigator.platform.startsWith('Win') ? 'https://asset.localhost/' : 'asset://';
 
   // console.log("initDir", initDir, protocol, navigator.platform);
   const storeNotes = useStore((state) => state.notes);
@@ -285,8 +270,12 @@ function Note(props: Props) {
 
   const onSaveDiagram = useCallback(async (svg: string, ty: string) => {
     if (!initDir) return;
-    // TODO 
-  }, [initDir]);
+    const rawSVG = decodeHTMLEntity(svg);
+    const svgBlob = new Blob([rawSVG], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+    saveAs(svgBlob, `${title}-${ty}.svg`);
+  }, [initDir, title]);
 
   const noteContainerClassName =
     'flex flex-col flex-shrink-0 md:flex-shrink w-full bg-white dark:bg-black dark:text-gray-200';
@@ -354,11 +343,9 @@ function Note(props: Props) {
                     onSaveDiagram={onSaveDiagram} 
                     embeds={embeds}
                     disables={['sub']}
-                    rootPath={initDir}
-                    protocol={protocol}
                   />
                 ) : rawMode === 'mindmap' ? (
-                  <Mindmap key={`mp-${noteId}`} mdValue={mdContent} />
+                  <Mindmap key={`mp-${noteId}`} mdValue={mdContent} title={title} />
                 ) : (
                   <div className="grid grid-cols-2 gap-1 justify-between">
                     <div className="flex-1 mr-4 border-r-2 border-gray-200 dark:border-gray-600">
@@ -390,8 +377,6 @@ function Note(props: Props) {
                         onClickAttachment={onClickAttachment} 
                         embeds={embeds}
                         disables={['sub']}
-                        rootPath={initDir}
-                        protocol={protocol}
                         onFocus={() => switchFocus('wysiwyg')}
                       />
                     </div>

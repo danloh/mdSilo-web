@@ -1,4 +1,3 @@
-//import { writeFile } from 'file/write';
 import { LINK_REGEX, WIKILINK_REGEX } from 'pages/app/ForceGraph'
 import { store } from 'lib/store';
 import { isUrl } from 'utils/helper';

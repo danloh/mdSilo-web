@@ -26,6 +26,19 @@ export const getNoteAsBlob = (content: string) => {
   return blob;
 };
 
+export function decodeHTMLEntity(text: string) {
+  const dummy = document.createElement("div");
+  const txt = text.replace(
+    /(&(?!(amp|gt|lt|quot|apos))[^;]+;)/g, // excerpt these html entities
+    (a: string) => {
+      dummy.innerHTML = a;
+      return dummy.textContent || ' '; // real value
+    }
+  );
+
+  return txt;
+}
+
 // file and path
 
 /**
