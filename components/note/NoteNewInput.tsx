@@ -73,7 +73,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
       onOptionClickCallback?.();
 
       if (option.type === OptionType.NEW_NOTE) {
-        if (!currentDir) return;
+        if (!currentDir) return; // ?? 
         const notePath = joinPath(currentDir, `${inputTxt}.md`);
         const note = { 
           ...defaultNote, 
@@ -83,6 +83,7 @@ function FindOrCreateInput(props: Props, ref: ForwardedRef<HTMLInputElement>) {
           is_daily: regDateStr.test(inputTxt),
         };
         store.getState().upsertNote(note);
+        store.getState().upsertTree(currentDir, [note]);
         // new FileHandle for the new create note and set in store
         await getOrNewFileHandle(note.title);
         // navigate to md view

@@ -106,6 +106,9 @@ export function useImportJson() {
         const dir = dirs.length > 0 ? dirs[0] : '.';
         store.getState().setInitDir(dir);
         store.getState().setCurrentDir(dir);
+        // check if any note in notes but not in tree 
+        const notesArr = Object.values(notesObj);
+        store.getState().upsertTree(dir, notesArr);
       } catch (e) {
         console.log(e);
       }
