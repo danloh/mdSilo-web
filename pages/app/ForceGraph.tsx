@@ -27,7 +27,6 @@ import { select } from 'd3-selection';
 import { useCurrentViewContext } from 'context/useCurrentView';
 import { useStore } from 'lib/store';
 import { isUrl } from 'utils/helper';
-// import { openFilePath } from 'file/open';
 
 export const LINK_REGEX = /\[([^[]+)]\((\S+)\)/g;
 export const WIKILINK_REGEX = /\[\[(.+)\]\]/g;

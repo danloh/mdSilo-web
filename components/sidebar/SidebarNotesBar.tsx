@@ -3,8 +3,6 @@ import { useStore } from 'lib/store';
 import { Sort } from 'lib/userSettingsSlice';
 import Tooltip from 'components/misc/Tooltip';
 import { normalizeSlash } from 'utils/helper';
-// import { normalizeSlash, getParentDir } from 'file/util';
-// import { listDirPath } from 'editor/hooks/useOpen';
 import SidebarNotesSortDropdown from './SidebarNotesSortDropdown';
 
 

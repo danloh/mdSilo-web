@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import updateBacklinks from 'components/note/backlinks/updateBacklinks';
 import { useCurrentViewContext } from 'context/useCurrentView';
 import { store } from 'lib/store';
-//import { deleteFile } from 'file/write';
 
 export default function useDeleteNote(noteId: string, noteTitle: string) {
   const currentView = useCurrentViewContext();

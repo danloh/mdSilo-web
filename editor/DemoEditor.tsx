@@ -13,21 +13,25 @@ import { useImportFiles } from 'editor/hooks/useImport';
 
 type MapProps = {
   mdValue: string;
+  title?: string;
   className?: string;
 };
 
 export function Mindmap(props: MapProps) {
-  const { mdValue, className='' } = props;
+  const { mdValue, title, className = '' } = props;
+
+  const [svgElement, setSvgElement] = useState<SVGAElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const renderSVG = useCallback(() => {
     if (!svgRef.current || !mdValue.trim()) { return; }
 
     const data = transform(parse(mdValue, {}));
-    markmap(svgRef.current, data, {
-      preset: 'colorful', // or default
-      linkShape: 'diagonal' // or bracket
+    const svg: SVGAElement = markmap(svgRef.current, data, {
+      preset: 'colorful',   
+      linkShape: 'diagonal'
     });
+    setSvgElement(svg);
   }, [mdValue]);
 
   useEffect(() => {
@@ -36,8 +40,34 @@ export function Mindmap(props: MapProps) {
     renderSVG();
   }, [renderSVG]);
 
+  const saveSVG = useCallback(async () => {
+    if (!svgElement) return;
+    const w = svgElement.clientWidth;
+    const h = svgElement.clientHeight;
+    if (w && h) {
+      svgElement.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    }
+    svgElement.setAttribute("style", "background-color:white");
+    // console.log("w/h", w, h, svgElement);
+    const styleNode = document.createElement('style');
+    styleNode.setAttribute('type', 'text/css');
+    styleNode.innerHTML = `svg#mindmap {width: 100%; height: 100%;} .markmap-node-circle {fill: #fff; stroke-width: 1.5px;} .markmap-node-text {fill: #000; font: 10px sans-serif;} .markmap-link {fill: none;}`;
+    svgElement.appendChild(styleNode);
+    // prepare to save
+    const rawSVG = svgElement.outerHTML;
+    const svgBlob = new Blob([rawSVG], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+    saveAs(svgBlob, `mindmap-${title || 'untitled'}.svg`);
+  }, [svgElement, title]);
+
   return (
-    <div className={`w-full h-full bg-slate-100 ${className}`}>
+    <div className={`w-full h-full bg-white mb-6 ${className}`}>
+      <div className="flex items-center justify-center my-2">
+        <button className="text-xs text-gray-700" onClick={saveSVG}>
+          SAVE RAW SVG
+        </button>
+      </div>
       <svg
         id="mindmap"
         ref={svgRef}
@@ -45,7 +75,7 @@ export function Mindmap(props: MapProps) {
         xmlns="http://www.w3.org/2000/svg" 
         xmlnsXlink="http://www.w3.org/1999/xlink"
         width="100%" 
-        height="100%"
+        height="100%" 
       />
     </div>
   );
