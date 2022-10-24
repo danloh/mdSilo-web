@@ -11,8 +11,8 @@ export default function SettingsModal({ isOpen, handleClose }: Props) {
 
   const darkMode = useStore((state) => state.darkMode);
   const setDarkMode = useStore((state) => state.setDarkMode);
-  const isPageStackingOn = useStore((state) => state.isPageStackingOn);
-  const setIsPageStackingOn = useStore((state) => state.setIsPageStackingOn);
+  // const isPageStackingOn = useStore((state) => state.isPageStackingOn);
+  // const setIsPageStackingOn = useStore((state) => state.setIsPageStackingOn);
   const isCheckSpellOn = useStore((state) => state.isCheckSpellOn);
   const setIsCheckSpellOn = useStore((state) => state.setIsCheckSpellOn);
   const isRTL = useStore((state) => state.isRTL);
@@ -29,12 +29,12 @@ export default function SettingsModal({ isOpen, handleClose }: Props) {
           optionLeft="Light" 
           optionRight="Dark"
         />
-        <SettingsToggle
+        {/* <SettingsToggle
           name="Page Stacking" 
           descript="To stack the minds"
           check={isPageStackingOn}
           handleCheck={setIsPageStackingOn}
-        />
+        /> */}
         <SettingsToggle
           name="Spell Check" 
           descript="Spell checker works for English"

@@ -80,7 +80,7 @@ export default function NoteHeader() {
           {({ open }) => (
             <>
               <Menu.Button ref={menuButtonRef} className={buttonClassName}>
-                <Tooltip content="Options (Move, Delete...)">
+                <Tooltip content="Options (Print, Delete...)">
                   <span className="flex items-center justify-center w-8 h-8">
                     <IconDots size={18} className={iconClass} />
                   </span>
