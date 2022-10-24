@@ -43,7 +43,7 @@ export default function SidebarHeader() {
           </DropdownItem>
           <DropdownItem
             className="border-t dark:border-gray-700"
-            as='link'
+            as='a'
             href='https://mdsilo.com/sponsors/'
           >
             <IconPizza size={18} className="mr-1" />
