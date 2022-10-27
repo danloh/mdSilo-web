@@ -18,7 +18,7 @@ export default function Chronicle() {
   const onNewDailyNote = useCallback(async (date: string) => {
     if (!initDir || !regDateStr.test(date)) return;
     const noteId = joinPath(initDir, 'daily', `${date}.md`);
-    const note = false; // await openFilePath(noteId, true);
+    const note = await refreshFile(noteId);
     if (!note) {
       const newNote: Note = {
         ...defaultNote,

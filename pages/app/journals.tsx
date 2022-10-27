@@ -5,6 +5,7 @@ import { Note } from 'types/model';
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import FindOrCreateInput from 'components/note/NoteNewInput';
 import { realDateCompare, regDateStr, strToDate } from 'utils/helper';
+import { refreshFile } from "editor/hooks/useRefresh";
 
 export default function Journals() {
   const initDir = useStore((state) => state.initDir);
@@ -48,7 +49,7 @@ function NoteItem(props: NoteItemProps) {
     <div className="flex flex-col w-full mx-auto overlfow-y-auto">
       <button 
         onClick={async () => {
-          // await openFilePath(note.id, true);
+          await refreshFile(note.id);
           dispatch({view: 'md', params: { noteId: note.id }});
         }}
         className="flex items-center link text-lg py-2 pl-4"
