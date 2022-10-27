@@ -160,7 +160,7 @@ Lightweight **knowledge silo** and networked-writing tool equipped with ==WYSIWY
 ## Get Application
 
 :::info
-You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), 10Mb only.
+You can [Get the application here](https://github.com/mdSilo/mdSilo/releases), 10MB only.
 Benefited from Tauri(Rust), mdSilo is lightweight and fast.  
 :::
 
