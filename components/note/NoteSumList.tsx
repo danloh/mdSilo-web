@@ -5,6 +5,7 @@ import { Note } from 'types/model';
 import Tree from 'components/misc/Tree';
 import Tooltip from 'components/misc/Tooltip';
 import { useStore } from 'lib/store';
+import { refreshFile } from 'editor/hooks/useRefresh';
 
 type Props = {
   anchor: string;
@@ -64,7 +65,7 @@ const noteToTreeData = (dispatch: DispatchType, darkMode: boolean, isRTL: boolea
         <button 
           className="link flex items-center py-2" 
           onClick={async () => {
-            // await openFilePath(note.id, true);
+            await refreshFile(note.id);
             dispatch({view: 'md', params: { noteId: note.id }});
           }}
         >

@@ -27,6 +27,7 @@ import { select } from 'd3-selection';
 import { useCurrentViewContext } from 'context/useCurrentView';
 import { useStore } from 'lib/store';
 import { isUrl } from 'utils/helper';
+import { refreshFile } from 'editor/hooks/useRefresh';
 
 export const LINK_REGEX = /\[([^[]+)]\((\S+)\)/g;
 export const WIKILINK_REGEX = /\[\[(.+)\]\]/g;
@@ -381,7 +382,7 @@ export default function ForceGraph(props: Props) {
         if (clickedNode && clickedNode.ty === 'link') {
           const note = storeNotes[clickedNode.id];
           if (!note) return;
-          // await openFilePath(note.id, true);
+          await refreshFile(note.id);
           dispatch({view: 'md', params: { noteId: note.id }});
         }
       });
