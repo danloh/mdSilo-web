@@ -11,7 +11,7 @@ import HashTags from "./hashtags";
 export default function MainView() {
   const currentView = useCurrentViewContext();
   const viewTy = currentView.state.view;
-  // 
+  // console.log("current view: ", viewTy);
   return (
     <>
       {viewTy === 'default' ? ( 
@@ -46,7 +46,7 @@ function DefaultView() {
   );
 }
 
-const defaultValue = `
+export const defaultValue = `
 A lightweight, local-first personal wik and knowledge base for storing ideas, thought, knowledge with a powerful all-in-one writing tool. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
 
 :::info
@@ -65,5 +65,4 @@ This is an editable demo.
   - ✨ Available for Windows, macOS, Linux and Web  
 
 For human brain, Reading and Writing is the I/O: the communication between the information processing system and the outside world. mdSilo is here to boost your daily I/O, it is tiny yet powerful, free for everyone.
-\\
 `;
