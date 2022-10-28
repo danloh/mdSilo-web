@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Menu } from '@headlessui/react';
-import { IconDots, IconFileText, IconLayout, IconMarkdown, IconPrinter, IconTournament, IconTrash } from '@tabler/icons';
+import { IconDots, IconFileText, IconLayout, IconMarkdown, IconPrinter, IconSitemap, IconTournament, IconTrash } from '@tabler/icons';
 import { usePopper } from 'react-popper';
 import { useCurrentMdContext } from 'context/useCurrentMd';
 import { store, useStore } from 'lib/store';
@@ -41,10 +41,10 @@ export default function NoteHeader() {
   const onDelClick = useCallback(() => setIsNoteDelModalOpen(true), []);
 
   const router = useRouter();
-  const onPreviewClick = useCallback(() => {
+  const onPreview = useCallback((to: string) => {
     store.getState().setCurrentNoteId(note.id);
-    router.push({pathname: '/preview'});
-  }, [note.id, router]);
+    router.push({pathname: to});
+  }, [note, router]);
 
   const buttonClassName =
     'rounded hover:bg-gray-300 active:bg-gray-400 dark:hover:bg-gray-700 dark:active:bg-gray-600';
@@ -103,11 +103,18 @@ export default function NoteHeader() {
                       <span>Delete Permanently</span>
                     </DropdownItem>
                     <DropdownItem
-                      onClick={onPreviewClick}
+                      onClick={() => onPreview('/preview')}
                       className="border-t dark:border-gray-700"
                     >
                       <IconPrinter className="mr-1" />
                       <span>Print Preview</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => onPreview('/mindmap')}
+                      className="border-t dark:border-gray-700"
+                    >
+                      <IconSitemap className="mr-1" />
+                      <span>MindMap Preview</span>
                     </DropdownItem>
                     <NoteMetadata noteId={note.id} />
                   </Menu.Items>
