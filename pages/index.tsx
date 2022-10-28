@@ -22,7 +22,7 @@ export default function Home() {
                   <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">VERSION  0.4.9</a>
                 </button>
                 <button className="m-1 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
-                  <a href="/playground" target="_blank" rel="noopener noreferrer">Try Online</a>
+                  <a href="/app/demo" target="_blank" rel="noopener noreferrer">Try Online</a>
                 </button>
               </div>
             </div>
