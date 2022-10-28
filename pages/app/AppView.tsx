@@ -1,6 +1,9 @@
 import MsEditor from "mdsmirror";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import ErrorBoundary from 'components/misc/ErrorBoundary';
 import { useCurrentViewContext } from 'context/useCurrentView';
+import { useStore } from "lib/store";
 import Chronicle from './chronicle';
 import Journals from './journals';
 import Tasks from './tasks';
@@ -9,9 +12,20 @@ import NotePage from './md';
 import HashTags from "./hashtags";
 
 export default function MainView() {
+  const router = useRouter();
   const currentView = useCurrentViewContext();
   const viewTy = currentView.state.view;
-  // console.log("current view: ", viewTy);
+  const dispatch = currentView.dispatch;
+  const currentNoteId = useStore(state => state.currentNoteId);
+  useEffect(() => {
+    if (router.pathname.startsWith('/app')) {
+      if (currentNoteId) {
+        dispatch({view: 'md', params: { noteId: currentNoteId }})
+      }
+    }
+  }, [currentNoteId, dispatch, router.pathname]);
+  
+  //console.log("current view: ", viewTy);
   return (
     <>
       {viewTy === 'default' ? ( 

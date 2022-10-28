@@ -62,8 +62,6 @@ function Note(props: Props) {
   // console.log(">> doc: ", doc);
   // const json = getJSONContent(doc); 
   // console.log(">>json: ", json);
-  
-  const notePath = thisNote?.file_path;
 
   // for context 
   const currentView = useCurrentViewContext();
@@ -175,7 +173,7 @@ function Note(props: Props) {
         };
         upsertNote(newNote);
         if (currentDir) upsertTree(currentDir, [newNote]);
-        await writeJsonFile();
+        // await writeJsonFile();
         // 5- nav to renamed note
         await refreshFile(`${newTitle}.md`);
         deleteNote(noteId);
@@ -277,7 +275,9 @@ function Note(props: Props) {
   const errorContainerClassName = 
     `${noteContainerClassName} items-center justify-center h-full p-4`;
 
-  const isNoteExists = useMemo(() => !!storeNotes[noteId], [noteId, storeNotes]);
+  const isNoteExists = useMemo(
+    () => !!storeNotes[noteId] || !!thisNote, [noteId, storeNotes, thisNote]
+  );
 
   if (!isNoteExists) {
     return (
@@ -304,6 +304,7 @@ function Note(props: Props) {
                 className="px-2 pb-1"
                 initialTitle={title}
                 onChange={onTitleChange}
+                isDaily={isDaily}
               />
               {(rawMode === 'wysiwyg') && headings.length > 0 
                 ? (<Toc headings={headings} />) 
