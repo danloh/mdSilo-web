@@ -14,6 +14,7 @@ import { isMobile } from 'utils/helper';
 import { DropdownItem } from 'components/misc/Dropdown';
 import Tooltip from 'components/misc/Tooltip';
 import Portal from 'components/misc/Portal';
+import { FileSystemAccess } from 'editor/checks';
 import Logo from '../Logo';
 import SidebarItem from './SidebarItem';
 
@@ -181,13 +182,16 @@ const TaskButton = (props: ButtonProps) => {
 export function FileDrop() {
   const onImportJson = useImportJson();
   const onImportFile = useImportFiles();
+  const hasFSA = FileSystemAccess.support(window);
   
   return (
     <>
-      <DropdownItem onClick={openDirDialog}>
-        <IconFolderPlus size={18} className="mr-1" />
-        <Tooltip content="Open Folder"><span>Open Folder</span></Tooltip>
-      </DropdownItem>
+      {hasFSA ? (
+        <DropdownItem onClick={openDirDialog}>
+          <IconFolderPlus size={18} className="mr-1" />
+          <Tooltip content="Open Folder"><span>Open Folder</span></Tooltip>
+        </DropdownItem>
+      ) : null}
       <DropdownItem onClick={onImportFile}>
         <IconFileText size={18} className="mr-1" />
         <Tooltip content="Open .md"><span>Open File</span></Tooltip>
