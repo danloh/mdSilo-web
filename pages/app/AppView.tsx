@@ -61,7 +61,7 @@ function DefaultView() {
 }
 
 export const defaultValue = `
-A lightweight, local-first personal wik and knowledge base for storing ideas, thought, knowledge with a powerful all-in-one writing tool. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
+A lightweight, local-first personal wiki and knowledge base for storing ideas, thought, knowledge with a powerful all-in-one writing tool. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
 
 :::info
 This is an editable demo.
