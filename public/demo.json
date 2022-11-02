@@ -3,7 +3,7 @@
     "5- Different Views.md": {
       "id": "5- Different Views.md",
       "title": "5- Different Views",
-      "content": "View writings from different perspectives.\n\n# Chronicle View\n\nFeed \n\n ![chronicle view](https://mdsilo.com/demo/chronicle-1.webp) \n\n# Graph View\n\nVisualize your thinking.\n\n ![Graph](https://mdsilo.com/demo/graph-1.webp) \n\n# Task View\n\nView your tasks in one place.",
+      "content": "View writings from different perspectives.\n\n# Chronicle View\n\nFeed \n\n ![chronicle view](/demo/chronicle-1.webp) \n\n# Graph View\n\nVisualize your thinking.\n\n ![Graph](/demo/graph-1.webp) \n\n# Task View\n\nView your tasks in one place.",
       "file_path": "5- Different Views.md",
       "cover": "",
       "created_at": "2022-10-21T23:23:39.000Z",
