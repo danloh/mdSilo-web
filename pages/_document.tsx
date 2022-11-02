@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const DESCRIPTION = 'mdSilo: Lightweight Mind Silo on Your Desktop';
+const DESCRIPTION = 'mdSilo: Lightweight Personal Wiki on Desktop and Web';
 
 class MsDocument extends Document {
   render() {
