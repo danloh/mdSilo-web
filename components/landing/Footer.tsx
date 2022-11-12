@@ -11,7 +11,7 @@ export default function Footer(props: Props) {
     <div className={`pt-4 pb-12 ${className}`}>
       <div className="container flex flex-col justify-between px-6 lg:flex-row">
         <div className="inline-block">
-          <LogoWithText />
+          <LogoWithText text="mds I/O" />
         </div>
         <div className="flex flex-wrap flex-col lg:flex-row mt-2">
           <Link href="/app/demo">
