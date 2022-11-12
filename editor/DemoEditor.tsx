@@ -27,13 +27,13 @@ export function Mindmap(props: MapProps) {
   const renderSVG = useCallback(() => {
     if (!svgRef.current || !mdValue.trim()) { return; }
 
-    const data = transform(parse(mdValue, {}));
+    const data = transform(parse(mdValue, {}), title);
     const svg: SVGAElement = markmap(svgRef.current, data, {
       preset: 'colorful',   
       linkShape: 'diagonal'
     });
     setSvgElement(svg);
-  }, [mdValue]);
+  }, [mdValue, title]);
 
   useEffect(() => {
     if (!svgRef.current) { return; }
