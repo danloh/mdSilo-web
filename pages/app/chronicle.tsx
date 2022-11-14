@@ -11,7 +11,7 @@ import HeatMap from './HeatMap';
 
 export default function Chronicle() {
   
-  const initDir = useStore((state) => state.initDir);
+  const initDir = useStore((state) => state.initDir) || 'md';
   const currentView = useCurrentViewContext();
   const dispatch = currentView.dispatch;
 
