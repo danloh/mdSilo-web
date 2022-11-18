@@ -3,7 +3,7 @@ import {
   IconInfoCircle,
   IconBrandDiscord,
   IconHelp,
-  IconTag,
+  IconPizza,
 } from '@tabler/icons';
 
 type SidebarFootProps = {
@@ -18,8 +18,8 @@ export default function SidebarFoot(props: SidebarFootProps) {
       <Link href="/about">
         <a title="About mdSilo"><IconInfoCircle size={18} className="mr-1" /></a>
       </Link>
-      <Link href="/sponsors">
-        <a><IconTag size={18} className="mr-1" /></a>
+      <Link href="/helpus">
+        <a><IconPizza size={18} className="mr-1" /></a>
       </Link>
       <Link href="/app/demo">
         <a title="Get Started"><IconHelp size={18} className="mr-1" /></a>
