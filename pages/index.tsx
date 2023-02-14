@@ -18,11 +18,11 @@ export default function Home() {
                 Buffering for your daily I/O 
               </p>
               <p className="text-2xl pt-2 text-center text-white">
-                Available for Windows(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.5.3/mdsilo_0.5.3_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.5.3/mdsilo_0.5.3_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.5.3/mdsilo_x64.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.5.3/mdsilo_0.5.3_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo/releases/download/app-v0.5.3/mdsilo_0.5.3_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>) and <a href="/app" className="link" target="_blank" rel="noopener noreferrer">Web</a>. 
+                Available for Windows(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_x64.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>) and <a href="/app" className="link" target="_blank" rel="noopener noreferrer">Web</a>. 
               </p>
               <div className="flex flex-wrap items-center justify-center mt-4">
                 <button className="m-2 text-lg text-white text-center bg-slate-700 py-2 px-4 rounded hover:bg-green-400">
-                  <a href="https://github.com/mdSilo/mdSilo/releases" target="_blank" rel="noopener noreferrer">VERSION  0.5.3</a>
+                  <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer">VERSION  0.5.4</a>
                 </button>
                 <button className="m-2 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
                   <a href="/app/demo" target="_blank" rel="noopener noreferrer">Try Online</a>
@@ -43,10 +43,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div>
-          <svg className="fill-slate-600" viewBox="0 0 1024 65"><path d="M99 0.25C59.25 0 0 25 0 25.2V0.25H99C99 0.25 99 0.25 99 0.25C99 0.25 99 0.25 99 0.25H1150V65C1018 22 958 25 820 23C672 21 573 73 427 73C308 73 218 0.25 99 0.25H99Z"></path></svg>
-        </div>
-        <Footer className="mt-12" />
+        <Footer className="mt-8" />
       </div>
     </MainView>
   );
