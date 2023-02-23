@@ -17,14 +17,6 @@ export default function Footer(props: Props) {
           <Link href="/app/demo">
             <a className="m-1 text-gray-300 hover:text-primary-500">About</a>
           </Link>
-          <a
-            href="https://github.com/mdSilo/mdSilo/releases"
-            className="m-1 text-green-400 hover:text-primary-500"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Get Application
-          </a>
           <Link href="/privacy">
             <a className="m-1 text-gray-300 hover:text-primary-500">Privacy</a>
           </Link>
