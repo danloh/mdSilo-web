@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col">
-        <div className="shadow-sm pb-8">
+        <div className="shadow-sm pb-8 bg-slate-800">
           <Navbar withText={true} />
           <div className="py-12">
             <div className="container px-6 text-center">
@@ -18,25 +18,25 @@ export default function Home() {
                 Buffering for your daily I/O 
               </p>
               <div className="flex-1 mx-auto pt-4">
-                <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer" className="inline-flex mt-4 mr-2 text-xl btn">
+                <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
                   Private Writing
                 </a>
-                <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer" className="inline-flex mt-4 mr-2 text-xl btn">
+                <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
                   Collaborative Writing
                 </a>
               </div>
             </div>
           </div>
         </div>
-        <div className="py-4 bg-neutral-300">
-          <div className="container px-6">
-            <div className="grid gap-8 pt-6 lg:grid-cols-2">
+        <div className="py-4">
+          <div className="container px-6 flex flex-col md:flex-row items-center justify-center">
+            
               <div className="container flex flex-col items-center justify-center py-4">
                 <div 
                   className="container p-4 text-center drop-shadow-lg flex flex-col items-center justify-center" 
                   title="All-In-One: WYSIWYG, Markdown, MindMap"
                 >
-                  <img className="rounded-md" style={{maxHeight: "280px", maxWidth: "570px"}} src="/3-mode.webp"></img>
+                  <img className="rounded-md" src="/3-mode.webp"></img>
                   <p className="py-1 text-xs text-center text-black">
                     All-In-One: WYSIWYG, Markdown, MindMap... 
                   </p>
@@ -69,7 +69,7 @@ export default function Home() {
                   className="container p-4 text-center drop-shadow-lg flex flex-col items-center justify-center" 
                   title="Effient live collaboration"
                 >
-                  <img className="rounded-md" style={{maxHeight: "280px", maxWidth: "570px"}} src="/live-collaboration.webp"></img>
+                  <img className="rounded-md"  src="/live-collaboration.webp"></img>
                   <p className="py-1 text-xs text-center text-black">
                     Effient live collaborative writing and preview... 
                   </p>
@@ -92,12 +92,12 @@ export default function Home() {
                       <a href="https://github.com/danloh/mdSilo-spc/releases" target="_blank" rel="noopener noreferrer">VERSION  0.1.0</a>
                     </button>
                     <button className="m-2 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
-                      <a href="https://github.com/danloh/mdSilo-spc" target="_blank" rel="noopener noreferrer">Source Code</a>
+                      <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer">Try Online</a>
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            
           </div>
         </div>
         <div className="py-8">
@@ -116,7 +116,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Footer className="mt-8" />
+      <Footer className="mt-8 bg-slate-600" />
     </MainView>
   );
 }

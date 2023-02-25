@@ -7,7 +7,7 @@ export default function Terms() {
       <Head>
         <title>Terms of Service | mdSilo</title>
       </Head>
-      <article className="container py-6 prose prose-primary text-gray-300">
+      <article className="container py-6 prose prose-primary text-gray-600">
         <h1>Terms of Service</h1>
 
         <p>Last updated: December 01, 2021</p>
