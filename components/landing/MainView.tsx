@@ -14,7 +14,7 @@ export default function MainView(props: Props) {
     children,
     showNavbar = true,
     showFooter = false,
-    className = 'splash-bg',
+    className = '',
   } = props;
 
   return (
