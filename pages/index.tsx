@@ -12,14 +12,14 @@ export default function Home() {
           <div className="py-12">
             <div className="container px-6 text-center">
               <h1 className="text-5xl font-semibold text-slate-300 leading-tight">
-                Open platform for <br/> Writing, Reading and Collaboration
+                Open platform for <br/> Reading, Writing and Collaboration
               </h1>
-              <p className="text-4xl py-2 text-center text-primary-500">
+              <p className="text-3xl py-2 text-center text-primary-500">
                 Buffering for your daily I/O 
               </p>
               <div className="flex-1 mx-auto pt-4">
                 <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
-                  Private Writing Native App
+                  Private Writing Desktop App
                 </a>
                 <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
                   Online Collaborative Editor
@@ -48,14 +48,14 @@ export default function Home() {
                   RSS & Podcast Client + Personal Wiki on Desktop
                 </p>
                 <p className="text-xl pt-2 text-center text-black">
-                  Available for Windows(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_x64_en-US.msi" className="link" target="_blank" rel="noopener noreferrer">msi</a>), macOS(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_x64.dmg" className="link" target="_blank" rel="noopener noreferrer">dmg</a>, <a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_x64.app.tar.gz" className="link" target="_blank" rel="noopener noreferrer">app</a>), Linux(<a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_amd64.deb" className="link" target="_blank" rel="noopener noreferrer">deb</a>, <a href="https://github.com/mdSilo/mdSilo-app/releases/download/app-v0.5.4/mdsilo_0.5.4_amd64.AppImage" className="link" target="_blank" rel="noopener noreferrer">AppImage</a>) and <a href="/app" className="link" target="_blank" rel="noopener noreferrer">Web</a>. 
+                  Available for Windows(<small className="text-primary-600">msi</small>), macOS(<small className="text-primary-600">dmg</small>, <small className="text-primary-600">app</small>), Linux(<small className="text-primary-600">deb</small>, <small className="text-primary-600">AppImage</small>) and <a href="/app" className="link" target="_blank" rel="noopener noreferrer">Web</a>. 
                 </p>
                 <p className="text-base pt-2 text-center text-slate-500">
                   Local-first, Lightweight Yet Powerful. 
                 </p>
                 <div className="flex flex-wrap items-center justify-center mt-4">
                   <button className="m-2 text-lg text-white text-center bg-slate-700 py-2 px-4 rounded hover:bg-green-400">
-                    <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer">VERSION  0.5.4</a>
+                    <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer">VERSION  0.5.5</a>
                   </button>
                   <button className="m-2 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
                     <a href="/app/demo" target="_blank" rel="noopener noreferrer">Try Online</a>
@@ -88,7 +88,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap items-center justify-center mt-4">
                   <button className="m-2 text-lg text-white text-center bg-slate-700 py-2 px-4 rounded hover:bg-green-400">
-                    <a href="https://github.com/danloh/mdSilo-spc/releases" target="_blank" rel="noopener noreferrer">VERSION  0.1.0</a>
+                    <a href="https://github.com/danloh/mdSilo-spc/releases" target="_blank" rel="noopener noreferrer">In Progress</a>
                   </button>
                   <button className="m-2 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
                     <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer">Try Online</a>
