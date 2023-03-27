@@ -7,7 +7,7 @@ export default function Helpus() {
   return (
     <MainView showFooter={true}>
       <Head><title>Help mdSilo survive</title></Head>
-      <div className="container p-6 text-white">
+      <div className="container p-6">
         <h1 className="text-5xl font-semibold text-center">We Appreciate Your Support</h1>
         <p className="text-xl text-center mt-4">
           recommend it to your friends, <a href="https://github.com/mdSilo/mdSilo">report bugs, contribute in coding</a> or donate...
