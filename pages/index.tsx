@@ -88,7 +88,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap items-center justify-center mt-4">
                   <button className="m-2 text-lg text-white text-center bg-slate-700 py-2 px-4 rounded hover:bg-green-400">
-                    <a href="https://github.com/danloh/mdSilo-spc/releases" target="_blank" rel="noopener noreferrer">In Progress</a>
+                    <a href="https://github.com/danloh/mdSilo-spc" target="_blank" rel="noopener noreferrer">VERSION  0.1.0</a>
                   </button>
                   <button className="m-2 text-lg text-white text-center bg-slate-500 py-2 px-4 rounded hover:bg-green-600">
                     <a href="https://pad.mdsilo.com" target="_blank" rel="noopener noreferrer">Try Online</a>
