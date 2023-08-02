@@ -23,6 +23,11 @@ export default function Footer(props: Props) {
           <Link href="/terms">
             <a className="m-1 text-gray-300 hover:text-primary-500">Terms</a>
           </Link>
+          <Link href="/helpus">
+            <a className="m-1 text-green-300 hover:text-primary-500">
+              HelpUs
+            </a>
+          </Link>
           <a
             href="https://discord.gg/EXYSEHRTFt"
             className="m-1 text-gray-300 hover:text-primary-500"
