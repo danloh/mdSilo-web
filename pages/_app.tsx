@@ -4,7 +4,6 @@ import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import NProgress from 'nprogress';
 import type { AppProps } from 'next/app';
-import { ProvideAuth } from 'utils/useAuth';
 import AppLayout from 'components/AppLayout';
 import ServiceWorker from 'components/ServiceWorker';
 import 'styles/styles.css';
@@ -24,15 +23,13 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
         <title>mdSilo</title>
       </Head>
       <ServiceWorker>
-        <ProvideAuth>
-          {router.pathname.startsWith('/app') ? (
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          ) : (
+        {router.pathname.startsWith('/app') ? (
+          <AppLayout>
             <Component {...pageProps} />
-          )}
-        </ProvideAuth>
+          </AppLayout>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </ServiceWorker>
       <ToastContainer
         position="top-center"

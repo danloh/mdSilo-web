@@ -16,18 +16,6 @@ export default function About() {
             mdSilo is a silo for storing ideas with a WYSIWYG editor and Markdown support. It is easy-to-use and versatile.
           </p>
         </div>
-        <div>
-          <blockquote>Networked is better than standalone.</blockquote>
-          <p>
-            With mdSilo, your writings are not standalone, but are networked together via bidirectional BackLinks, Block Reference, PubLinks, HashTag and more.
-          </p>
-        </div>
-        <div>
-          <blockquote>You can&apos;t start a fire without a spark.</blockquote>
-          <p>
-            mdSilo can help you take note of every idea, capture every spark of inspiration, connect your thoughts together, and think better.
-          </p>
-        </div>
       </article>
     </MainView>
   );
