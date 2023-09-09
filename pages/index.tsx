@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-import Navbar from 'components/landing/Navbar';
 import MainView from 'components/landing/MainView';
 import Footer from 'components/landing/Footer';
 
@@ -7,10 +5,10 @@ export default function Home() {
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col">
-        <div className="shadow-sm pb-8 bg-slate-800 min-h-screen">
-          <div className="w-screen flex flex-col justify-center h-screen">
-            <div className="container px-6 text-center">
-              <h1 className="text-8xl font-bold text-slate-300 leading-tight mb-12">
+        <div className="shadow-sm bg-slate-800 min-h-screen">
+          <div className="w-screen flex flex-col justify-center">
+            <div className="container text-center">
+              <h1 className="text-8xl font-bold text-slate-300 leading-tight mb-8 mt-12">
                 mdsilo
               </h1>
               <b className="text-4xl font-semibold text-slate-300 leading-tight my-6">

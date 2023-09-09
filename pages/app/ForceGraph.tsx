@@ -28,6 +28,7 @@ import { useCurrentViewContext } from 'context/useCurrentView';
 import { useStore } from 'lib/store';
 import { isUrl } from 'utils/helper';
 import { refreshFile } from 'editor/hooks/useRefresh';
+import { checkFileIsMd } from 'editor/hooks/useImport';
 
 export const LINK_REGEX = /\[([^[]+)]\((\S+)\)/g;
 export const WIKILINK_REGEX = /\[\[(.+)\]\]/g;
@@ -66,7 +67,7 @@ export default function ForceGraph(props: Props) {
   // Compute graph data
   const data: GraphData = useMemo(() => {
     const data: GraphData = { nodes: [], links: [] };
-    const notesArr = Object.values(notes).filter(n => !n.is_dir);
+    const notesArr = Object.values(notes).filter(n => !n.is_dir && checkFileIsMd(n.id));
 
     // Initialize linksByNoteId: {id: Set[ids]}
     const linksByNoteId: Record<string, Set<string>> = {};
@@ -84,7 +85,7 @@ export default function ForceGraph(props: Props) {
       for (const match of link_array) {
         const href = match[2];
         if (!isUrl(href)) {
-          const title = href.replaceAll('_', ' ');
+          const title = decodeURI(href);
           const existingNote = notesArr.find(n => (n.title === title));
           if (existingNote) {
             linksByNoteId[note.id].add(existingNote.id);

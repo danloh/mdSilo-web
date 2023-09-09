@@ -2007,15 +2007,23 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
+"@tabler/icons-react@^2.30.0":
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.34.0.tgz#fd112ab70269f114a4cb6f76e959a6649b86f009"
+  integrity sha512-HNNTdwwAW8IwUxLPY2HWFw+d7nPVByieamIx90qM1+Rq8UfvLjwsBFNcUKaJcfRFIAa80o4g6ZGy/NMD/Zw73A==
+  dependencies:
+    "@tabler/icons" "2.34.0"
+    prop-types "^15.7.2"
+
+"@tabler/icons@2.34.0":
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.34.0.tgz#cfa4b762259102cc91f52708253745b6438a5425"
+  integrity sha512-65GsJsT4ZBETWcdrNxbsjsbRoZvbVk3CcU2SafaElrzP1wpOeuAn9aELVEbxhdyZyP9dg2SCfgH6iAArJgp7lw==
+
 "@tabler/icons@^1.106.0":
   version "1.106.0"
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.106.0.tgz#adde7692da6114ae803e6cb2ff9e51181e941a55"
   integrity sha512-ldN/ucjGrtAE3YlU8ct8j13ZNbrUueEIqw3jVpGQ55eVztlqVBzGnZbF5kJyLJGmHtxVblyyhEWsRKutFbB21A==
-
-"@tabler/icons@^1.92.0":
-  version "1.92.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.92.0.tgz#e068938db61d5f932d317a8fd18acd5c0204496e"
-  integrity sha512-eZP5jYvNPtZKiWj1Bn2C+zjvGXhQoormXAyE3TH7ihCxXBHMzKF/ZLYhU3rnMC/+NjuLDBifKc6dmwoh7s62vQ==
 
 "@tailwindcss/forms@^0.5.3":
   version "0.5.3"
@@ -4117,13 +4125,13 @@ duplexer@^0.1.2:
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
 
-echarts@5.4.2:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/echarts/-/echarts-5.4.2.tgz#9f38781c9c6ae323e896956178f6956952c77a48"
-  integrity sha512-2W3vw3oI2tWJdyAz+b8DuWS0nfXtSDqlDmqgin/lfzbkB01cuMEN66KWBlmur3YMp5nEDEEt5s23pllnAzB4EA==
+echarts@5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-5.4.3.tgz#f5522ef24419164903eedcfd2b506c6fc91fb20c"
+  integrity sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==
   dependencies:
     tslib "2.3.0"
-    zrender "5.4.3"
+    zrender "5.4.4"
 
 ejs@^3.1.6:
   version "3.1.6"
@@ -6183,16 +6191,16 @@ mdsmark@0.0.2:
     react "^17.0.2"
     react-dom "^17.0.2"
 
-mdsmirror@^0.0.23:
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.23.tgz#a1173a1d2c84ecf7bda9923bfa8505875bd8927e"
-  integrity sha512-kRpE/f22kKuhgGeY4BQAJnWMYHd2L26obo/FQ5QlBRw/RILDtgnCedXhC6vz0kmYCyzSEO35s/zsf+zbrre1+Q==
+mdsmirror@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/mdsmirror/-/mdsmirror-0.0.31.tgz#a10a51b2432bde6e76aaf78b9c1e8b6b78e74caf"
+  integrity sha512-M4HbdvMth0t1nZCjUS7Drw9KW8iLG9dEGnCZDp/2r4hiYRDtxw/H1LT9CNAvrt2gcewy4X3kpxCHNl3ru0pLPA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@tabler/icons" "^1.92.0"
+    "@tabler/icons-react" "^2.30.0"
     abcjs "6.2.2"
     copy-to-clipboard "^3.3.3"
-    echarts "5.4.2"
+    echarts "5.4.3"
     katex "^0.15.6"
     lodash "^4.17.21"
     markdown-it "^12.3.2"
@@ -8645,10 +8653,10 @@ yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-zrender@5.4.3:
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/zrender/-/zrender-5.4.3.tgz#41ffaf835f3a3210224abd9d6964b48ff01e79f5"
-  integrity sha512-DRUM4ZLnoaT0PBVvGBDO9oWIDBKFdAVieNWxWwK0niYzJCMwGchRk21/hsE+RKkIveH3XHCyvXcJDkgLVvfizQ==
+zrender@5.4.4:
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-5.4.4.tgz#8854f1d95ecc82cf8912f5a11f86657cb8c9e261"
+  integrity sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==
   dependencies:
     tslib "2.3.0"
 
