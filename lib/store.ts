@@ -3,8 +3,7 @@ import createVanilla from 'zustand/vanilla';
 import { persist, StateStorage } from 'zustand/middleware';
 import produce, { Draft } from 'immer';
 import localforage from 'localforage';
-import type { Note } from 'types/model';
-import type { NoteUpdate } from 'api/curdNote';
+import type { Note, NoteUpdate } from 'types/model';
 import userSettingsSlice, { UserSettings } from './userSettingsSlice';
 
 export { default as shallowEqual } from 'zustand/shallow';

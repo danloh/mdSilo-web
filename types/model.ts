@@ -1,3 +1,4 @@
+import { PickPartial } from "./utils";
 
 export type User = {
   id: string;
@@ -25,3 +26,8 @@ export const defaultNote =  {
   updated_at: new Date().toISOString(),
   is_daily: false,
 };
+
+export type NoteUpdate = PickPartial<
+  Note, // id required
+  'title' | 'content' | 'created_at' | 'updated_at' | 'file_path' | 'cover' | 'is_daily' 
+>;
