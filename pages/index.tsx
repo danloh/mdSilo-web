@@ -12,7 +12,7 @@ export default function Home() {
                 mdsilo
               </h1>
               <b className="text-4xl font-semibold text-slate-300 leading-tight my-6">
-                Feed Reader and Knowledge Base 
+                Knowledge Base, Local and Free 
               </b>
               <p className="text-3xl py-2 text-center text-primary-500 my-4">
                 Buffering for your daily I/O 
@@ -21,10 +21,13 @@ export default function Home() {
                 <a href="https://github.com/mdSilo/mdSilo-app/releases" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
                   Desktop App
                 </a>
-                <a href="/app/demo" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
-                  Online Demo
+                <a href="/app" target="_blank" rel="noopener noreferrer" className="inline-flex m-4 text-xl btn">
+                  Web App
                 </a>
               </div>
+              <a href="https://mdsilo.com" target="_blank" rel="noopener noreferrer" className="inline-flex m-2 link">
+                Try our online application to practice daily wirting. 
+              </a>
             </div>
           </div>
         </div>
