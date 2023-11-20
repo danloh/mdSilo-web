@@ -52,19 +52,21 @@ function DefaultView() {
     <ErrorBoundary>
       <div className="flex flex-col p-8 w-full h-full mx-auto bg-white overflow-auto">
         <p className="text-2xl py-3 text-center text-primary-500">
-          Hello, welcome to mdSilo.
+          Hello, welcome to mdSilo Wep App.
         </p>
-        <MsEditor value={defaultValue} dark={false} />
+        <MsEditor value={defaultValue} dark={false} onOpenLink={(href) => window.open(href)} />
       </div>
     </ErrorBoundary>
   );
 }
 
 export const defaultValue = `
+> This web app is for local writing. If you want to sync your writing to cloud, please try our [online application](https://mdsilo.com)  
+
 A lightweight, local-first personal wiki and knowledge base for storing ideas, thought, knowledge with a powerful all-in-one writing tool. Use it to organize writing, network thoughts and build a Second Brain on top of local plain text Markdown files.
 
 :::info
-This is an editable demo.
+This is an editable demo. To sync your writing, please try our [online application](https://mdsilo.com) 
 :::
 
 ## Features
