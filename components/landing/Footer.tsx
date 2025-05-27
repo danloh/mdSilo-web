@@ -37,12 +37,12 @@ export default function Footer(props: Props) {
             Discord
           </a>
           <a
-            href="https://twitter.com/mdsiloapp"
+            href="https://bsky.app/profile/mdsilo.com"
             className="m-1 text-gray-300 hover:text-primary-500"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Twitter
+            Bluesky
           </a>
         </div>
       </div>

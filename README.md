@@ -83,4 +83,4 @@ And, BTW, [Desktop App is here](https://github.com/mdSilo/mdSilo/releases)
 
 ## Any questions, feedback or suggestions?
 
-You can follow us on [Twitter](https://twitter.com/mdsiloapp) or go to our [Discord](https://discord.gg/EXYSEHRTFt). We are waiting there for you.
+You can follow us on [Bluesky](https://bsky.app/profile/mdsilo.com) or go to our [Discord](https://discord.gg/EXYSEHRTFt). We are waiting there for you.

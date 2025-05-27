@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <MainView showNavbar={false} showFooter={false}>
       <div className="flex flex-col">
-        <div className="shadow-sm bg-slate-800 min-h-screen">
+        <div className="shadow-sm bg-slate-800 h-screen">
           <div className="w-screen flex flex-col justify-center">
             <div className="container text-center">
               <h1 className="text-8xl font-bold text-slate-300 leading-tight mb-8 mt-12">
@@ -25,9 +25,6 @@ export default function Home() {
                   Web App
                 </a>
               </div>
-              <a href="https://mdsilo.com" target="_blank" rel="noopener noreferrer" className="inline-flex m-2 link">
-                Try our online application to practice daily wirting. 
-              </a>
             </div>
           </div>
         </div>
